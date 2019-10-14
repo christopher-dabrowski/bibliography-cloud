@@ -1,0 +1,65 @@
+body {
+    background-color: rgb(90, 176, 250);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.card {
+    /* display: block; */
+    background-color: white;
+    width: 50%;
+    /* height: 400px; */
+    padding-top: 10px;
+    margin: 8% auto 15% auto;
+    border: 1px solid #888;
+    border-radius: 5px;
+}
+
+.card h1 {
+    text-align: center;
+}
+
+#form-logo {
+    margin: auto;
+    width: 140px;
+    height: 140px;
+    border-radius: 80%;
+}
+
+form {
+    padding: 10px;
+}
+
+form label {
+    display: block;
+    margin-top: 5px;
+}
+
+/* Full-width input fields */
+input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.aditional-info {
+    font-size: 70%;
+}
+
+input[type=checkbox] {
+    margin-right: 6px;
+}
+
+#submit-button {
+    margin-top: 20px;
+}
+
+.card footer {
+    background-color: #ccc;
+    height: 40px;
+    padding: 10px;
+    font-size: 80%;
+}

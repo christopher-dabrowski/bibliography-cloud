@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl">
 
 <head>
   <!-- Required meta tags -->
@@ -13,13 +13,40 @@
   <script src="https://kit.fontawesome.com/99f6a3dd35.js" crossorigin="anonymous"></script>
 
   <!-- My stylesheet -->
-  <link rel="stylesheet" href="styles/login.css">
+  <link rel="stylesheet" href="./styles/login.css">
 
-  <title>Login</title>
+  <title>Kreacja konta</title>
 </head>
 
 <body>
-  <i class="fas fa-thumbs-up fa-10x"></i>
+  <!-- <i class="fas fa-thumbs-up fa-10x"></i> -->
+
+  <!-- TODO: Navbar Maby a logo and link to github -->
+
+  <section id=form-card class="card">
+    <h1>Tworzenie konta</h1>
+
+    <img id="form-logo" src="img/education-concept/426430-PE93QI-643.jpg" alt="Otwarta książka leży na zielonym blacie">
+
+    <form action="">
+      <label for="name"><b>Nazwa użytkownika:</b></label>
+      <input type="text" placeholder="Wprowadź nazwę" name="name" required>
+
+      <label for="mail"><b>Mail:</b></label>
+      <input type="text" placeholder="Wprowadź adres email" name="mail" required>
+
+      <label for="password"><b>Hasło:</b></label>
+      <input type="password" placeholder="Wprowadź hasło" name="password" required>
+
+      <label class="aditional-info"><input type="checkbox" value="agree">Wyrażam zgodę na przetwarzanie moich danych.</label>
+
+      <button type="submit" id="submit-button" class="btn btn-success btn-block">Utwórz konto</button>
+    </form>
+
+    <footer>
+      <p>Ikona na górze pochodzi ze strony <a href="https://www.freepik.com/free-photos-vectors/school">freepik.com</a>.</p>
+    </footer>
+  </section>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -34,10 +61,10 @@
     crossorigin="anonymous"></script>
 
   <!-- Knockout.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script> -->
 
   <!-- My JavaScript -->
-  <script src="scripts/script.js"></script>
+  <script src="/scripts/script.js"></script>
 </body>
 
 </html>
