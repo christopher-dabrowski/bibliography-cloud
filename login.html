@@ -29,43 +29,62 @@
     <img id="form-logo" src="img/education-concept/426430-PE93QI-643.jpg" alt="Otwarta książka leży na zielonym blacie">
 
     <form action="">
-      <label for="first-name"><b>Imie:</b></label>
-      <input type="text" placeholder="Wprowadź imię" name="first-name" required>
-
-      <label for="last-name"><b>Nazwisko:</b></label>
-      <input type="text" placeholder="Wprowadź nazwisko" name="last-name" required>
-
-      <label for="birth-date"><b>Data urodzin:</b></label>
-      <input type="date" name="birth-date" required>
-
-      <label for="mail"><b>Mail:</b></label>
-      <input type="text" placeholder="Wprowadź adres email" name="mail" required>
-
-      <label for="login"><b>Login:</b></label>
-      <input type="text" placeholder="Wprowadź login" name="login" required>
-
-      <label for="password"><b>Hasło:</b></label>
-      <input type="password" placeholder="Wprowadź hasło" name="password" required>
-
-      <label for="pesel"><b>Pesel:</b></label>
-      <input type="number" placeholder="Wprowadź pesel" name="pesel" required>
-
-      <label><b>Płeć:</b></label>
-      <div class="form-check form-check-inline mb-2">
-        <input class="form-check-input" type="radio" name="gender" id="femaleRadioButton" value="female">
-        <label class="form-check-label mr-3" for="femaleRadioButton">Kobieta</label>
-
-        <input class="form-check-input" type="radio" name="gender" id="maleRadioButton" value="male" checked>
-        <label class="form-check-label" for="maleRadioButton">Mężczyzna</label>
+      <div class="form-group">
+        <label for="first-name"><b>Imię:</b></label>
+        <input type="text" placeholder="Wprowadź imię" name="first-name" required>
       </div>
 
-      <label for="profilePicture"><b>Zdjęcie lub awatar:</b></label>
-      <div class="custom-file mb-2">
-        <input type="file" class="custom-file-input" id="customFile">
-        <label class="custom-file-label" for="customFile">Wybierz zdjęcie</label>
+      <div class="form-group">
+        <label for="last-name"><b>Nazwisko:</b></label>
+        <input type="text" placeholder="Wprowadź nazwisko" name="last-name" required>
       </div>
 
-      <label class="aditional-info mt-3"><input type="checkbox" value="agree" checked>Wyrażam zgodę na przetwarzanie moich
+      <div class="form-group">
+        <label for="birth-date"><b>Data urodzin:</b></label>
+        <input type="date" name="birth-date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="mail"><b>Mail:</b></label>
+        <input type="text" placeholder="Wprowadź adres email" name="mail" required>
+      </div>
+
+      <div class="form-group">
+        <label for="login"><b>Login:</b></label>
+        <input type="text" placeholder="Wprowadź login" name="login" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password"><b>Hasło:</b></label>
+        <input type="password" placeholder="Wprowadź hasło" name="password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="pesel"><b>Pesel:</b></label>
+        <input type="number" placeholder="Wprowadź pesel" name="pesel" required>
+      </div>
+
+      <div class="form-group">
+        <label><b>Płeć:</b></label>
+        <div class="form-check form-check-inline mb-2">
+          <input class="form-check-input" type="radio" name="gender" id="femaleRadioButton" value="female">
+          <label class="form-check-label mr-3" for="femaleRadioButton">Kobieta</label>
+
+          <input class="form-check-input" type="radio" name="gender" id="maleRadioButton" value="male" checked>
+          <label class="form-check-label" for="maleRadioButton">Mężczyzna</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="profilePicture"><b>Zdjęcie lub awatar:</b></label>
+        <div class="custom-file mb-2">
+          <input type="file" class="custom-file-input" id="customFile">
+          <label class="custom-file-label" for="customFile">Wybierz zdjęcie</label>
+        </div>
+      </div>
+
+      <label class="aditional-info mt-3"><input type="checkbox" value="agree" checked>Wyrażam zgodę na przetwarzanie
+        moich
         danych.</label>
       <button type="submit" id="submit-button" class="btn btn-success btn-block">Utwórz konto</button>
     </form>
@@ -89,7 +108,11 @@
     crossorigin="anonymous"></script>
 
   <!-- bs-custom-file-input -->
-  <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"
+    crossorigin="anonymous"></script>
+
+  <!-- Validate.js -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
 
   <!-- Knockout.js -->
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script> -->
