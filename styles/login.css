@@ -6,12 +6,19 @@ body {
 .card {
     /* display: block; */
     background-color: white;
-    width: 50%;
+    width: 70%;
     /* height: 400px; */
-    padding-top: 10px;
-    margin: 8% auto 15% auto;
+    /* padding-top: 10px; */
+    padding: 10px 10px;
+    margin: 3% auto 15% auto;
     border: 1px solid #888;
     border-radius: 5px;
+    box-shadow: 4px 4px 10px #484848;
+}
+
+.card footer {
+    margin: 0 -10px -10px;
+    padding-left: 10px;
 }
 
 .card h1 {
@@ -36,6 +43,8 @@ form label {
 
 /* Full-width input fields */
 input[type=text],
+input[type=date],
+input[type=number],
 input[type=password] {
     width: 100%;
     padding: 12px 20px;
@@ -44,6 +53,20 @@ input[type=password] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0;
+    /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    /* Firefox */
+}
+
 
 .aditional-info {
     font-size: 70%;
