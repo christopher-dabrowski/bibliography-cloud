@@ -28,10 +28,11 @@
 
     <img id="form-logo" src="img/education-concept/426430-PE93QI-643.jpg" alt="Otwarta książka leży na zielonym blacie">
 
-    <form action="">
+    <form action="https://pi.iem.pw.edu.pl/register" method="POST" enctype="multipart/form-data" id="form">
+
       <div class="form-group">
-        <label for="first-name"><b>Imię:</b></label>
-        <input type="text" placeholder="Wprowadź imię" name="first-name" required>
+        <label for="firstname"><b>Imię:</b></label>
+        <input type="text" placeholder="Wprowadź imię" name="firstname" required>
       </div>
 
       <div class="form-group">
@@ -45,8 +46,8 @@
       </div>
 
       <div class="form-group">
-        <label for="mail"><b>Mail:</b></label>
-        <input type="text" placeholder="Wprowadź adres email" name="mail" required>
+        <label for="email"><b>Email:</b></label>
+        <input type="text" placeholder="Wprowadź adres email" name="email" id="email" required>
       </div>
 
       <div class="form-group">
@@ -84,13 +85,12 @@
       </div>
 
       <label class="aditional-info mt-3"><input type="checkbox" value="agree" checked>Wyrażam zgodę na przetwarzanie
-        moich
-        danych.</label>
+        moich danych.</label>
       <button type="submit" id="submit-button" class="btn btn-success btn-block">Utwórz konto</button>
     </form>
 
     <footer>
-      <p>Ikona na górze pochodzi ze strony <a href="https://www.freepik.com/free-photos-vectors/school">freepik.com</a>.
+      <p>Ikona na górze pochodzi ze strony <a href="https://www.freepik.com/free-photos-vectors/school" target="_blank">freepik.com</a>.
       </p>
     </footer>
   </section>
