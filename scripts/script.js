@@ -109,7 +109,9 @@ $(document).ready(function () {
     const sexRadio = document.querySelectorAll("#femaleRadioButton, #maleRadioButton");
     for (const radio of sexRadio) {
         radio.addEventListener("change", function (ev) {
-            validateField(form, document.getElementById("pesel"));
+            const peselInput = document.getElementById("pesel");
+            if (peselInput.value)
+                validateField(form, peselInput);
         });
     }
 });

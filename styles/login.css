@@ -90,14 +90,10 @@ input[type=checkbox] {
     font-size: 80%;
 }
 
-.form-group.has-error {
+.form-group.has-error:not(.radio-group) {
     color: rgb(179, 36, 36);
 }
 
-.form-group.has-success {
+.form-group.has-success:not(.radio-group) {
     color: rgb(110, 201, 54);
-}
-
-#femaleRadioButton, #maleRadioButton {
-    color: aqua;
 }
