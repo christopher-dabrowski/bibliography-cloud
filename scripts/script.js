@@ -71,6 +71,13 @@ const constraints = {
         pesel: {
             sexAttribute: "sex"
         }
+    },
+    photo: {
+        presence: { message: "^Zdjęcie jest wymagane" },
+        format: {
+            pattern: /^.*\.((jpg)|(png)|(bmp)|(gif))$/,
+            message: "^Nieprawidłowy format pliku"
+        },
     }
 };
 
