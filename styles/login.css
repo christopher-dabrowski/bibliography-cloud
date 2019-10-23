@@ -89,3 +89,11 @@ input[type=checkbox] {
     padding: 10px;
     font-size: 80%;
 }
+
+.form-group.has-error {
+    color: rgb(179, 36, 36);
+}
+
+.form-group.has-success {
+    color: rgb(110, 201, 54);
+}
