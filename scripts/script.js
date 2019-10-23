@@ -1,47 +1,61 @@
 let tmp; //Variable for testing 
 // TODO: Remove tmp
 
-validate.validators.pesel = function(value, options, key, attributes) {
-    console.log(value);
-    console.log(options);
-    if (attributes.sex !== undefined) {
-        console.log("Jest płeć");
-        console.log(attributes.sex);
+validate.validators.pesel = function (value, options, key, attributes) {
+    const pesel = value;
+
+    if (!pesel.match(/^[0-9]*$/))
+        return "^Pesel musi składać się wyłącznie z cyfr";
+
+    if (pesel.length !== 11)
+        return "^Pesel musi mieć 11 cyfr";
+
+    const weight = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
+    let sum = 0;
+    const controlNumber = parseInt(pesel.substring(10, 11));
+    for (let i = 0; i < weight.length; i++) {
+        sum += (parseInt(pesel.substring(i, i + 1)) * weight[i]);
     }
-    if (attributes.sex == 'M') {
-        console.log("hhh");
-        return "^Ok";
-    }
-    else {
-        console.log("nach");
-        return null;
+    sum = sum % 10;
+    const sumIsValid = 10 - sum === controlNumber;
+
+    if (!sumIsValid)
+        return "^Nieprawidłowa suma kontrolna";
+
+    if (options.sexAttribute) {
+        const sex = attributes[options.sexAttribute];
+        const sexNumber = parseInt(pesel.substring(10, 11));
+        const remider = sex === "M" ? 1 : 0;
+
+        if (sexNumber % 2 !== remider) {
+            return "^Nieprawidłowa cyfra płci"
+        }
     }
 
-    return attributes.sex != 'F' ? null : 23;
-    return "^is totally wrong";
-  };
+    return null;
+};
 
 // These are the constraints used to validate the form
 const constraints = {
     firstname: {
         // ^ at the start of the message prevents auto insert of field name
-        presence: {message: "^Imię jest wymagane"},
+        presence: { message: "^Imię jest wymagane" },
         format: {
             // Name must begin with [A-Z] or a Polish character, followed by at least one lowercase [a-z] or a Polish character
             pattern: /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/,
             message: "^Imię musi zaczynać się wielką literą, po które wystąpią małe litery"
-            }
+        }
     },
     lastname: {
-        presence: {message: "^Nazwisko jest wymagane"},
+        presence: { message: "^Nazwisko jest wymagane" },
         format: {
             // Last name must begin with [A-Z] or a Polish character, followed by at least one lowercase [a-z] or a Polish character
             pattern: /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/,
             message: "^Nazwisko musi zaczynać się wielką literą, po które wystąpią małe litery"
-            }
+        }
     },
     birthdate: {
-        presence: {message: "^Data urodzin jest wymagana"},
+        presence: { message: "^Data urodzin jest wymagana" },
         date: {
             earliest: "1900-01-01",
             tooEarly: "^Rok musi być co powyżej 1900"
@@ -49,12 +63,12 @@ const constraints = {
     },
     email: {
         // Email is required
-        presence: {message : "^Email jest wymagany"},
+        presence: { message: "^Email jest wymagany" },
         // and must be an email (duh)
-        email: {message: "^Nieprawidłowy format"}
+        email: { message: "^Nieprawidłowy format" }
     },
     login: {
-        presence: {message : "^Login jest wymagany"},
+        presence: { message: "^Login jest wymagany" },
         format: {
             pattern: /[a-z]*/,
             message: "^Login może zawierać tylko małe liter od a do z"
@@ -68,7 +82,7 @@ const constraints = {
     },
     // TODO: Validate login
     password: {
-        presence: {message: "^Hasło jest wymagane"},
+        presence: { message: "^Hasło jest wymagane" },
         // must be at least 8 characters of [A-Za-z]
         format: {
             pattern: /^[A-Za-z]*$/,
@@ -80,7 +94,7 @@ const constraints = {
         }
     },
     passwordConformation: {
-        presence: {message: "^Potwierdzenie hasła jest wymagane"},
+        presence: { message: "^Potwierdzenie hasła jest wymagane" },
         equality: {
             attribute: "password",
             message: "^hasła nie są takie same"
@@ -88,8 +102,7 @@ const constraints = {
     },
     pesel: {
         pesel: {
-            aa: "mma",
-            message: "^hej"
+            sexAttribute: "sex"
         }
     }
 };
@@ -106,7 +119,7 @@ $(document).ready(function () {
 
     // Don't submit form on enter
     form.onkeypress = (ev) => {
-        if (ev.key == "Enter") 
+        if (ev.key == "Enter")
             ev.preventDefault();
     };
 
@@ -142,7 +155,7 @@ function handleFormSubmit(form, input) {
         document.getElementById("form").submit();
     }
     else {
-        setTimeout(() => {alert("Niektóre pola zawierają błędy")}, 10);
+        setTimeout(() => { alert("Niektóre pola zawierają błędy") }, 10);
     }
 }
 
@@ -162,8 +175,8 @@ function closestParent(child, className) {
 function resetFormGroup(formGroup) {
     formGroup.classList.remove("has-error");
     formGroup.classList.remove("has-success");
-    
-    for(const message of formGroup.getElementsByClassName("help-block")) {
+
+    for (const message of formGroup.getElementsByClassName("help-block")) {
         formGroup.removeChild(message);
     }
 }
@@ -190,9 +203,10 @@ function showErrors(form, errors) {
 function showErrorsForInput(input, errors) {
     const formGroup = closestParent(input.parentNode, "form-group");
     resetFormGroup(formGroup);
-    
+
     if (errors) {
         formGroup.classList.add("has-error");
+        // addError(formGroup, errors[0]);
         for (const error of errors) {
             addError(formGroup, error);
         }
@@ -204,12 +218,12 @@ function showErrorsForInput(input, errors) {
 validate.extend(validate.validators.datetime, {
     // The value is guaranteed not to be null or undefined but otherwise it
     // could be anything.
-    parse: function(value, options) {
-      return +moment.utc(value);
+    parse: function (value, options) {
+        return +moment.utc(value);
     },
     // Input is a unix timestamp
-    format: function(value, options) {
-      var format = options.dateOnly ? "YYYY-MM-DD" : "YYYY-MM-DD hh:mm:ss";
-      return moment.utc(value).format(format);
+    format: function (value, options) {
+        var format = options.dateOnly ? "YYYY-MM-DD" : "YYYY-MM-DD hh:mm:ss";
+        return moment.utc(value).format(format);
     }
 });
