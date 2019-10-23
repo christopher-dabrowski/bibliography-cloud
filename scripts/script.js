@@ -35,7 +35,7 @@ $(document).ready(function () {
         inputs.item(i).addEventListener("change", function (ev) {
             console.log(validate(form, constraints))
             var errors = validate(form, constraints) || {};
-            showErrorsForInput(ev.target, errors[ev.target.name])
+            showErrorsForInput(ev.target, errors[ev.target.name] || null)
         });
     }
 });
@@ -47,6 +47,9 @@ function handleFormSubmit(form, input) {
     showErrors(form, errors || {});
     if (!errors) {
         document.getElementById("form").submit();
+    }
+    else {
+        setTimeout(() => {alert("Niektóre pola zawierają błędy")}, 10);
     }
 }
 
@@ -82,18 +85,12 @@ function addError(container, message) {
     container.appendChild(block);
 }
 
-// TODO: Get how showErrors() work
 // Updates the inputs with the validation errors
 function showErrors(form, errors) {
-    return; 
-    // TODO: Show errors
-
-    // We loop through all the inputs and show the errors for that input
-    $.each(form.querySelectorAll("input[name], select[name]"), function (input) {
-        // Since the errors can be null if no errors were found we need to handle
-        // that
-        showErrorsForInput(input, errors && errors[input.name]);
-    });
+    const inputs = form.querySelectorAll("input[name], select[name]");
+    for (const input of inputs) {
+        showErrorsForInput(input, errors[input.name])
+    }
 }
 
 // Shows the errors for a specific input
