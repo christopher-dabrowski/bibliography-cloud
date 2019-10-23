@@ -32,46 +32,51 @@
 
       <div class="form-group">
         <label for="firstname"><b>Imię:</b></label>
-        <input type="text" placeholder="Wprowadź imię" name="firstname" required>
+        <input type="text" placeholder="Wprowadź imię" name="firstname">
       </div>
 
       <div class="form-group">
-        <label for="last-name"><b>Nazwisko:</b></label>
-        <input type="text" placeholder="Wprowadź nazwisko" name="last-name" required>
+        <label for="lastname"><b>Nazwisko:</b></label>
+        <input type="text" placeholder="Wprowadź nazwisko" name="lastname">
       </div>
 
       <div class="form-group">
-        <label for="birth-date"><b>Data urodzin:</b></label>
-        <input type="date" name="birth-date" required>
+        <label for="birthdate"><b>Data urodzin:</b></label>
+        <input type="date" name="birthdate">
       </div>
 
       <div class="form-group">
         <label for="email"><b>Email:</b></label>
-        <input type="text" placeholder="Wprowadź adres email" name="email" id="email" required>
+        <input type="text" placeholder="Wprowadź adres email" name="email" id="email">
       </div>
 
       <div class="form-group">
         <label for="login"><b>Login:</b></label>
-        <input type="text" placeholder="Wprowadź login" name="login" required>
+        <input type="text" placeholder="Wprowadź login" name="login">
       </div>
 
       <div class="form-group">
         <label for="password"><b>Hasło:</b></label>
-        <input type="password" placeholder="Wprowadź hasło" name="password" required>
+        <input type="password" placeholder="Wprowadź hasło" name="password">
+      </div>
+
+      <div class="form-group">
+        <label for="passwordConformation"><b>Potwierdź hasło:</b></label>
+        <input type="password" placeholder="Wprowadź ponownie hasło" name="passwordConformation">
       </div>
 
       <div class="form-group">
         <label for="pesel"><b>Pesel:</b></label>
-        <input type="number" placeholder="Wprowadź pesel" name="pesel" required>
+        <input type="number" placeholder="Wprowadź pesel" name="pesel">
       </div>
 
       <div class="form-group">
         <label><b>Płeć:</b></label>
         <div class="form-check form-check-inline mb-2">
-          <input class="form-check-input" type="radio" name="gender" id="femaleRadioButton" value="female">
+          <input class="form-check-input" type="radio" name="sex" id="femaleRadioButton" value="F">
           <label class="form-check-label mr-3" for="femaleRadioButton">Kobieta</label>
 
-          <input class="form-check-input" type="radio" name="gender" id="maleRadioButton" value="male" checked>
+          <input class="form-check-input" type="radio" name="sex" id="maleRadioButton" value="M" checked>
           <label class="form-check-label" for="maleRadioButton">Mężczyzna</label>
         </div>
       </div>
@@ -79,14 +84,14 @@
       <div class="form-group">
         <label for="profilePicture"><b>Zdjęcie lub awatar:</b></label>
         <div class="custom-file mb-2">
-          <input type="file" class="custom-file-input" id="customFile">
-          <label class="custom-file-label" for="customFile">Wybierz zdjęcie</label>
+          <input type="file" name="photo" class="custom-file-input" id="customFile">
+          <label for="photo" class="custom-file-label" for="customFile">Wybierz zdjęcie</label>
         </div>
       </div>
 
       <label class="aditional-info mt-3"><input type="checkbox" value="agree" checked>Wyrażam zgodę na przetwarzanie
         moich danych.</label>
-      <button type="submit" id="submit-button" class="btn btn-success btn-block">Utwórz konto</button>
+      <button type="submit" id="submitButton" class="btn btn-success btn-block">Utwórz konto</button>
     </form>
 
     <footer>
