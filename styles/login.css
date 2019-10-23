@@ -67,6 +67,9 @@ input[type=number] {
     /* Firefox */
 }
 
+#submitButton {
+    height: 45px;
+}
 
 .aditional-info {
     font-size: 70%;
