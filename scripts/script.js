@@ -119,9 +119,11 @@ $(document).ready(function () {
     }
 
     // Revalidate pesel on sex change
-    const fields = document.querySelectorAll("#femaleRadioButton, #maleRadioButton");
-    for (const radio of fields) {
-        console.log(radio);
+    const sexRadio = document.querySelectorAll("#femaleRadioButton, #maleRadioButton");
+    for (const radio of sexRadio) {
+        radio.addEventListener("change", function (ev) {
+            validateField(document.getElementById("pesel"));
+        });
     }
 });
 
