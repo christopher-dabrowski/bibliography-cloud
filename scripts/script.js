@@ -1,4 +1,25 @@
 let tmp; //Variable for testing 
+// TODO: Remove tmp
+
+validate.validators.pesel = function(value, options, key, attributes) {
+    console.log(value);
+    console.log(options);
+    if (attributes.sex !== undefined) {
+        console.log("Jest płeć");
+        console.log(attributes.sex);
+    }
+    if (attributes.sex == 'M') {
+        console.log("hhh");
+        return "^Ok";
+    }
+    else {
+        console.log("nach");
+        return null;
+    }
+
+    return attributes.sex != 'F' ? null : 23;
+    return "^is totally wrong";
+  };
 
 // These are the constraints used to validate the form
 const constraints = {
@@ -11,11 +32,65 @@ const constraints = {
             message: "^Imię musi zaczynać się wielką literą, po które wystąpią małe litery"
             }
     },
+    lastname: {
+        presence: {message: "^Nazwisko jest wymagane"},
+        format: {
+            // Last name must begin with [A-Z] or a Polish character, followed by at least one lowercase [a-z] or a Polish character
+            pattern: /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/,
+            message: "^Nazwisko musi zaczynać się wielką literą, po które wystąpią małe litery"
+            }
+    },
+    birthdate: {
+        presence: {message: "^Data urodzin jest wymagana"},
+        date: {
+            earliest: "1900-01-01",
+            tooEarly: "^Rok musi być co powyżej 1900"
+        }
+    },
     email: {
         // Email is required
         presence: {message : "^Email jest wymagany"},
         // and must be an email (duh)
-        // email: true
+        email: {message: "^Nieprawidłowy format"}
+    },
+    login: {
+        presence: {message : "^Login jest wymagany"},
+        format: {
+            pattern: /[a-z]*/,
+            message: "^Login może zawierać tylko małe liter od a do z"
+        },
+        length: {
+            minimum: 3,
+            tooShort: "^Login musi mieć co najmniej %{count} znaków",
+            maximum: 12,
+            tooLong: "^Login musim mieć co najwyżej %{count} znaków"
+        }
+    },
+    // TODO: Validate login
+    password: {
+        presence: {message: "^Hasło jest wymagane"},
+        // must be at least 8 characters of [A-Za-z]
+        format: {
+            pattern: /^[A-Za-z]*$/,
+            message: "^Hasło musi się składać z wielkich liter od A do Z"
+        },
+        length: {
+            minimum: 8,
+            tooShort: "^Hasło musi mieć co najmniej %{count} znaków",
+        }
+    },
+    passwordConformation: {
+        presence: {message: "^Potwierdzenie hasła jest wymagane"},
+        equality: {
+            attribute: "password",
+            message: "^hasła nie są takie same"
+        }
+    },
+    pesel: {
+        pesel: {
+            aa: "mma",
+            message: "^hej"
+        }
     }
 };
 
@@ -29,20 +104,36 @@ $(document).ready(function () {
         handleFormSubmit(form);
     });
 
+    // Don't submit form on enter
+    form.onkeypress = (ev) => {
+        if (ev.key == "Enter") 
+            ev.preventDefault();
+    };
+
     // Hook up the inputs to validate on the fly
-    var inputs = document.querySelectorAll("input, textarea, select")
-    for (var i = 0; i < inputs.length; ++i) {
-        inputs.item(i).addEventListener("change", function (ev) {
-            console.log(validate(form, constraints))
-            var errors = validate(form, constraints) || {};
-            showErrorsForInput(ev.target, errors[ev.target.name] || null)
+    const inputs = document.querySelectorAll("input, textarea, select");
+    for (const input of inputs) {
+        input.addEventListener("change", function (ev) {
+            validateField(ev.target);
         });
+    }
+
+    // Revalidate pesel on sex change
+    const fields = document.querySelectorAll("#femaleRadioButton, #maleRadioButton");
+    for (const radio of fields) {
+        console.log(radio);
     }
 });
 
+function validateField(field) {
+    const form = document.getElementById("form");
+    const errors = validate(form, constraints) || {};
+    showErrorsForInput(field, errors[field.name] || null);
+}
+
 function handleFormSubmit(form, input) {
     // validate the form against the constraints
-    var errors = validate(form, constraints);
+    const errors = validate(form, constraints);
     // then we update the form to reflect the results
     showErrors(form, errors || {});
     if (!errors) {
@@ -108,3 +199,15 @@ function showErrorsForInput(input, errors) {
     }
 }
 
+validate.extend(validate.validators.datetime, {
+    // The value is guaranteed not to be null or undefined but otherwise it
+    // could be anything.
+    parse: function(value, options) {
+      return +moment.utc(value);
+    },
+    // Input is a unix timestamp
+    format: function(value, options) {
+      var format = options.dateOnly ? "YYYY-MM-DD" : "YYYY-MM-DD hh:mm:ss";
+      return moment.utc(value).format(format);
+    }
+});

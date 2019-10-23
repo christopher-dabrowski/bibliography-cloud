@@ -97,3 +97,7 @@ input[type=checkbox] {
 .form-group.has-success {
     color: rgb(110, 201, 54);
 }
+
+#femaleRadioButton, #maleRadioButton {
+    color: aqua;
+}
