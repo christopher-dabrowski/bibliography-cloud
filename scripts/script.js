@@ -1,5 +1,14 @@
-let tmp; //Variable for testing 
-// TODO: Remove tmp
+// TODO: Rmove this
+let tmp = null;
+
+validate.validators.loginValidator = function (login) {
+    return new validate.Promise((resolve, reject) => {
+        asyncIsLoginFree(login).then((result) => {
+            const message = result ? "" : "^Podany login jest zajęty";
+            resolve(message);
+        }).catch((error) => reject(error));
+    });
+};
 
 // These are the constraints used to validate the form
 const constraints = {
@@ -41,12 +50,12 @@ const constraints = {
         },
         length: {
             minimum: 3,
-            tooShort: "^Login musi mieć co najmniej %{count} znaków",
+            tooShort: "^Login musi mieć co najmniej %{count} znaki",
             maximum: 12,
             tooLong: "^Login musim mieć co najwyżej %{count} znaków"
-        }
+        },
+        // loginValidator: true
     },
-    // TODO: Validate login
     password: {
         presence: { message: "^Hasło jest wymagane" },
         // must be at least 8 characters of [A-Za-z]
@@ -103,9 +112,14 @@ $(document).ready(function () {
     // Hook up the inputs to validate on the fly
     const inputs = document.querySelectorAll("input, textarea, select");
     for (const input of inputs) {
-        input.addEventListener("change", function (ev) {
-            validateField(form, ev.target);
-        });
+        if (input.name === "login")
+            input.addEventListener("change", function (ev) {
+                validateLogin(form, ev.target);
+            });
+        else
+            input.addEventListener("change", function (ev) {
+                validateField(form, ev.target);
+            });
     }
 
     // Revalidate pesel on sex change
@@ -117,7 +131,35 @@ $(document).ready(function () {
                 validateField(form, peselInput);
         });
     }
+
+    // Asynchronously validate login
+    // document.getElementById("loginInput").addEventListener("change", function (ev) {
+    //     const input = ev.target;
+    //     asyncIsLoginFree(input.value).then((result) => {
+    //         console.log(result);
+    //     }).catch((error) => console.log(error));
+    // });
 });
+
+function validateLogin(form, field) {
+    const errors = validate(form, constraints) || {};
+    
+    asyncIsLoginFree(field.value).then((result) => {
+        const message = result ? "" : "Podany login jest zajęty";
+        if (result !== "") {
+            if (errors.login === undefined)
+                errors.login = [];
+            // For some reason append() doesn't work here
+            errors.login[errors.login.length] = message;
+        }
+
+        showErrorsForInput(field, errors[field.name] || null);
+    }).catch((error) => {
+        // Ignore login check
+        console.error(error);
+        showErrorsForInput(field, errors[field.name] || null);
+    }); 
+}
 
 function handleFormSubmit(form, input) {
     // validate the form against the constraints
@@ -142,6 +184,7 @@ function asyncIsLoginFree(login) {
         request.onload = function () {
             if (request.status == 404) {
                 // User not found so login is free
+                console.log("Please ignore this 404 error");
                 resolve(true);
             }
             else if (request.status === 200) {
