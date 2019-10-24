@@ -33,7 +33,9 @@ const constraints = {
         presence: { message: "^Data urodzin jest wymagana" },
         date: {
             earliest: "1900-01-01",
-            tooEarly: "^Rok musi być co powyżej 1900"
+            tooEarly: "^Rok musi być co powyżej 1900",
+            latest: () => {return moment().format('YYYY-MM-DD')},
+            tooLate: "^Ten dzień jeszcze nie miał miejsca!"
         }
     },
     email: {
