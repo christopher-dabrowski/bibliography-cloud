@@ -78,6 +78,9 @@ const constraints = {
             pattern: /^.*\.((jpg)|(png)|(bmp)|(gif))$/,
             message: "^Nieprawidłowy format pliku"
         },
+    },
+    agreement: {
+        presence: { message: "^" }
     }
 };
 
@@ -127,4 +130,33 @@ function handleFormSubmit(form, input) {
     else {
         setTimeout(() => { alert("Niektóre pola zawierają błędy") }, 10);
     }
+}
+
+// Check if login is free
+function asyncIsLoginFree(login) {
+    return new Promise((resolve, reject) => {
+        const url = `https://pi.iem.pw.edu.pl/user/${login}`;
+        var request = new XMLHttpRequest();
+        request.open('GET', url);
+
+        request.onload = function () {
+            if (request.status == 404) {
+                // User not found so login is free
+                resolve(true);
+            }
+            else if (request.status === 200) {
+                // Login is taken
+                resolve(false);
+            } else {
+                reject(Error(`Unable to verify user; error code:${request.statusText}`));
+            }
+        };
+        request.onerror = function () {
+            // Also deal with the case when the entire request fails to begin with
+            // This is probably a network error, so reject the promise with an appropriate message
+            reject(Error('There was a network error.'));
+        };
+
+        request.send();
+    });
 }
