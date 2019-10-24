@@ -143,7 +143,7 @@ $(document).ready(function () {
 
 function validateLogin(form, field) {
     const errors = validate(form, constraints) || {};
-    
+
     asyncIsLoginFree(field.value).then((result) => {
         const message = result ? "" : "Podany login jest zajęty";
         if (result !== "") {
@@ -158,20 +158,42 @@ function validateLogin(form, field) {
         // Ignore login check
         console.error(error);
         showErrorsForInput(field, errors[field.name] || null);
-    }); 
+    });
 }
 
 function handleFormSubmit(form, input) {
     // validate the form against the constraints
     const errors = validate(form, constraints);
-    // then we update the form to reflect the results
-    showErrors(form, errors || {});
-    if (!errors) {
-        document.getElementById("form").submit();
-    }
-    else {
-        setTimeout(() => { alert("Niektóre pola zawierają błędy") }, 10);
-    }
+
+    const loginInput = document.getElementById("loginInput");
+    asyncIsLoginFree(loginInput.value).then((result) => {
+        const message = result ? "" : "Podany login jest zajęty";
+        if (result !== "") {
+            if (errors.login === undefined)
+                errors.login = [];
+            // For some reason append() doesn't work here
+            errors.login[errors.login.length] = message;
+        }
+
+        showErrorsForInput(field, errors[field.name] || null);
+    }).catch((error) => {
+        // Ignore login check
+        console.error(error);
+        showErrorsForInput(field, errors[field.name] || null);
+    });
+
+    const finish = () => {
+        // then we update the form to reflect the results
+        showErrors(form, errors || {});
+        if (!errors) {
+            document.getElementById("form").submit();
+        }
+        else {
+            setTimeout(() => { alert("Niektóre pola zawierają błędy") }, 10);
+        }
+    };
+    finish();
+
 }
 
 // Check if login is free
