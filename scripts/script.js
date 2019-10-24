@@ -147,8 +147,8 @@ function validateLogin(form, field) {
     const errors = validate(form, constraints) || {};
 
     asyncIsLoginFree(field.value).then((result) => {
-        const message = result ? "" : "Podany login jest zajęty";
-        if (result !== "") {
+        if (!result) {
+            const message = "Podany login jest zajęty";
             if (errors.login === undefined)
                 errors.login = [];
             // For some reason append() doesn't work here
