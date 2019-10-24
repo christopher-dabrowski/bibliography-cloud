@@ -48,7 +48,7 @@ function resetFormGroup(formGroup) {
 // Adds the specified error with the following markup
 // <p class="help-block error">[message]</p>
 function addError(container, message) {
-    var block = document.createElement("p");
+    const block = document.createElement("p");
     block.classList.add("help-block");
     block.classList.add("error");
     block.innerText = message;
@@ -87,7 +87,7 @@ validate.extend(validate.validators.datetime, {
     },
     // Input is a unix timestamp
     format: function (value, options) {
-        var format = options.dateOnly ? "YYYY-MM-DD" : "YYYY-MM-DD hh:mm:ss";
+        const format = options.dateOnly ? "YYYY-MM-DD" : "YYYY-MM-DD hh:mm:ss";
         return moment.utc(value).format(format);
     }
 });
