@@ -1,15 +1,3 @@
-// TODO: Rmove this
-let tmp = null;
-
-validate.validators.loginValidator = function (login) {
-    return new validate.Promise((resolve, reject) => {
-        asyncIsLoginFree(login).then((result) => {
-            const message = result ? "" : "^Podany login jest zajęty";
-            resolve(message);
-        }).catch((error) => reject(error));
-    });
-};
-
 // These are the constraints used to validate the form
 const constraints = {
     firstname: {
@@ -133,14 +121,6 @@ $(document).ready(function () {
                 validateField(form, peselInput);
         });
     }
-
-    // Asynchronously validate login
-    // document.getElementById("loginInput").addEventListener("change", function (ev) {
-    //     const input = ev.target;
-    //     asyncIsLoginFree(input.value).then((result) => {
-    //         console.log(result);
-    //     }).catch((error) => console.log(error));
-    // });
 });
 
 function validateLogin(form, field) {
