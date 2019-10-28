@@ -1,6 +1,6 @@
-[![Board Status](https://dev.azure.com/01133318/58577f27-c36e-47d0-9166-d776046c9d72/b8c46cd8-ad29-4083-8158-d84b59d074b3/_apis/work/boardbadge/1c7d0226-0595-4aa6-b9e1-2e99eadfd43d)](https://dev.azure.com/01133318/58577f27-c36e-47d0-9166-d776046c9d72/_boards/board/t/b8c46cd8-ad29-4083-8158-d84b59d074b3/Microsoft.RequirementCategory)
-
 # Projekt na Programowanie aplikacji mobilnych i webowych
+
+[![Board Status](https://dev.azure.com/01133318/58577f27-c36e-47d0-9166-d776046c9d72/b8c46cd8-ad29-4083-8158-d84b59d074b3/_apis/work/boardbadge/1c7d0226-0595-4aa6-b9e1-2e99eadfd43d)](https://dev.azure.com/01133318/58577f27-c36e-47d0-9166-d776046c9d72/_boards/board/t/b8c46cd8-ad29-4083-8158-d84b59d074b3/Microsoft.RequirementCategory)
 
 Realizacja kolejnych etapów projektów laboratoryjnych.
 
@@ -59,5 +59,6 @@ Informacja o plikach składających się na projekt.
 ----------------------
 
 ## Przydatne materiały
+
 * [Pozbywanie się Callback Hell](https://www.nafrontendzie.pl/jak-pozbyc-sie-callback-hell)
 * [Testy i mockowanie AJAXa](https://www.nafrontendzie.pl/jquery-deffered-oraz-promise-pigulce)
