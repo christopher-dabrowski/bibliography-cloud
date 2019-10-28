@@ -1,3 +1,6 @@
+/*global moment, $, bsCustomFileInput, validateField, 
+validate, showErrorsForInput, showErrors*/
+
 // These are the constraints used to validate the form
 const constraints = {
     firstname: {
@@ -22,7 +25,7 @@ const constraints = {
         date: {
             earliest: "1900-01-01",
             tooEarly: "^Rok musi być co powyżej 1900",
-            latest: () => {return moment().format('YYYY-MM-DD')},
+            latest: () => { return moment().format("YYYY-MM-DD"); },
             tooLate: "^Ten dzień jeszcze nie miał miejsca!"
         }
     },
@@ -115,6 +118,7 @@ $(document).ready(function () {
     // Revalidate pesel on sex change
     const sexRadio = document.querySelectorAll("#femaleRadioButton, #maleRadioButton");
     for (const radio of sexRadio) {
+        // eslint-disable-next-line no-unused-vars
         radio.addEventListener("change", function (ev) {
             const peselInput = document.getElementById("pesel");
             if (peselInput.value)
@@ -143,9 +147,20 @@ function validateLogin(form, field) {
     });
 }
 
-function handleFormSubmit(form, input) {
+function handleFormSubmit(form) {
     // validate the form against the constraints
-    const errors = validate(form, constraints);
+    let errors = validate(form, constraints);
+
+    const finish = () => {
+        // then we update the form to reflect the results
+        showErrors(form, errors || {});
+        if (!errors) {
+            document.getElementById("form").submit();
+        }
+        else {
+            setTimeout(() => { alert("Niektóre pola zawierają błędy"); }, 30);
+        }
+    };
 
     const loginInput = document.getElementById("loginInput");
     asyncIsLoginFree(loginInput.value).then((result) => {
@@ -156,25 +171,13 @@ function handleFormSubmit(form, input) {
             // For some reason append() doesn't work here
             errors.login[errors.login.length] = message;
         }
-
-        showErrorsForInput(field, errors[field.name] || null);
     }).catch((error) => {
         // Ignore login check
+        console.error("Login check failed");
         console.error(error);
-        showErrorsForInput(field, errors[field.name] || null);
+    }).finally(() => {
+        finish();
     });
-
-    const finish = () => {
-        // then we update the form to reflect the results
-        showErrors(form, errors || {});
-        if (!errors) {
-            document.getElementById("form").submit();
-        }
-        else {
-            setTimeout(() => { alert("Niektóre pola zawierają błędy") }, 10);
-        }
-    };
-    finish();
 
 }
 
@@ -183,7 +186,7 @@ function asyncIsLoginFree(login) {
     return new Promise((resolve, reject) => {
         const url = `https://pi.iem.pw.edu.pl/user/${login}`;
         var request = new XMLHttpRequest();
-        request.open('GET', url);
+        request.open("GET", url);
 
         request.onload = function () {
             if (request.status == 404) {
@@ -201,7 +204,7 @@ function asyncIsLoginFree(login) {
         request.onerror = function () {
             // Also deal with the case when the entire request fails to begin with
             // This is probably a network error, so reject the promise with an appropriate message
-            reject(Error('There was a network error.'));
+            reject(Error("There was a network error."));
         };
 
         request.send();
