@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- Font Awesome5 -->
+  <script src="https://kit.fontawesome.com/99f6a3dd35.js" crossorigin="anonymous"></script>
+
+  <!-- My stylesheet -->
+  <link rel="stylesheet" href={{ url_for('static', filename='css/signup.css') }}>
+
+  <title>Kreacja konta</title>
+</head>
+
+<body>
+  <!-- <i class="fas fa-thumbs-up fa-10x"></i> -->
+
+  <!-- TODO: Navbar - maybe a logo and link to Github -->
+
+  <section id=form-card class="card">
+    <h1>Tworzenie konta</h1>
+
+    <img id="form-logo" src={{ url_for('static', filename='img/education-concept/426430-PE93QI-643.jpg') }} alt="Otwarta książka leży na zielonym blacie">
+
+    <form action="https://pi.iem.pw.edu.pl/register" method="POST" enctype="multipart/form-data" id="form">
+
+      <div class="form-group">
+        <label for="firstname"><b>Imię:</b></label>
+        <input type="text" placeholder="Wprowadź imię" name="firstname">
+      </div>
+
+      <div class="form-group">
+        <label for="lastname"><b>Nazwisko:</b></label>
+        <input type="text" placeholder="Wprowadź nazwisko" name="lastname">
+      </div>
+
+      <div class="form-group">
+        <label for="birthdate"><b>Data urodzin:</b></label>
+        <input type="date" name="birthdate">
+      </div>
+
+      <div class="form-group">
+        <label for="email"><b>Email:</b></label>
+        <input type="text" placeholder="Wprowadź adres email" name="email" id="email">
+      </div>
+
+      <div class="form-group">
+        <label for="login"><b>Login:</b></label>
+        <input type="text" placeholder="Wprowadź login" name="login" id="loginInput">
+      </div>
+
+      <div class="form-group">
+        <label for="password"><b>Hasło:</b></label>
+        <input type="password" placeholder="Wprowadź hasło" name="password">
+      </div>
+
+      <div class="form-group">
+        <label for="passwordConformation"><b>Potwierdź hasło:</b></label>
+        <input type="password" placeholder="Wprowadź ponownie hasło" name="passwordConformation">
+      </div>
+
+      <div class="form-group no-error no-succes">
+        <label><b>Płeć:</b></label>
+        <div class="form-check form-check-inline mb-2">
+          <input class="form-check-input" type="radio" name="sex" id="femaleRadioButton" value="F">
+          <label class="form-check-label mr-3" for="femaleRadioButton">Kobieta</label>
+
+          <input class="form-check-input" type="radio" name="sex" id="maleRadioButton" value="M" checked>
+          <label class="form-check-label" for="maleRadioButton">Mężczyzna</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="pesel"><b>Pesel:</b></label>
+        <input type="text" placeholder="Wprowadź pesel" name="pesel" id="pesel">
+      </div>
+
+      <div class="form-group">
+        <label for="profilePicture"><b>Zdjęcie lub awatar:</b></label>
+        <div class="custom-file mb-2">
+          <input type="file" name="photo" class="custom-file-input" id="customFile">
+          <label for="photo" class="custom-file-label" for="customFile">Wybierz zdjęcie</label>
+        </div>
+      </div>
+
+      <div class="form-group no-succes">
+        <label class="aditional-info mt-3"><input type="checkbox" value="agree" name="agreement" checked>Wyrażam zgodę na przetwarzanie
+          moich danych.</label>
+      </div>
+      <button type="submit" id="submitButton" class="btn btn-success btn-block">Utwórz konto</button>
+    </form>
+
+    <footer>
+      <p>Ikona na górze pochodzi ze strony <a href="https://www.freepik.com/free-photos-vectors/school" target="_blank">freepik.com</a>.
+      </p>
+    </footer>
+  </section>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <!-- bs-custom-file-input -->
+  <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"
+    crossorigin="anonymous"></script>
+
+  <!-- Validate.js -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+
+  <!-- Moment.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+  <!-- Knockout.js -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script> -->
+
+  <!-- My JavaScript -->
+  <script src={{ url_for('static', filename='js/utils.js') }}></script>
+  <script src={{ url_for('static', filename='js/validateExtension.js') }}></script>
+  <script src={{ url_for('static', filename='js/signup.js') }}></script>
+</body>
+
+</html>

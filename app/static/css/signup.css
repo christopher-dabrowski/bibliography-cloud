@@ -1,0 +1,99 @@
+body {
+    background-color: rgb(90, 176, 250);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.card {
+    /* display: block; */
+    background-color: white;
+    width: 70%;
+    /* height: 400px; */
+    /* padding-top: 10px; */
+    padding: 10px 10px;
+    margin: 3% auto 15% auto;
+    border: 1px solid #888;
+    border-radius: 5px;
+    box-shadow: 4px 4px 10px #484848;
+}
+
+.card footer {
+    margin: 0 -10px -10px;
+    padding-left: 10px;
+}
+
+.card h1 {
+    text-align: center;
+}
+
+#form-logo {
+    margin: auto;
+    width: 140px;
+    height: 140px;
+    border-radius: 80%;
+}
+
+form {
+    padding: 10px;
+}
+
+form label {
+    display: block;
+    margin-top: 5px;
+}
+
+/* Full-width input fields */
+input[type=text],
+input[type=date],
+input[type=number],
+input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0;
+    /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    /* Firefox */
+}
+
+#submitButton {
+    height: 45px;
+}
+
+.aditional-info {
+    font-size: 70%;
+}
+
+input[type=checkbox] {
+    margin-right: 6px;
+}
+
+#submit-button {
+    margin-top: 20px;
+}
+
+.card footer {
+    background-color: #ccc;
+    height: 40px;
+    padding: 10px;
+    font-size: 80%;
+}
+
+.form-group.has-error:not(.no-error) {
+    color: rgb(179, 36, 36);
+}
+
+.form-group.has-success:not(.no-succes) {
+    color: rgb(110, 201, 54);
+}
