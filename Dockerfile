@@ -1,8 +1,16 @@
-FROM nginx
+FROM python:3
+EXPOSE 5000
 
-COPY index.html /usr/share/nginx/html
-COPY scripts /usr/share/nginx/html/scripts
-COPY img /usr/share/nginx/html/img
-COPY styles /usr/share/nginx/html/styles
+WORKDIR /var/www
 
-EXPOSE 80
+RUN pip install --upgrade pip
+
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY app app
+
+ENV FLASK_APP app/app.py
+ENV FLASK_RUN_HOST 0.0.0.0
+
+CMD ["flask", "run"]
