@@ -4,5 +4,6 @@
 # Config for VSCode
 .vscode
 
-# Some wierd python files
+# Python files
 __pycache__
+venv
