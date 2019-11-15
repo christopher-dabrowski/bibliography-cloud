@@ -13,6 +13,17 @@
     border-width: 2px;
 }
 
+.intro {
+    max-width: 800px;
+    /* color: brown; */
+}
+
+@media (max-width: 600px) {
+    .intro h1 {
+        font-size: 30px;
+    }
+}
+
 body {
-    background-color: rgb(132, 202, 232);
+    background-color: rgb(255, 255, 255);
 }
