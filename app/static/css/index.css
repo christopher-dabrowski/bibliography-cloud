@@ -1,0 +1,18 @@
+.navbar {
+    background-color: rgb(102, 190, 228);
+    ;
+    font-weight: 500;
+    color: red;
+}
+
+.nav-link {
+    color: black !important;
+}
+
+#login-button {
+    border-width: 2px;
+}
+
+body {
+    background-color: rgb(132, 202, 232);
+}
