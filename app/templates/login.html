@@ -9,7 +9,8 @@
   <section>
     <h1>Logowanie</h1>
 
-    <form action="#" method="POST" id="form">
+    <form action={{url_for('login')}} method="POST" id="form">
+      {{ form.csrf_token }}
 
       <div class="form-group">
         <label for="firstname"><b>Login:</b></label>
@@ -18,7 +19,7 @@
 
       <div class="form-group">
         <label for="lastname"><b>Hasło:</b></label>
-        <input type="text" placeholder="Hasło" name="password">
+        <input type="password" placeholder="Hasło" name="password">
       </div>
 
       <button type="submit" class="btn btn-block btn-primary">Zaloguj</button>
@@ -34,4 +35,14 @@
 </div>
 
 </div>
+{% endblock %}
+
+{% block js %}
+<!-- Validate.js -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+
+<!-- My JavaScript -->
+<script src={{ url_for('static', filename='js/utils.js') }}></script>
+<script src={{ url_for('static', filename='js/validateExtension.js') }}></script>
+<script src={{ url_for('static', filename='js/login.js') }}></script>
 {% endblock %}

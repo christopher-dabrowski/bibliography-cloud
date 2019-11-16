@@ -57,7 +57,7 @@ function addError(container, message) {
 
 // Updates the inputs with the validation errors
 function showErrors(form, errors) {
-    const inputs = form.querySelectorAll("input[name], select[name]");
+    const inputs = form.querySelectorAll('input:not([type="hidden"]):not([disabled]), select:not([hidden]), select[name]');
     for (const input of inputs) {
         showErrorsForInput(input, errors[input.name])
     }
