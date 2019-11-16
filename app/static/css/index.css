@@ -1,18 +1,3 @@
-.navbar {
-    background-color: rgb(102, 190, 228);
-    ;
-    font-weight: 500;
-    color: red;
-}
-
-.nav-link {
-    color: black !important;
-}
-
-#login-button {
-    border-width: 2px;
-}
-
 .intro {
     max-width: 800px;
     /* color: brown; */
@@ -22,8 +7,4 @@
     .intro h1 {
         font-size: 30px;
     }
-}
-
-body {
-    background-color: rgb(255, 255, 255);
 }
