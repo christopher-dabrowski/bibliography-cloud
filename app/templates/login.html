@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block css_links %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/login.css') }}>
+{% endblock %}
+
+{% block main %}
+<div id=form-card class="card">
+  <section>
+    <h1>Logowanie</h1>
+
+    <form action="#" method="POST" id="form">
+
+      <div class="form-group">
+        <label for="firstname"><b>Login:</b></label>
+        <input type="text" placeholder="Login" name="login">
+      </div>
+
+      <div class="form-group">
+        <label for="lastname"><b>Hasło:</b></label>
+        <input type="text" placeholder="Hasło" name="password">
+      </div>
+
+      <button type="submit" class="btn btn-block btn-primary">Zaloguj</button>
+    </form>
+  </section>
+
+  <hr class="my-3">
+
+  <section class="text-center">
+    <p class="text-muted">Nie masz jeszcze konta? Zarejestruj się już dziś.</p>
+    <a href={{url_for('signup')}} class="btn btn-secondary">Utwórz konto</a>
+  </section>
+</div>
+
+</div>
+{% endblock %}

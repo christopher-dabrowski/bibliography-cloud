@@ -16,8 +16,12 @@ def index():
     return render_template('index.html')
 
 @app.route('/signup')
-def singup():
+def signup():
     return render_template('signup.html', title='Kreacja konta')
+
+@app.route('/login')
+def login():
+    return render_template('login.html', title='Logowanie')
 
 if 'DEBUG' in os.environ and os.environ['DEBUG'].lower() == 'true':
     server = Server(app.wsgi_app)

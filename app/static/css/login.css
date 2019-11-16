@@ -1,5 +1,19 @@
-main {
+body {
     background-color: rgb(90, 176, 250);
+}
+
+.btn-secondary {
+    min-width: 200px;
+    border-radius: 40px;
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white !important;
+}
+
+.btn-secondary:hover {
+    background-color: rgb(32, 135, 56);
+    border-color: rgb(32, 135, 56);
+    color: white !important;
 }
 
 .card {
@@ -23,14 +37,6 @@ main {
 .card h1 {
     text-align: center;
 }
-
-#form-logo {
-    margin: auto;
-    width: 140px;
-    height: 140px;
-    border-radius: 80%;
-}
-
 form {
     padding: 10px;
 }
@@ -80,13 +86,6 @@ input[type=checkbox] {
 
 #submit-button {
     margin-top: 20px;
-}
-
-.card footer {
-    background-color: #ccc;
-    height: 40px;
-    padding: 10px;
-    font-size: 80%;
 }
 
 .form-group.has-error:not(.no-error) {
