@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pl">
+<html lang="pl" class="h-100">
 
 <head>
   <!-- Required meta tags -->
@@ -19,41 +19,52 @@
   <title>Kreacja konta</title>
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
 
-  <nav class="navbar sticky-top navbar-expand-lg navbar-light shadow-sm">
-    <a class="navbar-brand" href="#">Bibliography Cloud</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <header>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light shadow-sm">
+      <a class="navbar-brand" href="#">Bibliography Cloud</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item mr-3">
-          <a class="nav-link text-center" href="#">O projekcie</a>
-        </li>
-        <li class="nav-item mr-3">
-          <a class="nav-link text-center" href="#">Kontakt</a>
-        </li>
-        <li class="nav-item mr-3">
-          <a class="nav-link btn btn-outline-success" id="login-button" href="#">Logowanie</a>
-          <!-- <a class="nav-link btn btn-outline-success my-2 my-sm-0">Logowanie</button> -->
-        </li>
-      </ul>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item mr-3">
+            <a class="nav-link text-center" href="#">O projekcie</a>
+          </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link text-center" href="#">Kontakt</a>
+          </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link btn btn-outline-success" id="login-button" href="#">Logowanie</a>
+            <!-- <a class="nav-link btn btn-outline-success my-2 my-sm-0">Logowanie</button> -->
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main role="main" class="flex-shrink-0">
+    <section class="container text-center px-5 intro">
+      <h1 class="mt-5">Miejsce na Twoją bibliografię</h1>
+      <p>Jeśli zastanawiałeś się kiedyś nad tym gdzie trzymać swoją bibliografię, to <b>teraz już nie musisz</b>!
+        Możesz śmiało trzymać ją na Bibliography Cloud. Wystarczy tylko ,że założysz darmowe konto.</p>
+      <a class="btn btn-success" href="#">Rejestracja</a>
+    </section>
+
+    <section class="cotainer mt-4 d-flex justify-content-center" id="custommer-satisfaction">
+      <img class="mx-auto" width="700px" src={{ url_for('static', filename='img/happy-customer-5star.jpg') }}
+        alt="Happy customer giving max rating">
+    </section>
+  </main>
+
+  <footer class="pb-1 pt-2 mt-auto">
+    <div class="container text-muted text-center">
+      <p>Copyright (c) 2019 - Krzysztof Dąbrowski</p>
     </div>
-  </nav>
-
-  <section class="container text-center px-5 intro">
-    <h1 class="mt-5">Miejsce na Twoją bibliografię</h1>
-    <p>Jeśli zastanawiałeś się kiedyś nad tym gdzie trzymać swoją bibliografię, to <b>teraz już nie musisz</b>!
-    Możesz śmiało trzymać ją na Bibliography Cloud. Wystarczy tylko ,że założysz darmowe konto.</p>
-    <a class="btn btn-success" href="#">Rejestracja</a>
-  </section>
-
-  <section class="cotainer mt-4 d-flex justify-content-center" id="custommer-satisfaction">
-    <img class="mx-auto" width="700px" src={{ url_for('static', filename='img/happy-customer-5star.jpg') }} alt="Happy customer giving max rating">
-  </section>
+  </footer>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
