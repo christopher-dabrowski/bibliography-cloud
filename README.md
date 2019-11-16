@@ -4,6 +4,12 @@
 
 Realizacja kolejnych etapów projektów laboratoryjnych.
 
+
+Aktualny stan projektu można zobaczyć pod [adresem](https://bibliography-cloud.azurewebsites.net).
+
+Projekt jest hostowany na platformie _Microsoft Azure_ na **darmowym** poziomie - F1.  
+:exclamation: Jeśli aplikacja nie była ostatnio uruchamiana start może zająć nawet **5 minut**. :exclamation:
+
 ## Cel projektu
 
 Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
@@ -57,6 +63,10 @@ Informacja o plikach składających się na projekt.
 * **Dockerfile** - Opis jak zbudować kontener serwujący stronę
 
 ----------------------
+
+## Etap 2
+
+Opis wymagań i realizacji już niedługo :smiley:
 
 ## Przydatne materiały
 
