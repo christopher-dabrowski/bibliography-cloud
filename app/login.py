@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 class LoginManager(object):
     """Class responsible for keeping track of logged users and session data"""
 
-    def __init__(self, redisConnection=redis.Redis()):
+    def __init__(self, redisConnection):
         self.redis: redis.Redis = redisConnection
 
     def _generateSessionID(self) -> str:

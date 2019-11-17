@@ -2,6 +2,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, ValidationError
 from wtforms.validators import DataRequired, Email
 from users import UserManager
+from config import Config
+import redis
+# TODO: Ask how to give this redis handle
 
 
 class LoginValidator(object):
@@ -9,7 +12,8 @@ class LoginValidator(object):
         self.message = message
 
     def __call__(self, form, field):
-        if not UserManager().checkUser(field.data):
+        red = redis.Redis(Config.REDIS_NAME)
+        if not UserManager(red).checkUser(field.data):
             raise ValidationError(self.message)
 
 
@@ -22,7 +26,8 @@ class PasswordValidator(object):
         if not login:
             return
 
-        if not UserManager().validatePassword(login, field.data):
+        red = redis.Redis(Config.REDIS_NAME)
+        if not UserManager(red).validatePassword(login, field.data):
             raise ValidationError(self.message)
 
 

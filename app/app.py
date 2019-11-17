@@ -13,7 +13,9 @@ from login import LoginManager
 app = Flask(__name__)
 app.config.from_object(Config)
 
-red = redis.Redis()
+red = redis.Redis(app.config['REDIS_NAME'])
+print(app.config['REDIS_NAME'])
+print(red)
 user_manager = UserManager(red)
 login_manager = LoginManager(red)
 
@@ -24,6 +26,8 @@ create_sample_users(user_manager)
 @app.route('/index')
 @app.route('/home')
 def index():
+    print('Showing index')
+
     session_id = request.cookies.get('session-id')
     if session_id is None:
         # TODO: Display invalid message
@@ -51,12 +55,16 @@ def login():
     if form.validate_on_submit():
         login = form.login.data
 
+        print('Logowanie poprawne')
+
         session_id = login_manager.registerLogin(login)
         response = redirect(url_for('index'))
         response.set_cookie('session-id', session_id)
         return response
 
     else:
+        print('Logowanie nie poprawne')
+
         return render_template('login.html', title='Logowanie', form=form)
 
 

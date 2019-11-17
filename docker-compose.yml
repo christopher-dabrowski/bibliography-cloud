@@ -1,6 +1,12 @@
-version: '3'
+version: "3"
 services:
   web:
     build: ./app
     ports:
       - "8080:5000"
+    environment:
+      - REDIS_NAME=redis
+    depends_on:
+      - redis
+  redis:
+    image: redis

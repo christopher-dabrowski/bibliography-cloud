@@ -3,7 +3,7 @@ from hashlib import sha256
 
 
 class UserManager(object):
-    def __init__(self, redisConnection=redis.Redis()):
+    def __init__(self, redisConnection):
         self.redis = redisConnection
 
     def addUser(self, login: str, password: str):
