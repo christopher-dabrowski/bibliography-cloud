@@ -9,7 +9,7 @@ class LoginManager(object):
     def __init__(self, redisConnection=redis.Redis()):
         self.redis: redis.Redis = redisConnection
 
-    def generateSessionID(self) -> str:
+    def _generateSessionID(self) -> str:
         """Generate session id used for user login feature"""
         for _ in range(100):
             id = secrets.token_urlsafe(128)
@@ -21,17 +21,22 @@ class LoginManager(object):
 
     def registerLogin(self, login: str) -> str:
         """Register that user logged in and return session cookie id"""
-        sessionID = self.generateSessionID()
+        sessionID = self._generateSessionID()
         exp_date = datetime.now() + timedelta(minutes=30)
 
         self.redis.hset(sessionID, 'login', login)
         self.redis.hset(sessionID, 'exp', str(exp_date))
 
+        return sessionID
+
     def isSessionValid(self, session_id: str) -> bool:
         """Check if user session cookie is valid"""
         if not self.redis.exists(session_id):
             return False
-        if self.redis.hget(session_id, 'exp') > datetime.now():
+
+        exp_date = datetime.fromisoformat(
+            self.redis.hget(session_id, 'exp').decode())
+        if exp_date < datetime.now():
             self.registerLogout(session_id)
             return False
 

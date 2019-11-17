@@ -1,7 +1,7 @@
 import os
 import secrets
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from livereload import Server
 from forms import LoginForm
 import redis
@@ -24,7 +24,17 @@ create_sample_users(user_manager)
 @app.route('/index')
 @app.route('/home')
 def index():
-    return render_template('index.html')
+    session_id = request.cookies.get('session-id')
+    if session_id is None:
+        return render_template('index.html')
+
+    if login_manager.isSessionValid(session_id):
+        print('Valid session')
+        print(login_manager.getLogin(session_id))
+        return render_template('index.html')
+    else:
+        print('Invalid session')
+        return render_template('index.html')
 
 
 @app.route('/signup')
@@ -37,15 +47,15 @@ def signup():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # TODO: Check login and password
-        # TODO: Give a cookie 🍪
         login = form.login.data
-        password = form.password.data
 
-        return f'Udało Ci się wpisać login!\nLogin: {login}\nHasło: {password}'
+        session_id = login_manager.registerLogin(login)
+        response = redirect(url_for('index'))
+        response.set_cookie('session-id', session_id)
+        return response
 
-    # TODO: Send back errors
-    return render_template('login.html', title='Logowanie', form=form)
+    else:
+        return render_template('login.html', title='Logowanie', form=form)
 
 
 if app.debug:
