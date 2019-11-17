@@ -25,7 +25,10 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
   - [Opis plików](#opis-plików)
     - [Pliki projektu](#pliki-projektu)
     - [Pliki konfiguracji (serwer)](#pliki-konfiguracji-serwer)
+  - [Zakończenie etapu](#zakończenie-etapu)
 - [Etap 2 - Logowanie i przechowywanie plików](#etap-2---logowanie-i-przechowywanie-plików)
+  - [Istotne elementy](#istotne-elementy-1)
+  - [Projekt systemu](#projekt-systemu)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -76,11 +79,35 @@ Informacja o plikach składających się na projekt.
 * **nginx.conf** - Konfiguracja serwera _Nginx_
 * **Dockerfile** - Opis jak zbudować kontener serwujący stronę
 
-----------------------
+### Zakończenie etapu
+
+Projekt w stanie bezpośrednio po tym etapie można znaleźć w zakładce [release](https://github.com/SiwyKrzysiek/bibliography-cloud/releases/tag/v1.0).
 
 ## Etap 2 - Logowanie i przechowywanie plików
 
 Opracowanie modułu służącego do bezpiecznego logowania i wylogowywania użytkownika. Moduł logowania otrzymuje od użytkownika hasło i login – w przypadku poprawnych danych generowany jest **identyfikator sesji**. Dane sesyjne przechowywane są w bazie danych **Redis**. Należy opracować formularz pozwalający na przechowywanie przez użytkownika plików **PDF** w systemie. Pliki PDF powinny być dostępne do pobrania i serwowane przez **bezstanową aplikację**. Należy wykorzystać **JWT** z krótką datą ważności.
+
+### Istotne elementy
+
+- czy w ciasteczku generowany jest identyfikator sesji czy bezterminowy JWT (to drugie nie pozwala wylogować),
+- czy przy wylogowaniu usuwane są wpisy z _Redis_,
+- czy w formularzu jest `enctype=multipart/form-data`
+- czy aplikacja serwująca dostęp do pliku korzysta z sesji (czy innych informacji poza tymi w żetonie) - jeżeli tak, to źle,
+- czy żeton do pobrania ma krótki czas ważności (kilka minut)
+
+### Projekt systemu
+
+System będzie podzielony na 3 główne komponenty.
+
+Pierwszy z nich będzie rozbudowaniem aplikacji we _Falsk_ z etapu 1. Jego zdaniem jest serwowanie stron internetowych i bezpośrednia komunikacja z użytkownikiem.
+
+Do przechowywania danych sesyjnych oraz bazy użytkowników wykorzystana zostanie baza nosql _Redis_.
+
+Do obsługi plików wykorzystana zostanie oddzielna usługa typu REST.
+
+![Component diagram displaying system](./doc/ComponentDiagram.svg)
+
+----------------------
 
 ## Przydatne materiały
 
