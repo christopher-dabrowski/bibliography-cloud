@@ -1,7 +1,7 @@
 import os
 import secrets
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, make_response
 from livereload import Server
 from forms import LoginForm
 import redis
@@ -31,7 +31,9 @@ def index():
 
     if not login_manager.isSessionValid(session_id):
         # TODO: Display invalid message
-        return render_template('index.html')
+        response = make_response(render_template('index.html'))
+        response.set_cookie('session-id', '', expires=0)  # Clear cookie
+        return response
 
     login = login_manager.getLogin(session_id)
     return render_template('index.html', logged=True, login=login)
@@ -56,6 +58,16 @@ def login():
 
     else:
         return render_template('login.html', title='Logowanie', form=form)
+
+
+@app.route('/logout', methods=["GET"])
+def logout():
+    session_id = request.cookies.get('session-id')
+    login_manager.registerLogout(session_id)
+
+    response = redirect(url_for('index'))
+    response.set_cookie('session-id', '', expires=0)  # Clear cookie
+    return response
 
 
 if app.debug:

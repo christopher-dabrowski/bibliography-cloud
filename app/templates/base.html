@@ -47,7 +47,7 @@
           </li>
           {% if logged and logged == True %}
           <li class="nav-item mr-3">
-            <a class="nav-link btn btn-outline-danger" id="logout-button">Wyloguj</a>
+            <a class="nav-link btn btn-outline-danger" id="logout-button" href={{url_for('logout')}}>Wyloguj</a>
           </li>
           {% else %}
           <li class="nav-item mr-3">
@@ -60,7 +60,7 @@
     </nav>
 
     {% if login %}
-    <section class="login-lnfo">
+    <section class="login-lnfo pt-md-2">
       <p class="text-center text-muted">Zalogowany jako: <span class="font-weight-bold">{{login}}</span></p>
     </section>
     {% endif %}
