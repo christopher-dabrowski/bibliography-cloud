@@ -1,4 +1,4 @@
-# Projekt na Programowanie aplikacji mobilnych i webowych
+# Projekt na Programowanie aplikacji mobilnych i webowych <!-- omit in toc -->
 
 [![Board Status](https://dev.azure.com/01133318/58577f27-c36e-47d0-9166-d776046c9d72/b8c46cd8-ad29-4083-8158-d84b59d074b3/_apis/work/boardbadge/1c7d0226-0595-4aa6-b9e1-2e99eadfd43d)](https://dev.azure.com/01133318/Bibliography%20Cloud/_workitems)
 
@@ -12,6 +12,21 @@ Projekt jest hostowany na platformie _Microsoft Azure_ na **darmowym** poziomie 
 ## Cel projektu
 
 Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
+
+## Spis treści
+
+- [Cel projektu](#cel-projektu)
+- [Spis treści](#spis-treści)
+- [Etap 1 - Formularz rejestracyjny](#etap-1---formularz-rejestracyjny)
+  - [Istotne elementy](#istotne-elementy)
+  - [Uruchomienie Formularza](#uruchomienie-formularza)
+    - [Docker](#docker)
+    - [Docker-compose](#docker-compose)
+  - [Opis plików](#opis-plików)
+    - [Pliki projektu](#pliki-projektu)
+    - [Pliki konfiguracji (serwer)](#pliki-konfiguracji-serwer)
+- [Etap 2 - Logowanie i przechowywanie plików](#etap-2---logowanie-i-przechowywanie-plików)
+- [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
 
@@ -63,9 +78,9 @@ Informacja o plikach składających się na projekt.
 
 ----------------------
 
-## Etap 2
+## Etap 2 - Logowanie i przechowywanie plików
 
-Opis wymagań i realizacji już niedługo :smiley:
+Opracowanie modułu służącego do bezpiecznego logowania i wylogowywania użytkownika. Moduł logowania otrzymuje od użytkownika hasło i login – w przypadku poprawnych danych generowany jest **identyfikator sesji**. Dane sesyjne przechowywane są w bazie danych **Redis**. Należy opracować formularz pozwalający na przechowywanie przez użytkownika plików **PDF** w systemie. Pliki PDF powinny być dostępne do pobrania i serwowane przez **bezstanową aplikację**. Należy wykorzystać **JWT** z krótką datą ważności.
 
 ## Przydatne materiały
 
