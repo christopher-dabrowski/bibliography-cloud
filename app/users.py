@@ -3,8 +3,8 @@ from hashlib import sha256
 
 
 class UserManager(object):
-    def __init__(self):
-        self.redis = redis.Redis()
+    def __init__(self, redisConnection=redis.Redis()):
+        self.redis = redisConnection
 
     def addUser(self, login: str, password: str):
         """Add new user to database. Overwrite if user already exists."""

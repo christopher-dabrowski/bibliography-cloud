@@ -1,4 +1,5 @@
 import os
+import secrets
 from dotenv import load_dotenv
 from flask import Flask, render_template
 from livereload import Server
@@ -7,12 +8,14 @@ import redis
 from config import Config
 from setup import create_sample_users
 from users import UserManager
+from login import LoginManager
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 red = redis.Redis()
-user_manager = UserManager()
+user_manager = UserManager(red)
+login_manager = LoginManager(red)
 
 create_sample_users(user_manager)
 
