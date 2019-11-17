@@ -2,3 +2,4 @@ flask
 livereload
 python-dotenv
 flask-wtf
+redis

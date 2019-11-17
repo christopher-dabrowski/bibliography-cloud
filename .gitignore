@@ -7,3 +7,6 @@
 # Python files
 __pycache__
 venv
+
+# User files
+test.py

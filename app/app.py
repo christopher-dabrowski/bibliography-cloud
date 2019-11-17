@@ -1,14 +1,15 @@
-from flask import Flask
-from flask import render_template
-from livereload import Server
 import os
 from dotenv import load_dotenv
-from config import Config
-
+from flask import Flask, render_template
+from livereload import Server
 from forms import LoginForm
+from config import Config
+from setup import create_sample_users
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+create_sample_users()
 
 
 @app.route('/')
