@@ -3,14 +3,17 @@ from dotenv import load_dotenv
 from flask import Flask, render_template
 from livereload import Server
 from forms import LoginForm
+import redis
 from config import Config
 from setup import create_sample_users
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-create_sample_users()
+red = redis.Redis()
+user_manager = UserManager()
 
+create_sample_users(user_manager)
 
 @app.route('/')
 @app.route('/index')
