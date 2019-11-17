@@ -39,12 +39,7 @@ def login():
         login = form.login.data
         password = form.password.data
 
-        if not user_manager.checkUser(login):
-            return 'Nieprawidłowy login'
-        if not user_manager.validatePassword(login, password):
-            return 'Nieprawidłowe hasło'
-
-        return f'Udało Ci się wpisać login!\nLogin: {form.login.data}\nHasło: {form.password.data}'
+        return f'Udało Ci się wpisać login!\nLogin: {login}\nHasło: {password}'
 
     # TODO: Send back errors
     return render_template('login.html', title='Logowanie', form=form)

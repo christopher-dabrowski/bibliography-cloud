@@ -14,7 +14,7 @@
 
       <div class="form-group {{'has-error' if form.login.errors }}">
         <label for="firstname"><b>Login:</b></label>
-        <input type="text" placeholder="Login" name="login">
+        <input type="text" placeholder="Login" name="login" {{'value='+form.login.data if form.login.data}}>
         {% for error in form.login.errors %}
         <p class="help-block error">{{ error }}</p>
         {% endfor %}
