@@ -31,6 +31,7 @@
   <header>
     <nav class="navbar sticky-top navbar-expand-lg navbar-light shadow-sm">
       <a class="navbar-brand" href={{url_for('index')}}>Bibliography Cloud</a>
+
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -44,12 +45,27 @@
           <li class="nav-item mr-3">
             <a class="nav-link text-center" href="#">Kontakt</a>
           </li>
+          {% if logged and logged == True %}
+          <li class="nav-item mr-3">
+            <a class="nav-link btn btn-outline-danger" id="logout-button">Wyloguj</a>
+          </li>
+          {% else %}
           <li class="nav-item mr-3">
             <a class="nav-link btn btn-outline-success" id="login-button" href={{url_for('login')}}>Logowanie</a>
           </li>
+          {% endif %}
+
         </ul>
       </div>
     </nav>
+
+    {% if login %}
+    <section class="login-lnfo">
+      <p class="text-center text-muted">Zalogowany jako: <span class="font-weight-bold">{{login}}</span></p>
+    </section>
+    {% endif %}
+
+
   </header>
 
   <main role="main" class="flex-shrink-0">

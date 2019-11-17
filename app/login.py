@@ -47,4 +47,4 @@ class LoginManager(object):
         self.redis.delete(session_id)
 
     def getLogin(self, session_id: str) -> str:
-        return self.redis.hget(session_id, 'login')
+        return self.redis.hget(session_id, 'login').decode()

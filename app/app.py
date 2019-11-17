@@ -26,15 +26,15 @@ create_sample_users(user_manager)
 def index():
     session_id = request.cookies.get('session-id')
     if session_id is None:
+        # TODO: Display invalid message
         return render_template('index.html')
 
-    if login_manager.isSessionValid(session_id):
-        print('Valid session')
-        print(login_manager.getLogin(session_id))
+    if not login_manager.isSessionValid(session_id):
+        # TODO: Display invalid message
         return render_template('index.html')
-    else:
-        print('Invalid session')
-        return render_template('index.html')
+
+    login = login_manager.getLogin(session_id)
+    return render_template('index.html', logged=True, login=login)
 
 
 @app.route('/signup')
