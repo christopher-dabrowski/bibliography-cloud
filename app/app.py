@@ -21,8 +21,6 @@ create_sample_users(user_manager)
 @app.route('/index')
 @app.route('/home')
 def index():
-    print('Showing index')
-
     session_id = request.cookies.get('session-id')
     if session_id is None:
         # TODO: Display invalid message
@@ -36,6 +34,22 @@ def index():
 
     login = login_manager.getLogin(session_id)
     return render_template('index.html', logged=True, login=login)
+
+
+@app.route('/files')
+def files():
+    session_id = request.cookies.get('session-id')
+    if session_id is None:
+        # TODO: Display require login message message
+        return render_template('index.html'), 403
+
+    if not login_manager.isSessionValid(session_id):
+        # TODO: Display invalid message
+        response = make_response(render_template('index.html'))
+        response.set_cookie('session-id', '', expires=0)  # Clear cookie
+        return response, 403
+
+    return "Here there will be list of user files"
 
 
 @app.route('/signup')
