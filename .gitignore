@@ -1,3 +1,6 @@
+# Project secrets
+app/.env
+
 # OSX Filesystem info
 .DS_Store
 
