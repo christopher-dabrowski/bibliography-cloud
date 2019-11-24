@@ -17,6 +17,11 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-body > footer {
+body>footer {
     background-color: black;
+}
+
+.messages ul.flashes {
+    list-style-type: none;
+    padding-left: 0;
 }
