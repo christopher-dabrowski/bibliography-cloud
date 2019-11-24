@@ -6,6 +6,7 @@ from livereload import Server
 from forms import LoginForm
 import redis
 from config import Config
+from jwt_tokens import create_download_token, create_upload_token, create_list_token
 from setup import create_sample_users
 
 app = Flask(__name__)
@@ -50,7 +51,13 @@ def files():
         return response, 403
 
     login = login_manager.getLogin(session_id)
-    return render_template('files.html', logged=True, login=login)
+    tokens = {
+        'download_token': create_download_token(login),
+        'upload_token': create_upload_token(login),
+        'list_token': create_list_token(login),
+    }
+
+    return render_template('files.html', logged=True, login=login, **tokens)
 
 
 @app.route('/signup')
@@ -73,8 +80,6 @@ def login():
         return response
 
     else:
-        print('Logowanie nie poprawne')
-
         return render_template('login.html', title='Logowanie', form=form)
 
 

@@ -9,4 +9,25 @@
   <h1 class="mt-5">Lista plików</h1>
   <p>Tutaj możesz trzymać swoje ciekawe pliki.</p>
 </section>
+
+<section class="container mt-2">
+  <div class="d-none token" id="list-token">{{ list_token }}</div>
+
+  <h2>Pliki</h2>
+  <ul>
+    <div class="d-none token" id="delete-token">{{ delete_token }}</div>
+    <li>File 1 <a href="#">delete</a></li>
+    <li>File 2 <a href="#">delete</a></li>
+    <li>File 3 <a href="#">delete</a></li>
+  </ul>
+  <form action="REST/files" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="hidden" name="token" value={{ upload_token }}>
+    <input type="submit">
+  </form>
+</section>
+{% endblock %}
+
+{% block js %}
+
 {% endblock %}
