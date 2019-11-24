@@ -42,9 +42,11 @@
           <li class="nav-item mr-3">
             <a class="nav-link text-center" href="#">O projekcie</a>
           </li>
+          {% if logged and logged == True %}
           <li class="nav-item mr-3">
-            <a class="nav-link text-center" href="#">Kontakt</a>
+            <a class="nav-link btn" id="files-button" href={{url_for('files')}}>Moje pliki</a>
           </li>
+          {% endif %}
           {% if logged and logged == True %}
           <li class="nav-item mr-3">
             <a class="nav-link btn btn-outline-danger" id="logout-button" href={{url_for('logout')}}>Wyloguj</a>

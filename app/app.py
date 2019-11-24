@@ -49,7 +49,8 @@ def files():
         response.set_cookie('session-id', '', expires=0)  # Clear cookie
         return response, 403
 
-    return "Here there will be list of user files"
+    login = login_manager.getLogin(session_id)
+    return render_template('files.html', logged=True, login=login)
 
 
 @app.route('/signup')
