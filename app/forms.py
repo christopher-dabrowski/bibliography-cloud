@@ -1,10 +1,10 @@
+"""File for storing classes representing forms and validators"""
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, ValidationError
 from wtforms.validators import DataRequired, Email
 from users import UserManager
 from config import Config
-import redis
-# TODO: Ask how to give this redis handle
 
 
 class LoginValidator(object):
@@ -12,8 +12,7 @@ class LoginValidator(object):
         self.message = message
 
     def __call__(self, form, field):
-        red = redis.Redis(Config.REDIS_NAME)
-        if not UserManager(red).checkUser(field.data):
+        if not Config.user_manager.checkUser(field.data):
             raise ValidationError(self.message)
 
 
@@ -26,8 +25,7 @@ class PasswordValidator(object):
         if not login:
             return
 
-        red = redis.Redis(Config.REDIS_NAME)
-        if not UserManager(red).validatePassword(login, field.data):
+        if not Config.user_manager.validatePassword(login, field.data):
             raise ValidationError(self.message)
 
 

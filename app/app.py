@@ -7,17 +7,12 @@ from forms import LoginForm
 import redis
 from config import Config
 from setup import create_sample_users
-from users import UserManager
-from login import LoginManager
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-red = redis.Redis(app.config['REDIS_NAME'])
-print(app.config['REDIS_NAME'])
-print(red)
-user_manager = UserManager(red)
-login_manager = LoginManager(red)
+user_manager = Config.user_manager
+login_manager = Config.login_manager
 
 create_sample_users(user_manager)
 
@@ -78,6 +73,7 @@ def logout():
     return response
 
 
+# Run app with live reload
 if app.debug:
     server = Server(app.wsgi_app)
     # server.watch

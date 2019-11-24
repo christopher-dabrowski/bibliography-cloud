@@ -3,6 +3,8 @@ from hashlib import sha256
 
 
 class UserManager(object):
+    """Class for managing user account creation and validation"""
+
     def __init__(self, redisConnection):
         self.redis = redisConnection
 

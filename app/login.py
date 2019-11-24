@@ -6,6 +6,9 @@ from datetime import datetime, timedelta
 class LoginManager(object):
     """Class responsible for keeping track of logged users and session data"""
 
+    # TODO: Save session duration to variable
+    # SESSION_DURATION = {}
+
     def __init__(self, redisConnection):
         self.redis: redis.Redis = redisConnection
 
@@ -46,5 +49,7 @@ class LoginManager(object):
         """Register that user logged out"""
         self.redis.delete(session_id)
 
+    # If more session variables will be added this can be changed to getSessionData -> Dict
     def getLogin(self, session_id: str) -> str:
+        """Get login from session id"""
         return self.redis.hget(session_id, 'login').decode()
