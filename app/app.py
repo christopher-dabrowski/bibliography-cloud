@@ -24,11 +24,11 @@ create_sample_users(user_manager)
 def index():
     session_id = request.cookies.get('session-id')
     if session_id is None:
-        # TODO: Display invalid message
         return render_template('index.html')
 
     if not login_manager.isSessionValid(session_id):
         # TODO: Display invalid message
+        flash('Sesja wygasła', 'alert-warning')
         response = make_response(render_template('index.html'))
         response.set_cookie('session-id', '', expires=0)  # Clear cookie
         return response
@@ -42,10 +42,12 @@ def files():
     session_id = request.cookies.get('session-id')
     if session_id is None:
         # TODO: Display require login message message
+        flash('Wprowadzony adres wymaga logowania', 'alert-danger')
         return render_template('index.html'), 403
 
     if not login_manager.isSessionValid(session_id):
         # TODO: Display invalid message
+        flash('Sesja wygasła', 'alert-warning')
         response = make_response(render_template('index.html'))
         response.set_cookie('session-id', '', expires=0)  # Clear cookie
         return response, 403
@@ -63,6 +65,7 @@ def files():
 @app.route('/signup')
 def signup():
     # TODO: Create user and validate
+    flash('Kreacja konta aktualnie nie działa', 'alert-danger')
     return render_template('signup.html', title='Kreacja konta')
 
 
@@ -71,8 +74,6 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         login = form.login.data
-
-        print('Logowanie poprawne')
 
         session_id = login_manager.registerLogin(login)
         response = redirect(url_for('index'))
@@ -88,6 +89,7 @@ def logout():
     session_id = request.cookies.get('session-id')
     login_manager.registerLogout(session_id)
 
+    flash('Nastąpiło poprawne wylogowanie', 'alert-success')
     response = redirect(url_for('index'))
     response.set_cookie('session-id', '', expires=0)  # Clear cookie
     return response

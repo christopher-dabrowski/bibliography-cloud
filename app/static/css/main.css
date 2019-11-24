@@ -9,6 +9,10 @@
     color: black !important;
 }
 
+.nav-link.disabled {
+    color: rgb(91, 91, 91) !important;
+}
+
 #login-button {
     border-width: 2px;
 }
