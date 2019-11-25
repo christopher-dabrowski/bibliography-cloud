@@ -1,0 +1,162 @@
+swagger: "2.0"
+info:
+  description: API for the Biblography cloud project
+  version: 1.0.0
+  title: Biblography cloud stateless API
+  # put the contact info for your development or API team
+  contact:
+    email: 293101@pw.edu.pl
+
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+# tags are used for organizing operations
+tags:
+  - name: files
+    description: User file storage
+
+paths:
+  /files:
+    get:
+      tags:
+        - files
+      summary: list user files
+      description: |
+        By authenticating with JWT, you can view user files
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: user
+          description: pass user name
+          required: true
+          type: string
+        - in: query
+          name: skip
+          description: number of records to skip for pagination
+          type: integer
+          format: int32
+          minimum: 0
+        - in: query
+          name: limit
+          description: maximum number of records to return
+          type: integer
+          format: int32
+          minimum: 0
+
+        - in: body
+          name: jwt
+          description: Authorizatio token
+          required: true
+          schema:
+            $ref: "#/definitions/JWTToken"
+
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/File"
+        400:
+          description: bad input parameters
+        403:
+          description: invalid authentication
+
+    post:
+      tags:
+        - files
+      summary: upload file
+      description: |
+        By authenticating with JWT, you can upload pdf file
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+
+      parameters:
+        - in: formData
+          name: user
+          type: string
+          required: true
+          description: user name
+        - in: formData
+          name: file
+          type: file
+          required: true
+          description: The pdf file to upload.
+        - in: formData
+          name: jwt
+          type: string
+          required: true
+          description: Authorizatio token
+
+      responses:
+        200:
+          description: succesfull upload
+          schema:
+            $ref: "#/definitions/File"
+        400:
+          description: bad input parameters
+        403:
+          description: invalid authentication
+
+    delete:
+      tags:
+        - files
+      summary: Delete file
+      description: Delete user file from the server
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: user
+          description: name of user that has the file
+          required: true
+          type: string
+        - name: fileName
+          in: query
+          description: Name of the file to be deleted
+          required: true
+          type: string
+
+        - in: body
+          name: jwt
+          description: Authorizatio token
+          required: true
+          schema:
+            $ref: "#/definitions/JWTToken"
+
+      responses:
+        200:
+          description: file successfully deleted
+
+        400:
+          description: Invalid username provided
+        403:
+          description: invalid authentication
+        404:
+          description: File not found
+
+definitions:
+  File:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        example: funny_proofs.pdf
+
+  JWTToken:
+    type: string
+    format: jwt-sha256
+    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /oakbit/biblography-cloud/1.0.0
+schemes:
+  - https
+  - http

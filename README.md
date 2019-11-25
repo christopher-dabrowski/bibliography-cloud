@@ -29,6 +29,7 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
 - [Etap 2 - Logowanie i przechowywanie plików](#etap-2---logowanie-i-przechowywanie-plików)
   - [Istotne elementy](#istotne-elementy-1)
   - [Projekt systemu](#projekt-systemu)
+  - [Rest API](#rest-api)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -106,6 +107,12 @@ Do przechowywania danych sesyjnych oraz bazy użytkowników wykorzystana zostani
 Do obsługi plików wykorzystana zostanie oddzielna usługa typu REST.
 
 ![Component diagram displaying system](./doc/ComponentDiagram.svg)
+
+### Rest API
+
+Dokumentacja API jest opisana w pliku [restAPI.yml](./doc/resAPI.yml). Dzięki wykorzystaniu usługi Swagger łatwo można je [zobaczyć](https://app.swaggerhub.com/apis-docs/oakbit/biblography-cloud/).
+
+Zarządzanie plikami użytkownika jest realizowane przez **oddzielny serwer**.
 
 ----------------------
 
