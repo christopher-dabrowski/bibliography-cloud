@@ -9,7 +9,9 @@
   <h1 class="mt-5">Miejsce na Twoją bibliografię</h1>
   <p>Jeśli zastanawiałeś się kiedyś nad tym gdzie trzymać swoją bibliografię, to <b>teraz już nie musisz</b>!
     Możesz śmiało trzymać ją na Bibliography Cloud. Wystarczy tylko ,że założysz darmowe konto.</p>
+  {% if not logged or logged != True %}
   <a class="btn btn-success" href={{url_for('signup')}}>Rejestracja</a>
+  {% endif %}
 </section>
 
 <section class="cotainer mt-4 d-flex justify-content-center" id="custommer-satisfaction">

@@ -77,7 +77,8 @@ def login():
 
         session_id = login_manager.registerLogin(login)
         response = redirect(url_for('index'))
-        response.set_cookie('session-id', session_id)
+        response.set_cookie('session-id', session_id,
+                            httponly=True)
         return response
 
     else:
@@ -91,7 +92,8 @@ def logout():
 
     flash('Nastąpiło poprawne wylogowanie', 'alert-success')
     response = redirect(url_for('index'))
-    response.set_cookie('session-id', '', expires=0)  # Clear cookie
+    response.set_cookie('session-id', '', expires=0,
+                        httponly=True)  # Clear cookie
     return response
 
 
