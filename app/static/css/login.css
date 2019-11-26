@@ -2,6 +2,14 @@ body {
     background-color: rgb(90, 176, 250);
 }
 
+.shrinking {
+    transition: 0.2s;
+}
+
+.shrinking:hover {
+    transform: scale(1.1, 1.1);
+}
+
 .btn-secondary {
     min-width: 200px;
     border-radius: 40px;
@@ -37,6 +45,7 @@ body {
 .card h1 {
     text-align: center;
 }
+
 form {
     padding: 10px;
 }
