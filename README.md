@@ -119,6 +119,7 @@ Zarządzanie plikami użytkownika jest realizowane przez **oddzielny serwer**.
 ## Przydatne materiały
 
 - [Pozbywanie się Callback Hell](https://www.nafrontendzie.pl/jak-pozbyc-sie-callback-hell)
+- [Czysty kod js](https://github.com/ryanmcdermott/clean-code-javascript)
 - [Testy i mockowanie AJAXa](https://www.nafrontendzie.pl/jquery-deffered-oraz-promise-pigulce)
 - [Kurs Webpack 2](https://www.youtube.com/watch?v=8vnkM8JgjpU&list=PL55RiY5tL51rcCnrOrZixuOsZhAHHy6os&index=4)
 - [Integracja Flask + Webpack](https://codeburst.io/creating-a-full-stack-web-application-with-python-npm-webpack-and-react-8925800503d9)
