@@ -6,15 +6,21 @@ import lombok.val;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.Jedis;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Class for storing user files
- * TODO: Change this to Redis
  */
 @Repository
 public class FileRepositoryRedis implements FileRepository {
@@ -23,9 +29,9 @@ public class FileRepositoryRedis implements FileRepository {
     private final ListOperations<String, String> listOperations;
     private final SetOperations<String, String> setOperations;
 
-    private final Map<String, List<UserFile>> data;
-
     private Jedis jedis;
+
+    private final String STORAGE_DIRECTORY = "Storage";
 
     public FileRepositoryRedis(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
@@ -33,8 +39,6 @@ public class FileRepositoryRedis implements FileRepository {
         this.setOperations = this.redisTemplate.opsForSet();
 
         this.jedis = new Jedis();
-
-        data = new HashMap<>();
 
         fillWithInitialData();
     }
@@ -48,8 +52,6 @@ public class FileRepositoryRedis implements FileRepository {
                 new UserFile(user, "Odbicia światła.pdf"),
                 new UserFile(user, "Ciekawe dowody.pdf")
         );
-        data.put(user, files);
-
 
         listOperations.rightPushAll(user, files.stream().map(f -> f.getName()).collect(Collectors.toList()));
         System.out.println(listOperations.size(user));
@@ -60,12 +62,17 @@ public class FileRepositoryRedis implements FileRepository {
         user = "Atrox";
         redisTemplate.delete(user);
         files = Arrays.asList(
-                new UserFile(user, "Zupy świata.pdf"),
-                new UserFile(user, "Kompzycje przypraw.pdf"),
-                new UserFile(user, "Najlepsze desery.pdf"),
-                new UserFile(user, "Sztuka marynowania.pdf")
+                new UserFile(user, "Zupy świata.pdf")
+//                new UserFile(user, "Kompzycje przypraw.pdf"),
+//                new UserFile(user, "Najlepsze desery.pdf"),
+//                new UserFile(user, "Sztuka marynowania.pdf")
         );
-        data.put(user, files);
+
+        listOperations.rightPushAll(user, files.stream().map(f -> f.getName()).collect(Collectors.toList()));
+        System.out.println(listOperations.size(user));
+
+        tmp = listOperations.range(user, 0, -1);
+        tmp.forEach(n -> System.out.println(n));
     }
 
     public List<UserFile> getUserFiles(@NonNull String userName) {
@@ -77,25 +84,53 @@ public class FileRepositoryRedis implements FileRepository {
     }
 
     public List<UserFile> getUserFiles(@NonNull String userName, int skip, OptionalInt limit) {
-        if (!data.containsKey(userName)) {
-            data.put(userName, new ArrayList<UserFile>());
+        if (!redisTemplate.hasKey(userName)) {
+            return new ArrayList<>();
         }
 
-        var result = data.get(userName).stream().skip(skip);
-        if (limit.isPresent()) {
-            result = result.limit(limit.getAsInt());
+        var end = limit.isPresent() ? skip + limit.getAsInt() : -1;
+        var fileNames = listOperations.range(userName, skip, end);
+
+        var result = new ArrayList<UserFile>(fileNames.size());
+        for (var name : fileNames) {
+            result.add(new UserFile(userName, name));
         }
 
-        return result.collect(Collectors.toList());
+        return result;
     }
 
-    public void addUserFile(@NonNull String userName, @NonNull String fileName) {
-        if (!data.containsKey(userName)) {
-            data.put(userName, new LinkedList<UserFile>());
-        }
-
-        val file = new UserFile(userName, fileName);
-        data.get(userName).add(file);
+    public void addUserFile(@NonNull String userName, @NonNull MultipartFile file) throws IOException {
+        listOperations.rightPush(userName, file.getOriginalFilename());
+        saveFile(userName, file);
     }
 
+    @Override
+    public void deleteUserFile(@NonNull String userName, @NonNull String fileName) {
+        listOperations.remove(userName, 0, fileName);
+        deleteFile(userName, fileName);
+    }
+
+    @Override
+    public byte[] getActualFile(String userName, String fileName) throws IOException {
+        var basePath = Paths.get(STORAGE_DIRECTORY).toAbsolutePath().toString();
+        var filePath = Paths.get(basePath, userName, fileName).toString();
+        var file = new File(filePath);
+
+        if (!file.exists())
+            throw new IllegalArgumentException("Cannot access file");
+        return Files.readAllBytes(file.toPath());
+    }
+
+    private void saveFile(@NonNull String userName, @NonNull MultipartFile file) throws IOException {
+        var basePath = Paths.get(STORAGE_DIRECTORY).toAbsolutePath().toString();
+        var filePath = Paths.get(basePath, userName,file.getOriginalFilename()).toString();
+        file.transferTo(new File(filePath));
+    }
+
+    private void deleteFile(@NonNull String userName, @NonNull String fileName) {
+        var basePath = Paths.get(STORAGE_DIRECTORY).toAbsolutePath().toString();
+        var filePath = Paths.get(basePath, userName, fileName).toString();
+
+        new File(filePath).delete();
+    }
 }
