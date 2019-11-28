@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.OptionalInt;
@@ -37,18 +38,18 @@ public class FilesApi {
     @PostConstruct
     public void init() throws IOException {
 //        var directroy = new File(getClass().getClassLoader().getResource("static").getPath());
-
+//
 //        System.out.println(directroy.isDirectory());
-
+//
 //        String serverPath = request.getServletContext().getRealPath("/");
 //
 //        System.out.println(serverPath);
-
+//
 //        for (var file : directroy.listFiles()) {
 //            Files.copy(file.toPath(), new File(serverPath).toPath());
 //            System.out.println(file.getAbsolutePath());
 //        }
-
+//
 //        System.out.println(files.nextElement().getPath());
     }
 
@@ -80,7 +81,9 @@ public class FilesApi {
         System.out.println(user);
         System.out.println(file);
 
-        String filePath = request.getServletContext().getRealPath("/");
+//        String filePath = request.getServletContext().getRealPath("/");
+        var basePath = Paths.get("").toAbsolutePath().toString();
+        var filePath = Paths.get(basePath, file.getOriginalFilename()).toString();
         try {
             file.transferTo(new File(filePath));
         } catch (IOException e) {
