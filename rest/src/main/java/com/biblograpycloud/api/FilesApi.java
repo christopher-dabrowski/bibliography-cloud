@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.OptionalInt;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/files")
 public class FilesApi {
     private final FileRepository fileRepo;
