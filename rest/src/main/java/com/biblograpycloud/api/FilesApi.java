@@ -1,18 +1,16 @@
 package com.biblograpycloud.api;
 
 import com.biblograpycloud.api.repository.FileRepository;
-import com.biblograpycloud.api.repository.FileRepositoryRedis;
+import com.biblograpycloud.api.repository.FileRepositoryDirectory;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.OptionalInt;
 
@@ -23,7 +21,7 @@ public class FilesApi {
 
     private final HttpServletRequest request;
 
-    public FilesApi(@Autowired FileRepositoryRedis fileRepo, @Autowired HttpServletRequest request) {
+    public FilesApi(@Autowired FileRepositoryDirectory fileRepo, @Autowired HttpServletRequest request) {
         this.fileRepo = fileRepo;
         this.request = request;
     }
@@ -77,5 +75,17 @@ public class FilesApi {
 
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteFile(@RequestParam String user,
+                                     @RequestParam("file") String file) {
+        try {
+            fileRepo.deleteUserFile(user, file);
+        } catch (FileNotFoundException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
