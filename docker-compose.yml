@@ -8,5 +8,11 @@ services:
       - REDIS_NAME=redis
     depends_on:
       - redis
+      - rest
   redis:
     image: redis
+
+  rest:
+    build: ./rest
+    ports:
+      - "8081:8081"

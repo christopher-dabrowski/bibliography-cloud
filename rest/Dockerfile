@@ -1,7 +1,7 @@
 FROM openjdk:11
 #COPY . .
 #ENV MONGO_URL mongodb://localhost/belfastjug_sample_01
-EXPOSE 8080
+EXPOSE 8081
 
 ENV HOST=Docker
 
