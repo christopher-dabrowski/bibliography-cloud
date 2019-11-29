@@ -34,6 +34,8 @@ public class FileRepositoryDirectory implements FileRepository {
     @Override
     public List<UserFile> getUserFiles(@NonNull String userName, int skip, OptionalInt limit) {
         var userDirectory = Paths.get(STORAGE_DIRECTORY, userName).toFile();
+        if (!userDirectory.exists())
+            return new ArrayList<>();
 
         List<String> fileNames = Arrays.stream(userDirectory.listFiles()).skip(skip).limit(limit.orElse(0)).map(f -> f.getName()).collect(Collectors.toList());
         var result = new ArrayList<UserFile>();

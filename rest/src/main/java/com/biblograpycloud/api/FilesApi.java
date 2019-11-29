@@ -31,13 +31,6 @@ public class FilesApi {
                                                  @RequestParam(defaultValue = "0") Integer skip,
                                                  @RequestParam(required = false) Integer limit) {
 
-        System.out.println("getAll");
-        System.out.println(user);
-        System.out.println(skip);
-        System.out.println(limit);
-
-        System.out.println(request.getServletContext().getRealPath("/"));
-
         OptionalInt optionalLimit = limit != null ? OptionalInt.of(limit) : OptionalInt.empty();
 
         val files = fileRepo.getUserFiles(user, skip, optionalLimit);
@@ -51,8 +44,10 @@ public class FilesApi {
         byte[] file;
         try {
             file = fileRepo.getActualFile(user, fileName);
-        } catch (IOException e) {
+        } catch (IllegalArgumentException e) {
             return new HttpEntity(HttpStatus.BAD_REQUEST);
+        } catch (IOException e) {
+            return new HttpEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         var header = new HttpHeaders();
