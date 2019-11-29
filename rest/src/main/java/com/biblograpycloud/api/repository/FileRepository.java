@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.val;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public interface FileRepository {
 
     void addUserFile(@NonNull String userName, @NonNull MultipartFile file) throws IOException;
 
-    void deleteUserFile(@NonNull String userName, @NonNull String fileName);
+    void deleteUserFile(@NonNull String userName, @NonNull String fileName) throws FileNotFoundException;
 
     byte[] getActualFile(String userName, String fileName) throws IOException;
 }
