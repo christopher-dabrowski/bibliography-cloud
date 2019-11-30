@@ -2,6 +2,7 @@ import os
 import secrets
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, make_response, flash
+import requests
 from livereload import Server
 from forms import LoginForm
 import redis
@@ -37,6 +38,11 @@ def index():
     return render_template('index.html', logged=True, login=login)
 
 
+@app.route('/files/delete/<int:id>')
+def delete_file(id):
+    return 'I will delete your file ' + str(id)
+
+
 @app.route('/files')
 def files():
     session_id = request.cookies.get('session-id')
@@ -52,6 +58,18 @@ def files():
         response.set_cookie('session-id', '', expires=0)  # Clear cookie
         return response, 403
 
+    # Get user files
+    url = Config.API_URL + f"/files?user=jan"
+    r = requests.get(url)
+
+    files_dto_list = r.json()
+    for i, file in enumerate(files_dto_list):
+        delete_link = url_for('delete_file', id=i)
+        file['links'] = {'delete': delete_link}
+        file['id'] = str(i)
+
+    print(files_dto_list)
+
     login = login_manager.getLogin(session_id)
     tokens = {
         'download_token': create_download_token(login),
@@ -59,7 +77,7 @@ def files():
         'list_token': create_list_token(login),
     }
 
-    return render_template('files.html', logged=True, login=login, **tokens)
+    return render_template('files.html', logged=True, login=login, files=files_dto_list, ** tokens)
 
 
 @app.route('/signup')

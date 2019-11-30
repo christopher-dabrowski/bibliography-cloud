@@ -17,6 +17,8 @@ class Config(object):
     JWT_SECRET = os.environ.get('JWT_SECRET') or 'ChangeMe'
     JWT_SESSION_TIME = int(os.environ.get('JWT_SESSION_TIME') or '10')
 
+    API_URL = 'http://localhost:8081'
+
     redis = redis.Redis(REDIS_NAME)
     user_manager = UserManager(redis)
     login_manager = LoginManager(redis)
