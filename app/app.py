@@ -69,11 +69,11 @@ def delete_file(id):
     r = requests.delete(url)
 
     if r.status_code == 200:
-        return 'File deleted'
+        flash('Plik został usunięty', category='alert-success')
+    else:
+        flash('Nie udało się usunąć pliku', category='alert-danger')
 
-    print(r.status_code)
-
-    return 'I will delete your file ' + str(id)
+    return redirect(url_for('files'))
 
 
 @app.route('/files')
