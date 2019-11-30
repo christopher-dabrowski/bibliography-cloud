@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, make_respo
 import requests
 import urllib.parse
 from livereload import Server
-from forms import LoginForm
+from forms import LoginForm, FileUploadForm
 import redis
 from config import Config
 from jwt_tokens import create_download_token, create_upload_token, create_list_token, create_delete_token
@@ -105,6 +105,17 @@ def download_file(id):
     return redirect(url)
 
 
+@app.route('/files/upload', methods=["POST"])
+def upload_file():
+    form = FileUploadForm()
+    form.validate()
+    if len(form.file.errors) > 0:
+        flash('Brak pliku do wysłania', category='alert-warning')
+        return redirect(url_for('files'))
+
+    return 'Your file will be uploaded'
+
+
 @app.route('/files')
 def files():
     session_id = request.cookies.get('session-id')
@@ -134,7 +145,7 @@ def files():
         file['links'] = {'delete': delete_link, 'download': download_link}
         file['id'] = str(i)
 
-    print(files_dto_list)
+    # print(files_dto_list)
 
     tokens = {
         'download_token': create_download_token(login),

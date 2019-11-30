@@ -19,9 +19,8 @@
     <li>{{file.fileName}} <a href="{{file.links.download}}">download</a> <a href={{file.links.delete}}>delete</a></li>
     {% endfor %}
   </ul>
-  <form action="REST/files" method="POST" enctype="multipart/form-data">
+  <form action={{url_for('upload_file')}} method="POST" enctype="multipart/form-data">
     <input type="file" name="file">
-    <input type="hidden" name="token" value={{ upload_token }}>
     <input type="submit">
   </form>
 </section>
