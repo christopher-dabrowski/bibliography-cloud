@@ -76,6 +76,35 @@ def delete_file(id):
     return redirect(url_for('files'))
 
 
+@app.route('/files/download/<int:id>')
+def download_file(id):
+    session_id = request.cookies.get('session-id')
+    if session_id is None:
+        # TODO: Display require login message message
+        flash('Wprowadzony adres wymaga logowania', 'alert-danger')
+        return render_template('index.html'), 403
+
+    if not login_manager.isSessionValid(session_id):
+        # TODO: Display invalid message
+        flash('Sesja wygasła', 'alert-warning')
+        response = make_response(render_template('index.html'))
+        response.set_cookie('session-id', '', expires=0)  # Clear cookie
+        return response, 403
+
+    login = login_manager.getLogin(session_id)
+    token = create_download_token(login)
+
+    # Map id to file name
+    url = Config.API_URL + f"/files?user=jan"
+    r = requests.get(url)
+    files = r.json()
+    file_name = files[id]['fileName']
+
+    url = Config.API_URL + f'/files/{file_name}?user={login}'
+
+    return redirect(url)
+
+
 @app.route('/files')
 def files():
     session_id = request.cookies.get('session-id')
@@ -101,7 +130,7 @@ def files():
     for i, file in enumerate(files_dto_list):
         delete_link = url_for('delete_file', id=i)
         file_name = file['fileName']
-        download_link = Config.API_URL + f'/files/{file_name}?user={login}'
+        download_link = url_for('download_file', id=i)
         file['links'] = {'delete': delete_link, 'download': download_link}
         file['id'] = str(i)
 
