@@ -1,4 +1,4 @@
-package com.biblograpycloud.api;
+package com.biblograpycloud.api.models;
 
 
 import lombok.Getter;

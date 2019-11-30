@@ -3,11 +3,12 @@ import secrets
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, make_response, flash
 import requests
+import urllib.parse
 from livereload import Server
 from forms import LoginForm
 import redis
 from config import Config
-from jwt_tokens import create_download_token, create_upload_token, create_list_token
+from jwt_tokens import create_download_token, create_upload_token, create_list_token, create_delete_token
 from setup import create_sample_users
 
 app = Flask(__name__)
@@ -40,6 +41,38 @@ def index():
 
 @app.route('/files/delete/<int:id>')
 def delete_file(id):
+    session_id = request.cookies.get('session-id')
+    if session_id is None:
+        # TODO: Display require login message message
+        flash('Wprowadzony adres wymaga logowania', 'alert-danger')
+        return render_template('index.html'), 403
+
+    if not login_manager.isSessionValid(session_id):
+        # TODO: Display invalid message
+        flash('Sesja wygasła', 'alert-warning')
+        response = make_response(render_template('index.html'))
+        response.set_cookie('session-id', '', expires=0)  # Clear cookie
+        return response, 403
+
+    login = login_manager.getLogin(session_id)
+    token = create_delete_token(login)
+
+    # Map id to file name
+    url = Config.API_URL + f"/files?user=jan"
+    r = requests.get(url)
+    files = r.json()
+    file_name = files[id]['fileName']
+
+    url = Config.API_URL + f"/files?user=jan&file={file_name}"
+    # url = urllib.parse.quote(url)
+    # print(url)
+    r = requests.delete(url)
+
+    if r.status_code == 200:
+        return 'File deleted'
+
+    print(r.status_code)
+
     return 'I will delete your file ' + str(id)
 
 

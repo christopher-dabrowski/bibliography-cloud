@@ -1,8 +1,7 @@
 package com.biblograpycloud.api.repository;
 
-import com.biblograpycloud.api.UserFile;
+import com.biblograpycloud.api.models.UserFile;
 import lombok.NonNull;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 

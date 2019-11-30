@@ -22,9 +22,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    // https://mvnrepository.com/artifact/org.springframework.hateoas/spring-hateoas
+//    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.0.1.RELEASE'
+//    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-hateoas
+//    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '1.2.2.RELEASE'
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    // https://mvnrepository.com/artifact/redis.clients/jedis
-    compile group: 'redis.clients', name: 'jedis', version: '3.1.0'
+    implementation 'com.auth0:java-jwt:3.8.3'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

@@ -1,5 +1,7 @@
 package com.biblograpycloud.api;
 
+import com.biblograpycloud.api.models.FileDTO;
+import com.biblograpycloud.api.models.UserFile;
 import com.biblograpycloud.api.repository.FileRepository;
 import com.biblograpycloud.api.repository.FileRepositoryDirectory;
 import lombok.val;
@@ -13,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -28,14 +31,14 @@ public class FilesApi {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserFile>> getAll(@RequestParam String user,
+    public ResponseEntity<List<FileDTO>> getAll(@RequestParam String user,
                                                  @RequestParam(defaultValue = "0") Integer skip,
                                                  @RequestParam(required = false) Integer limit) {
 
         OptionalInt optionalLimit = limit != null ? OptionalInt.of(limit) : OptionalInt.empty();
-
         val files = fileRepo.getUserFiles(user, skip, optionalLimit);
-        var response = new ResponseEntity<List<UserFile>>(files, HttpStatus.OK);
+        val filesDTO = files.stream().map(f -> new FileDTO(f.getName())).collect(Collectors.toList());
+        var response = new ResponseEntity<List<FileDTO>>(filesDTO, HttpStatus.OK);
 
         return  response;
     }
