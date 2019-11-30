@@ -37,7 +37,7 @@ public class FileRepositoryDirectory implements FileRepository {
         if (!userDirectory.exists())
             return new ArrayList<>();
 
-        List<String> fileNames = Arrays.stream(userDirectory.listFiles()).skip(skip).limit(limit.orElse(0)).map(f -> f.getName()).collect(Collectors.toList());
+        List<String> fileNames = Arrays.stream(userDirectory.listFiles()).skip(skip).limit(limit.orElse(Integer.MAX_VALUE)).map(f -> f.getName()).collect(Collectors.toList());
         var result = new ArrayList<UserFile>();
         for (var fileName : fileNames) {
             result.add(new UserFile(userName, fileName));
