@@ -16,7 +16,7 @@
   <h2>Pliki</h2>
   <ul>
     {% for file in files %}
-    <li>{{file.fileName}} <a href={{file.links.delete}}>delete</a></li>
+    <li>{{file.fileName}} <a href="{{file.links.download}}">download</a> <a href={{file.links.delete}}>delete</a></li>
     {% endfor %}
   </ul>
   <form action="REST/files" method="POST" enctype="multipart/form-data">

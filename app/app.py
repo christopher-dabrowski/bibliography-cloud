@@ -91,19 +91,22 @@ def files():
         response.set_cookie('session-id', '', expires=0)  # Clear cookie
         return response, 403
 
+    login = login_manager.getLogin(session_id)
+
     # Get user files
-    url = Config.API_URL + f"/files?user=jan"
+    url = Config.API_URL + f"/files?user={login}"
     r = requests.get(url)
 
     files_dto_list = r.json()
     for i, file in enumerate(files_dto_list):
         delete_link = url_for('delete_file', id=i)
-        file['links'] = {'delete': delete_link}
+        file_name = file['fileName']
+        download_link = Config.API_URL + f'/files/{file_name}?user={login}'
+        file['links'] = {'delete': delete_link, 'download': download_link}
         file['id'] = str(i)
 
     print(files_dto_list)
 
-    login = login_manager.getLogin(session_id)
     tokens = {
         'download_token': create_download_token(login),
         'upload_token': create_upload_token(login),
