@@ -29,7 +29,6 @@ def index():
         return render_template('index.html')
 
     if not login_manager.isSessionValid(session_id):
-        # TODO: Display invalid message
         flash('Sesja wygasła', 'alert-warning')
         response = make_response(render_template('index.html'))
         response.set_cookie('session-id', '', expires=0)  # Clear cookie
@@ -107,13 +106,44 @@ def download_file(id):
 
 @app.route('/files/upload', methods=["POST"])
 def upload_file():
+    session_id = request.cookies.get('session-id')
+    if session_id is None:
+        # TODO: Display require login message message
+        flash('Wprowadzony adres wymaga logowania', 'alert-danger')
+        return render_template('index.html'), 403
+
+    if not login_manager.isSessionValid(session_id):
+        # TODO: Display invalid message
+        flash('Sesja wygasła', 'alert-warning')
+        response = make_response(render_template('index.html'))
+        response.set_cookie('session-id', '', expires=0)  # Clear cookie
+        return response, 403
+
     form = FileUploadForm()
     form.validate()
     if len(form.file.errors) > 0:
         flash('Brak pliku do wysłania', category='alert-warning')
         return redirect(url_for('files'))
 
-    return 'Your file will be uploaded'
+    login = login_manager.getLogin(session_id)
+    token = create_upload_token(login)
+
+    url = Config.API_URL + f'/files?user={login}'
+    print(dir(form.file.data))
+    print(form.file.data.filename)
+    # print((form.flie.data.filename, form.file.data,
+    #        form.file.data.mimetype))
+    files = {'file': (form.file.data.filename, form.file.data)}
+
+    r = requests.post(url, files=files)
+    print(requests.Request('POST', url, files=files))
+
+    if r.status_code == 200:
+        flash('Plik został przesłany', category='alert-success')
+    else:
+        flash('Nie udało się przesłać pliku', category='alert-danger')
+
+    return redirect(url_for('files'))
 
 
 @app.route('/files')
