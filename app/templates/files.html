@@ -15,7 +15,6 @@
 
   <h2>Pliki</h2>
   <ul>
-    <div class="d-none token" id="delete-token">{{ delete_token }}</div>
     {% for file in files %}
     <li>{{file.fileName}} <a href={{file.links.delete}}>delete</a></li>
     {% endfor %}
