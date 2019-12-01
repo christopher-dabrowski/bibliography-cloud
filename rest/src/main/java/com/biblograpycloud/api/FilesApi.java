@@ -58,6 +58,7 @@ public class FilesApi {
     public HttpEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName,
                                            @RequestParam String user,
                                            @RequestParam String token) {
+
         val isTokenValid = jwtValidator.isFileDownloadTokenValid(token, user, fileName);
         if (!isTokenValid) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
@@ -83,13 +84,19 @@ public class FilesApi {
 
     @PostMapping
     public ResponseEntity<UserFile> uploadFile(@RequestParam String user,
-                                               @RequestParam("file") MultipartFile file) {
+                                               @RequestParam("file") MultipartFile file,
+                                               @RequestParam String token) {
+
+        val isTokenValid = jwtValidator.isFileUploadTokenValid(token, user);
+        if (!isTokenValid) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
         try {
             fileRepo.addUserFile(user, file);
         } catch (IOException e) {
             return new ResponseEntity(HttpStatus.INSUFFICIENT_STORAGE);
         }
-
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -98,6 +105,7 @@ public class FilesApi {
     public ResponseEntity deleteFile(@RequestParam String user,
                                      @RequestParam("file") String file,
                                      @RequestParam String token) {
+        
         val isTokenValid = jwtValidator.isFileDeletionTokenValid(token, user);
         if (!isTokenValid) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);

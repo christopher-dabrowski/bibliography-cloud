@@ -66,4 +66,20 @@ public class JWTValidator {
 
         return true;
     }
+
+    public boolean isFileUploadTokenValid(@NonNull String token,@NonNull String userName) {
+        try {
+            Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
+            Jwts.parser()
+                    .require("iss", "bibiograpy-cloud.pl")
+                    .require("user", userName)
+                    .require("upload", true)
+                    .setSigningKey(key)
+                    .parseClaimsJws(token);
+        } catch (JwtException e) {
+            return false;
+        }
+
+        return true;
+    }
 }
