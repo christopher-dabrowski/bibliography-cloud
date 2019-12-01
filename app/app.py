@@ -175,15 +175,7 @@ def files():
         file['links'] = {'delete': delete_link, 'download': download_link}
         file['id'] = str(i)
 
-    # print(files_dto_list)
-
-    tokens = {
-        'download_token': create_download_token(login),
-        'upload_token': create_upload_token(login),
-        'list_token': create_list_token(login),
-    }
-
-    return render_template('files.html', logged=True, login=login, files=files_dto_list, ** tokens)
+    return render_template('files.html', logged=True, login=login, files=files_dto_list)
 
 
 @app.route('/signup')
