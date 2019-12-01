@@ -22,14 +22,38 @@ public class JWTValidator {
             System.out.println(JWT_SECRET);
             System.out.println(JWT_SECRET.getBytes().length);
             Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
-//            var reuslt = Jwts.parser()
-////                    .require("iss", "bibiograpy-cloud.pl")
-//                    .require("user", userName)
-//                    .require("list", true)
-//                    .setSigningKey(key)
-//                    .parseClaimsJws(token);
-//
-//            System.out.println("Dobry token");
+            var reuslt = Jwts.parser()
+                    .require("iss", "bibiograpy-cloud.pl")
+                    .require("user", userName)
+                    .require("list", true)
+                    .setSigningKey(key)
+                    .parseClaimsJws(token);
+
+            System.out.println("Dobry token");
+            //OK, we can trust this JWT
+
+        } catch (JwtException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isDownloadTokenValid(@NonNull String token,@NonNull String userName,
+                                        @NonNull String fileName) {
+        try {
+            System.out.println(JWT_SECRET);
+            System.out.println(JWT_SECRET.getBytes().length);
+            Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
+            var reuslt = Jwts.parser()
+                    .require("iss", "bibiograpy-cloud.pl")
+                    .require("user", userName)
+                    .require("fileName", fileName)
+                    .require("download", true)
+                    .setSigningKey(key)
+                    .parseClaimsJws(token);
+
+            System.out.println("Dobry token");
             //OK, we can trust this JWT
 
         } catch (JwtException e) {

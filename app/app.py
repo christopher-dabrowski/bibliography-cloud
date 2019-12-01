@@ -91,15 +91,20 @@ def download_file(id):
         return response, 403
 
     login = login_manager.getLogin(session_id)
-    token = create_download_token(login)
 
     # Map id to file name
-    url = Config.API_URL + f"/files?user=jan"
+    token = create_list_token(login)
+    url = Config.API_URL + f"/files?user={login}&token={token}"
     r = requests.get(url)
+    if (r.status_code != 200):
+        flash("Nie udało się pobrać pliku", "alert-danger")
+        return redirect(url_for('index'))
+
     files = r.json()
     file_name = files[id]['fileName']
 
-    url = Config.API_URL + f'/files/{file_name}?user={login}'
+    token = create_download_token(login, file_name)
+    url = Config.API_URL + f'/files/{file_name}?user={login}&token={token}'
 
     return redirect(url)
 
@@ -165,10 +170,8 @@ def files():
 
     # Get user files
     token = create_list_token(login)
-
     url = Config.API_URL + f"/files?user={login}&token={token}"
     r = requests.get(url)
-    print(r.status_code)
     if (r.status_code != 200):
         flash("Nie udało się pobrać listy plików", "alert-danger")
         return redirect(url_for('index'))

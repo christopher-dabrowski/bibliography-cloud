@@ -62,7 +62,14 @@ public class FilesApi {
     }
 
     @GetMapping("/{fileName}")
-    public HttpEntity<byte[]> downloadFile(@RequestParam String user, @PathVariable("fileName") String fileName) {
+    public HttpEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName,
+                                           @RequestParam String user,
+                                           @RequestParam String token) {
+        val isTokenValid = jwtValidator.isDownloadTokenValid(token, user, fileName);
+        if (!isTokenValid) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
         byte[] file;
         try {
             file = fileRepo.getActualFile(user, fileName);
