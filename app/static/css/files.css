@@ -1,0 +1,17 @@
+.download-button {
+    background-color: DodgerBlue;
+    color: white;
+}
+
+.download-button:hover {
+    background-color: royalblue;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
