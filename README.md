@@ -30,6 +30,7 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
   - [Istotne elementy](#istotne-elementy-1)
   - [Projekt systemu](#projekt-systemu)
   - [Rest API](#rest-api)
+  - [Logowanie](#logowanie)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -110,9 +111,29 @@ Do obsługi plików wykorzystana zostanie oddzielna usługa typu REST.
 
 ### Rest API
 
-Dokumentacja API jest opisana w pliku [restAPI.yml](./doc/resAPI.yml). Dzięki wykorzystaniu usługi Swagger łatwo można je [zobaczyć](https://app.swaggerhub.com/apis-docs/oakbit/biblography-cloud/).
+Dokumentacja API jest opisana w pliku [restAPI.yml](./doc/resAPI.yml). Dzięki wykorzystaniu usługi Swagger łatwo można je [zobaczyć](https://app.swaggerhub.com/apis-docs/oakbit/biblography-cloud/1.0.0).
 
 Zarządzanie plikami użytkownika jest realizowane przez **oddzielny serwer**.
+
+Serwer jest napisany w języku Java przy pomocy biblioteki _spring_.
+Odpowiada on za przechowywanie plików użytkownika. Komunikacja z nim jest możliwa tylko
+przy podaniu tokenu **JWT** generowanego dynamicznie przez serwer we _Flasku_.
+
+Tokeny mają **krótki czas ważności** i są przydzielane bezpośrednio przy podjęciu akcji przez użytkownika. Odpowiednie ścieżki na serwerze _web_ generują tokeny i zwracają **przekierowanie z zapisanym tokenem**
+
+### Logowanie
+
+Jest kilka kont użytkownika wpisanych na stałe do bazy
+
+- **Login:** jan **hasło:** AAA
+- - **Login:** zupan **hasło:** gros
+- - **Login:** Atrox **hasło:** password
+
+Moduł kreacji kont aktualnie **nie działa**.
+
+Stan zalogowania oraz dane związane z sesją są trzymane w bazie _Redis_.
+Po wylogowaniu wpisy z bazy są kasowane. Na tej podstawie odbywa się dalsze uwierzytelnianie użytkownika.
+Użytkownik dostaje jedynie ciastko z **id sesji**.
 
 ----------------------
 
