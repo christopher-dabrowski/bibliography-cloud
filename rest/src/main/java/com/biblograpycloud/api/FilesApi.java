@@ -4,15 +4,22 @@ import com.biblograpycloud.api.models.FileDTO;
 import com.biblograpycloud.api.models.UserFile;
 import com.biblograpycloud.api.repository.FileRepository;
 import com.biblograpycloud.api.repository.FileRepositoryDirectory;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.Key;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
@@ -25,6 +32,9 @@ public class FilesApi {
 
     private final HttpServletRequest request;
 
+    @Value("${jwt.secret}")
+    String JWT_SECRET;
+
     public FilesApi(@Autowired FileRepositoryDirectory fileRepo, @Autowired HttpServletRequest request) {
         this.fileRepo = fileRepo;
         this.request = request;
@@ -36,7 +46,18 @@ public class FilesApi {
                                                  @RequestParam(required = false) Integer limit,
                                                 @RequestParam String token) {
 
-        System.out.println(token);
+        try {
+            System.out.println(JWT_SECRET);
+            System.out.println(JWT_SECRET.getBytes().length);
+            Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
+            var reuslt = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            System.out.println("Dobry token");
+            //OK, we can trust this JWT
+
+        } catch (JwtException e) {
+            System.out.println("Zły token");
+            //don't trust the JWT!
+        }
 
         OptionalInt optionalLimit = limit != null ? OptionalInt.of(limit) : OptionalInt.empty();
         val files = fileRepo.getUserFiles(user, skip, optionalLimit);
