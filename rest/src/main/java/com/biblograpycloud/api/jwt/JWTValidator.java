@@ -19,19 +19,13 @@ public class JWTValidator {
 
     public boolean isFileListingTokenValid(@NonNull String token,@NonNull String userName) {
         try {
-            System.out.println(JWT_SECRET);
-            System.out.println(JWT_SECRET.getBytes().length);
             Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
-            var reuslt = Jwts.parser()
+            Jwts.parser()
                     .require("iss", "bibiograpy-cloud.pl")
                     .require("user", userName)
                     .require("list", true)
                     .setSigningKey(key)
                     .parseClaimsJws(token);
-
-            System.out.println("Dobry token");
-            //OK, we can trust this JWT
-
         } catch (JwtException e) {
             return false;
         }
@@ -39,23 +33,33 @@ public class JWTValidator {
         return true;
     }
 
-    public boolean isDownloadTokenValid(@NonNull String token,@NonNull String userName,
-                                        @NonNull String fileName) {
+    public boolean isFileDownloadTokenValid(@NonNull String token, @NonNull String userName,
+                                            @NonNull String fileName) {
         try {
-            System.out.println(JWT_SECRET);
-            System.out.println(JWT_SECRET.getBytes().length);
             Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
-            var reuslt = Jwts.parser()
+            Jwts.parser()
                     .require("iss", "bibiograpy-cloud.pl")
                     .require("user", userName)
                     .require("fileName", fileName)
                     .require("download", true)
                     .setSigningKey(key)
                     .parseClaimsJws(token);
+        } catch (JwtException e) {
+            return false;
+        }
 
-            System.out.println("Dobry token");
-            //OK, we can trust this JWT
+        return true;
+    }
 
+    public boolean isFileDeletionTokenValid(@NonNull String token,@NonNull String userName) {
+        try {
+            Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
+            Jwts.parser()
+                    .require("iss", "bibiograpy-cloud.pl")
+                    .require("user", userName)
+                    .require("delete", true)
+                    .setSigningKey(key)
+                    .parseClaimsJws(token);
         } catch (JwtException e) {
             return false;
         }

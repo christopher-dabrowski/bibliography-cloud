@@ -5,22 +5,15 @@ import com.biblograpycloud.api.models.FileDTO;
 import com.biblograpycloud.api.models.UserFile;
 import com.biblograpycloud.api.repository.FileRepository;
 import com.biblograpycloud.api.repository.FileRepositoryDirectory;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.Key;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
@@ -65,7 +58,7 @@ public class FilesApi {
     public HttpEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName,
                                            @RequestParam String user,
                                            @RequestParam String token) {
-        val isTokenValid = jwtValidator.isDownloadTokenValid(token, user, fileName);
+        val isTokenValid = jwtValidator.isFileDownloadTokenValid(token, user, fileName);
         if (!isTokenValid) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
@@ -103,7 +96,13 @@ public class FilesApi {
 
     @DeleteMapping
     public ResponseEntity deleteFile(@RequestParam String user,
-                                     @RequestParam("file") String file) {
+                                     @RequestParam("file") String file,
+                                     @RequestParam String token) {
+        val isTokenValid = jwtValidator.isFileDeletionTokenValid(token, user);
+        if (!isTokenValid) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
         try {
             fileRepo.deleteUserFile(user, file);
         } catch (FileNotFoundException e) {
