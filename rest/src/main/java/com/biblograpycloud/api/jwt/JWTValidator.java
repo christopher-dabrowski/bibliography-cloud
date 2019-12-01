@@ -18,6 +18,10 @@ public class JWTValidator {
     private String JWT_SECRET;
 
     public boolean isFileListingTokenValid(@NonNull String token,@NonNull String userName) {
+        System.out.println(JWT_SECRET);
+        System.out.println(userName);
+
+
         try {
             Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
             Jwts.parser()
@@ -27,6 +31,8 @@ public class JWTValidator {
                     .setSigningKey(key)
                     .parseClaimsJws(token);
         } catch (JwtException e) {
+            System.out.println("Błędny token");
+            System.out.println(e.toString());
             return false;
         }
 

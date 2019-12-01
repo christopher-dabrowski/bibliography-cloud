@@ -103,7 +103,8 @@ def download_file(id):
     file_name = files[id]['fileName']
 
     token = create_download_token(login, file_name)
-    url = Config.API_URL + f'/files/{file_name}?user={login}&token={token}'
+    url = 'http://localhost:8081' + \
+        f'/files/{file_name}?user={login}&token={token}'
 
     return redirect(url)
 
@@ -160,6 +161,7 @@ def files():
     # Get user files
     token = create_list_token(login)
     url = Config.API_URL + f"/files?user={login}&token={token}"
+
     r = requests.get(url)
     if (r.status_code != 200):
         flash("Nie udało się pobrać listy plików", "alert-danger")

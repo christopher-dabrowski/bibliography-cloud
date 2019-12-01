@@ -6,6 +6,7 @@ services:
       - "8080:5000"
     environment:
       - REDIS_NAME=redis
+      - API_HOST=rest
     depends_on:
       - redis
       - rest

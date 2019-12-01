@@ -41,6 +41,7 @@ public class FilesApi {
                                                 @RequestParam(required = false) Integer limit,
                                                 @RequestParam String token) {
 
+        System.out.println("Kto prosi o pliki");
         val isTokenValid = jwtValidator.isFileListingTokenValid(token, user);
         if (!isTokenValid) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
@@ -105,7 +106,7 @@ public class FilesApi {
     public ResponseEntity deleteFile(@RequestParam String user,
                                      @RequestParam("file") String file,
                                      @RequestParam String token) {
-        
+
         val isTokenValid = jwtValidator.isFileDeletionTokenValid(token, user);
         if (!isTokenValid) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
