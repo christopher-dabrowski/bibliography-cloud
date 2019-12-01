@@ -168,6 +168,10 @@ def files():
 
     url = Config.API_URL + f"/files?user={login}&token={token}"
     r = requests.get(url)
+    print(r.status_code)
+    if (r.status_code != 200):
+        flash("Nie udało się pobrać listy plików", "alert-danger")
+        return redirect(url_for('index'))
 
     files_dto_list = r.json()
     for i, file in enumerate(files_dto_list):
