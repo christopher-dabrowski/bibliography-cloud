@@ -16,7 +16,7 @@ class Config(object):
     REDIS_NAME = os.environ.get('REDIS_NAME') or 'localhost'
     JWT_SECRET = os.environ.get(
         'JWT_SECRET') or 'ChangeMeChangeMeChangeMeChangeMeChangeMeChangeMeChangeMeChangeMeChangeMe'
-    JWT_SESSION_TIME = int(os.environ.get('JWT_SESSION_TIME') or '2')
+    JWT_SESSION_TIME = int(os.environ.get('JWT_SESSION_TIME') or '4')
 
     API_URL = 'http://localhost:8081'
 
