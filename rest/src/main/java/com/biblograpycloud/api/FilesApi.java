@@ -32,32 +32,33 @@ public class FilesApi {
     private final FileRepository fileRepo;
 
     private final HttpServletRequest request;
+    private final JWTValidator jwtValidator;
 
-    @Value("${jwt.secret}")
-    String JWT_SECRET;
-
-    public FilesApi(@Autowired FileRepositoryDirectory fileRepo, @Autowired HttpServletRequest request) {
+    public FilesApi(@Autowired FileRepositoryDirectory fileRepo,
+                    @Autowired HttpServletRequest request,
+                    @Autowired JWTValidator jwtValidator) {
         this.fileRepo = fileRepo;
         this.request = request;
+        this.jwtValidator = jwtValidator;
     }
 
     @GetMapping
     public ResponseEntity<List<FileDTO>> getAll(@RequestParam String user,
-                                                 @RequestParam(defaultValue = "0") Integer skip,
-                                                 @RequestParam(required = false) Integer limit,
+                                                @RequestParam(defaultValue = "0") Integer skip,
+                                                @RequestParam(required = false) Integer limit,
                                                 @RequestParam String token) {
 
-        val isTokenValid = JWTValidator.isFileListingTokenValid(token, user);
-        if (!isTokenValid) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
+        val isTokenValid = jwtValidator.isFileListingTokenValid(token, user);
+//        if (!isTokenValid) {
+//            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+//        }
 
         OptionalInt optionalLimit = limit != null ? OptionalInt.of(limit) : OptionalInt.empty();
         val files = fileRepo.getUserFiles(user, skip, optionalLimit);
         val filesDTO = files.stream().map(f -> new FileDTO(f.getName())).collect(Collectors.toList());
         var response = new ResponseEntity<List<FileDTO>>(filesDTO, HttpStatus.OK);
 
-        return  response;
+        return response;
     }
 
     @GetMapping("/{fileName}")
