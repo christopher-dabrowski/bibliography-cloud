@@ -1,5 +1,6 @@
 package com.biblograpycloud.api;
 
+import com.biblograpycloud.api.jwt.JWTValidator;
 import com.biblograpycloud.api.models.FileDTO;
 import com.biblograpycloud.api.models.UserFile;
 import com.biblograpycloud.api.repository.FileRepository;
@@ -46,17 +47,9 @@ public class FilesApi {
                                                  @RequestParam(required = false) Integer limit,
                                                 @RequestParam String token) {
 
-        try {
-            System.out.println(JWT_SECRET);
-            System.out.println(JWT_SECRET.getBytes().length);
-            Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
-            var reuslt = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-            System.out.println("Dobry token");
-            //OK, we can trust this JWT
-
-        } catch (JwtException e) {
-            System.out.println("Zły token");
-            //don't trust the JWT!
+        val isTokenValid = JWTValidator.isFileListingTokenValid(token, user);
+        if (!isTokenValid) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
         OptionalInt optionalLimit = limit != null ? OptionalInt.of(limit) : OptionalInt.empty();
