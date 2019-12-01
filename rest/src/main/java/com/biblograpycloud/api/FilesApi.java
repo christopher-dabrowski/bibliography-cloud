@@ -33,7 +33,10 @@ public class FilesApi {
     @GetMapping
     public ResponseEntity<List<FileDTO>> getAll(@RequestParam String user,
                                                  @RequestParam(defaultValue = "0") Integer skip,
-                                                 @RequestParam(required = false) Integer limit) {
+                                                 @RequestParam(required = false) Integer limit,
+                                                @RequestParam String token) {
+
+        System.out.println(token);
 
         OptionalInt optionalLimit = limit != null ? OptionalInt.of(limit) : OptionalInt.empty();
         val files = fileRepo.getUserFiles(user, skip, optionalLimit);

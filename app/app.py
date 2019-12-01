@@ -164,7 +164,9 @@ def files():
     login = login_manager.getLogin(session_id)
 
     # Get user files
-    url = Config.API_URL + f"/files?user={login}"
+    token = create_list_token(login)
+
+    url = Config.API_URL + f"/files?user={login}&token={token}"
     r = requests.get(url)
 
     files_dto_list = r.json()
