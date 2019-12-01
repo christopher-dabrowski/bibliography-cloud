@@ -17,6 +17,39 @@ tags:
     description: User file storage
 
 paths:
+  /files/{fileName}:
+    get:
+      tags:
+        - files
+      parameters:
+        - in: path
+          name: fileName
+          description: File to download
+          required: true
+          type: string
+        - in: query
+          name: user
+          description: pass user name
+          required: true
+          type: string
+        - in: query
+          name: token
+          description: Authorizatio token
+          required: true
+          type: string
+          format: jwt-sha256
+
+      produces:
+        - file
+
+      responses:
+        200:
+          description: correct data
+        400:
+          description: bad input parameters
+        403:
+          description: invalid authentication
+
   /files:
     get:
       tags:
@@ -45,12 +78,12 @@ paths:
           format: int32
           minimum: 0
 
-        - in: body
-          name: jwt
+        - in: query
+          name: token
           description: Authorizatio token
           required: true
-          schema:
-            $ref: "#/definitions/JWTToken"
+          type: string
+          format: jwt-sha256
 
       responses:
         200:
@@ -87,7 +120,7 @@ paths:
           required: true
           description: The pdf file to upload.
         - in: formData
-          name: jwt
+          name: token
           type: string
           required: true
           description: Authorizatio token
@@ -101,6 +134,8 @@ paths:
           description: bad input parameters
         403:
           description: invalid authentication
+        507:
+          description: unable to save file
 
     delete:
       tags:
@@ -122,7 +157,7 @@ paths:
           type: string
 
         - in: body
-          name: jwt
+          name: token
           description: Authorizatio token
           required: true
           schema:
@@ -132,8 +167,6 @@ paths:
         200:
           description: file successfully deleted
 
-        400:
-          description: Invalid username provided
         403:
           description: invalid authentication
         404:
@@ -158,5 +191,5 @@ definitions:
 host: virtserver.swaggerhub.com
 basePath: /oakbit/biblography-cloud/1.0.0
 schemes:
-  - https
+  # - https
   - http
