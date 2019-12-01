@@ -49,9 +49,9 @@ public class FilesApi {
                                                 @RequestParam String token) {
 
         val isTokenValid = jwtValidator.isFileListingTokenValid(token, user);
-//        if (!isTokenValid) {
-//            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-//        }
+        if (!isTokenValid) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
         OptionalInt optionalLimit = limit != null ? OptionalInt.of(limit) : OptionalInt.empty();
         val files = fileRepo.getUserFiles(user, skip, optionalLimit);
