@@ -12,8 +12,8 @@ services:
 
   web:
     build: ./app
-    ports:
-      - "8080:5000"
+    # ports: # Exposed by Nginx
+    # - "8080:5000"
     environment:
       - REDIS_NAME=redis
       - API_HOST=rest
