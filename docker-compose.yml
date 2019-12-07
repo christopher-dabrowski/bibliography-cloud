@@ -1,5 +1,15 @@
 version: "3"
 services:
+  nginx:
+    image: chaberb/nginx-ssl
+    depends_on:
+      - web
+      - rest
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
   web:
     build: ./app
     ports:
@@ -10,6 +20,7 @@ services:
     depends_on:
       - redis
       - rest
+
   redis:
     image: redis
 
