@@ -55,7 +55,7 @@ def delete_file(id):
 
     # Map id to file name
     token = create_list_token(login)
-    url = Config.API_URL + f"/files?user={login}&token={token}"
+    url = Config.FILE_STORE_URL + f"/files?user={login}&token={token}"
     r = requests.get(url)
     if (r.status_code != 200):
         flash("Nie udało się pobrać pliku", "alert-danger")
@@ -65,7 +65,8 @@ def delete_file(id):
     file_name = files[id]['fileName']
 
     token = create_delete_token(login)
-    url = Config.API_URL + f"/files?user=jan&file={file_name}&token={token}"
+    url = Config.FILE_STORE_URL + \
+        f"/files?user=jan&file={file_name}&token={token}"
     r = requests.delete(url)
 
     if r.status_code == 200:
@@ -93,7 +94,7 @@ def download_file(id):
 
     # Map id to file name
     token = create_list_token(login)
-    url = Config.API_URL + f"/files?user={login}&token={token}"
+    url = Config.FILE_STORE_URL + f"/files?user={login}&token={token}"
     r = requests.get(url)
     if (r.status_code != 200):
         flash("Nie udało się pobrać pliku", "alert-danger")
@@ -131,7 +132,7 @@ def upload_file():
     login = login_manager.getLogin(session_id)
     token = create_upload_token(login)
 
-    url = Config.API_URL + f'/files?user={login}&token={token}'
+    url = Config.FILE_STORE_URL + f'/files?user={login}&token={token}'
     files = {'file': (form.file.data.filename, form.file.data)}
 
     r = requests.post(url, files=files)
@@ -160,7 +161,7 @@ def files():
 
     # Get user files
     token = create_list_token(login)
-    url = Config.API_URL + f"/files?user={login}&token={token}"
+    url = Config.FILE_STORE_URL + f"/files?user={login}&token={token}"
 
     r = requests.get(url)
     if (r.status_code != 200):

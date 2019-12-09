@@ -8,11 +8,11 @@ import lombok.Setter;
 public class UserFile {
     @Getter
     @Setter
-    private final String name;
+    private String name;
 
     @Getter
     @Setter
-    private final String user;
+    private String user;
 
     public UserFile() {
         this.name = "";
