@@ -18,10 +18,9 @@ public class JWTValidator {
     private String JWT_SECRET;
 
     public boolean isFileListingTokenValid(@NonNull String token,@NonNull String userName) {
-        System.out.println(JWT_SECRET);
-        System.out.println(userName);
-
-
+//        System.out.println(JWT_SECRET);
+//        System.out.println(userName);
+        
         try {
             Key key = new SecretKeySpec(JWT_SECRET.getBytes(), "HmacSHA256");
             Jwts.parser()

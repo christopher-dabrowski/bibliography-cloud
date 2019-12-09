@@ -41,7 +41,6 @@ public class FilesApi {
                                                 @RequestParam(required = false) Integer limit,
                                                 @RequestParam String token) {
 
-        System.out.println("Kto prosi o pliki");
         val isTokenValid = jwtValidator.isFileListingTokenValid(token, user);
         if (!isTokenValid) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
