@@ -2,6 +2,7 @@ package com.biblograpycloud.api.repository;
 
 import com.biblograpycloud.api.models.UserFile;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,7 +37,13 @@ public class FileRepositoryDirectory implements FileRepository {
         if (!userDirectory.exists())
             return new ArrayList<>();
 
-        List<String> fileNames = Arrays.stream(userDirectory.listFiles()).skip(skip).limit(limit.orElse(Integer.MAX_VALUE)).map(f -> f.getName()).collect(Collectors.toList());
+        var tmp = Arrays.stream(userDirectory.listFiles()).skip(skip);
+        if (limit.isPresent())
+            tmp = tmp.limit(limit.getAsInt());
+
+//        limit.ifPresent(a -> System.out.println(a));
+
+        List<String> fileNames = tmp.map(f -> f.getName()).collect(Collectors.toList());
         var result = new ArrayList<UserFile>();
         for (var fileName : fileNames) {
             result.add(new UserFile(userName, fileName));

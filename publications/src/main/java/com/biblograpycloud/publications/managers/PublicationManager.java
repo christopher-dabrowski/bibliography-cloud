@@ -7,6 +7,8 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PublicationManager {
 
@@ -24,6 +26,15 @@ public class PublicationManager {
     public Iterable<Publication> getAll() {
         return publicationRepo.findAll();
     }
+
+    public Optional<Publication> getById(long id) {
+        return publicationRepo.findById(id);
+    }
+
+    public Iterable<Publication> getWithPagesBetween(int a, int b) {
+        return publicationRepo.findAllByPageCountBetween(a, b);
+    }
+
 
     @EventListener(ApplicationReadyEvent.class)
     public void createInitialRecords() {

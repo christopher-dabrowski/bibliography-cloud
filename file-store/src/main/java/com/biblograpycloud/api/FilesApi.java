@@ -27,9 +27,10 @@ public class FilesApi {
     private final HttpServletRequest request;
     private final JWTValidator jwtValidator;
 
-    public FilesApi(@Autowired FileRepositoryDirectory fileRepo,
-                    @Autowired HttpServletRequest request,
-                    @Autowired JWTValidator jwtValidator) {
+    @Autowired
+    public FilesApi(FileRepositoryDirectory fileRepo,
+                    HttpServletRequest request,
+                    JWTValidator jwtValidator) {
         this.fileRepo = fileRepo;
         this.request = request;
         this.jwtValidator = jwtValidator;

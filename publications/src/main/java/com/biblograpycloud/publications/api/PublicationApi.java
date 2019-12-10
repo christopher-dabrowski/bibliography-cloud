@@ -21,7 +21,7 @@ public class PublicationApi {
         this.publicationManager = publicationManager;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Iterable<Publication>> getAll() {
 
         var result = publicationManager.getAll();
@@ -36,12 +36,35 @@ public class PublicationApi {
 //        return ResponseEntity.ok().body(representationModel);
     }
 
-//    @PostMapping
-//    public ResponseEntity<Publication> addPublication(@PathVariable String title,
-//                                                      @PathVariable Integer pageCount,
-//                                                      @PathVariable Integer publicationYear) {
-//
-//        var publication = new Publication()
-//
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Publication> getById(@PathVariable long id) {
+        var maybePublication = publicationManager.getById(id);
+
+//        return maybePublication.ifPresentOrElse(p -> ResponseEntity.ok(p), () -> ResponseEntity.notFound().build());
+
+        if (maybePublication.isPresent())
+            return ResponseEntity.ok(maybePublication.get());
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Iterable<Publication>> getWithPagesBetween(@RequestParam int from,
+                                                                     @RequestParam int to) {
+
+        var result = publicationManager.getWithPagesBetween(from, to);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping
+    public ResponseEntity<Publication> addPublication(@RequestParam String title,
+                                                      @RequestParam Integer pageCount,
+                                                      @RequestParam Integer publicationYear) {
+
+        var publication = new Publication(title, pageCount, publicationYear);
+        var result = publicationManager.save(publication);
+
+        return ResponseEntity.ok(result);
+//        return new ResponseEntity<Publication>(result, HttpStatus.OK);
+    }
 }
