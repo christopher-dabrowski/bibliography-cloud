@@ -1,4 +1,6 @@
+# H2 DB files
 h2db.mv.db
+h2db.trace.db
 
 HELP.md
 .gradle
