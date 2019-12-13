@@ -20,6 +20,6 @@ public class Customer {
 //    private String email;
 
     @OneToMany(targetEntity = Product.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "cp_fk", referencedColumnName = "id")
+//    @JoinColumn(name = "cp_fk", referencedColumnName = "id")
     private List<Product> products;
 }

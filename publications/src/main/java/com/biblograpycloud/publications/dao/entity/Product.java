@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor
@@ -18,4 +17,8 @@ public class Product {
     private String productName;
 //    private int qty;
     private int price;
+
+    @ManyToOne
+    @JoinColumn(name = "cp_fk")
+    private Customer customer;
 }
