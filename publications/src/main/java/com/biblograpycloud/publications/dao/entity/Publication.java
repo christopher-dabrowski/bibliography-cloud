@@ -3,10 +3,7 @@ package com.biblograpycloud.publications.dao.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -14,10 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 public class Publication {
 
-    public Publication(String title, Integer pageCount, Integer publicationYear) {
+    public Publication(String title, Integer pageCount, Integer publicationYear, List<UserFile> attachments) {
         this.title = title;
         this.pageCount = pageCount;
         this.publicationYear = publicationYear;
+        this.attachments = attachments;
     }
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +28,7 @@ public class Publication {
 
     private Integer publicationYear;
 
+    @OneToMany(targetEntity = UserFile.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "publication_fk", referencedColumnName = "id")
+    private List<UserFile> attachments;
 }

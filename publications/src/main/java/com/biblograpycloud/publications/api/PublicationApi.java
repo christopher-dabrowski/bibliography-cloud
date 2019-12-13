@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/publications")
@@ -61,7 +63,7 @@ public class PublicationApi {
                                                       @RequestParam Integer pageCount,
                                                       @RequestParam Integer publicationYear) {
 
-        var publication = new Publication(title, pageCount, publicationYear);
+        var publication = new Publication(title, pageCount, publicationYear, new ArrayList<>());
         var result = publicationManager.save(publication);
 
         return ResponseEntity.ok(result);
