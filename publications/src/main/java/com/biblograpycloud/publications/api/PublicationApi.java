@@ -4,6 +4,7 @@ import com.biblograpycloud.publications.dao.entity.Publication;
 import com.biblograpycloud.publications.managers.PublicationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,10 @@ public class PublicationApi {
 
     @GetMapping("/users/{user}/publications/all")
     public ResponseEntity<Iterable<Publication>> getAllUserPublication(@PathVariable String user) {
-        var link = new Link("/place", "next");
+//        var link = new Link("/place", "next");
+        var link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PublicationApi.class).getAll()).withRel("me");
         System.out.println(link);
+
 
         var result = publicationManager.getAllUserPublications(user);
 
