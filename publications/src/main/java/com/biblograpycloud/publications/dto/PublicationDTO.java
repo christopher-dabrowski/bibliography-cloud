@@ -1,0 +1,27 @@
+package com.biblograpycloud.publications.dto;
+
+import com.biblograpycloud.publications.dao.entity.PublicationShare;
+import com.biblograpycloud.publications.dao.entity.UserFile;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.hateoas.EntityModel;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PublicationDTO extends EntityModel<PublicationDTO> {
+    private Long id;
+
+    private String owner;
+
+    private String title;
+    private Integer pageCount;
+    private Integer publicationYear;
+
+    private List<UserFile> attachments;
+
+    private List<PublicationShare> shareList;
+}

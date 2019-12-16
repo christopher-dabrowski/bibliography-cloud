@@ -1,11 +1,14 @@
 package com.biblograpycloud.publications.api;
 
 import com.biblograpycloud.publications.dao.entity.Publication;
+import com.biblograpycloud.publications.dto.Translator;
 import com.biblograpycloud.publications.managers.PublicationManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -21,16 +24,20 @@ public class PublicationApi {
     }
 
     @GetMapping("/users/{user}/publications/all")
-    public ResponseEntity<RepresentationModel<?>> getAllUserPublication(@PathVariable String user) {
+    public ResponseEntity<?> getAllUserPublication(@PathVariable String user) {
 //        var link = new Link("/place", "next");
         var link = linkTo(methodOn(PublicationApi.class).getAll()).withRel("me");
         System.out.println(link);
 
         var selfLink = link.andAffordance(afford(methodOn(PublicationApi.class).deletePublication(user, 1)));
 
-        var result = publicationManager.getAllUserPublications(user);
+        var publications = publicationManager.getAllUserPublications(user);
+        var mapped = StreamSupport.stream(publications.spliterator(), false)
+                .map(p -> Translator.createPublicationDTOWithHATEOAS(p)).collect(Collectors.toList());
 
-        return ResponseEntity.ok(new RepresentationModel<>(selfLink));
+
+        return ResponseEntity.ok(mapped);
+//        return ResponseEntity.ok(new RepresentationModel<>(selfLink));
 
 
 //        return ResponseEntity.ok(result);
