@@ -3,13 +3,8 @@ package com.biblograpycloud.publications.api;
 import com.biblograpycloud.publications.dao.entity.Publication;
 import com.biblograpycloud.publications.managers.PublicationManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.RepresentationModel;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -23,9 +18,10 @@ public class PublicationApi {
     }
 
     @GetMapping("/users/{user}/publications/all")
-    public ResponseEntity getAllUserPublication(@PathVariable String user) {
+    public ResponseEntity<Iterable<Publication>> getAllUserPublication(@PathVariable String user) {
+        var result = publicationManager.getAllUserPublications(user);
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/all")

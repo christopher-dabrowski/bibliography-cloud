@@ -37,6 +37,10 @@ public class PublicationManager {
         return publicationRepo.findById(id);
     }
 
+    public Iterable<Publication> getAllUserPublications(@NonNull String userName) {
+        return publicationRepo.findAllByOwnerEquals(userName);
+    }
+
     public Iterable<Publication> getWithPagesBetween(int a, int b) {
         return publicationRepo.findAllByPageCountBetween(a, b);
     }
