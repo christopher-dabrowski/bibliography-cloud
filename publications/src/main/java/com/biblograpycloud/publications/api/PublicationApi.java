@@ -33,7 +33,8 @@ public class PublicationApi {
 
         var publications = publicationManager.getAllUserPublications(user);
         var mapped = StreamSupport.stream(publications.spliterator(), false)
-                .map(p -> Translator.createPublicationDTOWithHATEOAS(p)).collect(Collectors.toList());
+                .map(p -> Translator.createPublicationDTOWithHATEOAS(p))
+                .collect(Collectors.toList());
 
 
         return ResponseEntity.ok(mapped);
