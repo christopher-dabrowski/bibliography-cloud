@@ -3,10 +3,11 @@ package com.biblograpycloud.publications.api;
 import com.biblograpycloud.publications.dao.entity.Publication;
 import com.biblograpycloud.publications.managers.PublicationManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -20,15 +21,25 @@ public class PublicationApi {
     }
 
     @GetMapping("/users/{user}/publications/all")
-    public ResponseEntity<Iterable<Publication>> getAllUserPublication(@PathVariable String user) {
+    public ResponseEntity<RepresentationModel<?>> getAllUserPublication(@PathVariable String user) {
 //        var link = new Link("/place", "next");
-        var link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PublicationApi.class).getAll()).withRel("me");
+        var link = linkTo(methodOn(PublicationApi.class).getAll()).withRel("me");
         System.out.println(link);
 
+        var selfLink = link.andAffordance(afford(methodOn(PublicationApi.class).deletePublication(user, 1)));
 
         var result = publicationManager.getAllUserPublications(user);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(new RepresentationModel<>(selfLink));
+
+
+//        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/users/{user}/publications/{id}")
+    public ResponseEntity<?> deletePublication(@PathVariable String user, @PathVariable int id) {
+        // TODO: Make deleting work
+        return ResponseEntity.ok(String.format("Publication number %d deleted", id));
     }
 
     @GetMapping("/all")
