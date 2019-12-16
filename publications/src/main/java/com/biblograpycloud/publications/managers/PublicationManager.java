@@ -2,7 +2,9 @@ package com.biblograpycloud.publications.managers;
 
 import com.biblograpycloud.publications.dao.PublicationRepo;
 import com.biblograpycloud.publications.dao.entity.Publication;
+import com.biblograpycloud.publications.dao.entity.PublicationShare;
 import com.biblograpycloud.publications.dao.entity.UserFile;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -42,10 +44,19 @@ public class PublicationManager {
 
     @EventListener(ApplicationReadyEvent.class)
     public void createInitialRecords() {
-        var file = new UserFile("jan", "test.pdf");
+        var file = new UserFile("jan", "entropy.pdf");
         List<UserFile> list = Arrays.asList(file);
 
         save(new Publication("jan", "Drugie prawo Kopernika", 220, 1526, list, new ArrayList<>()));
+
+        save(new Publication("jan", "Rozpawa na temety wszelakie", 148, 2019,
+                Arrays.asList(
+                        new UserFile("jan", "Ciekawe dowody.pdf"),
+                        new UserFile("jan", "Odbicia światła.pdf")
+                ),
+                Arrays.asList(new PublicationShare("Atrox", true, false))
+        ));
+
         save(new Publication("Atrox", "Pomiary - czlyli jak uwalić 50%", 170, 2000, new ArrayList<>(), new ArrayList<>()));
     }
 }

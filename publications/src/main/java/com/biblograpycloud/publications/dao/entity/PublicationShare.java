@@ -16,6 +16,12 @@ import javax.persistence.Id;
 @Data
 public class PublicationShare {
 
+    public PublicationShare(String user, Boolean canRead, Boolean canDelete) {
+        this.user = user;
+        this.canRead = canRead;
+        this.canDelete = canDelete;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
