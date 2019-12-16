@@ -1,6 +1,5 @@
 package com.biblograpycloud.publications.api;
 
-import com.biblograpycloud.publications.dao.entity.Publication;
 import com.biblograpycloud.publications.dto.CreatePublicationDTO;
 import com.biblograpycloud.publications.dto.Translator;
 import com.biblograpycloud.publications.dto.errors.PublicationAlreadyExistsMessage;
@@ -82,12 +81,5 @@ public class PublicationApi {
 
         publicationManager.delete(publication.get());
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping
-    public ResponseEntity addPublication(@RequestBody Publication publication) {
-        var result = publicationManager.save(publication);
-
-        return ResponseEntity.ok(result);
     }
 }
