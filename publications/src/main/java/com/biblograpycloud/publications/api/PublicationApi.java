@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/publications")
 public class PublicationApi {
 
     private PublicationManager publicationManager;
@@ -24,9 +23,9 @@ public class PublicationApi {
     }
 
     @GetMapping("/users/{user}/publications/all")
-    public ResponseEntity getAllUserPublication() {
+    public ResponseEntity getAllUserPublication(@PathVariable String user) {
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/all")
