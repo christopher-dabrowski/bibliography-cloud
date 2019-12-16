@@ -1,4 +1,4 @@
-package com.biblograpycloud.publications.dto;
+package com.biblograpycloud.publications.dto.errors;
 
 import lombok.NonNull;
 
