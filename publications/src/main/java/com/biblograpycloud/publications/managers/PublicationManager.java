@@ -45,7 +45,7 @@ public class PublicationManager {
         var file = new UserFile("jan", "test.pdf");
         List<UserFile> list = Arrays.asList(file);
 
-        save(new Publication("Drugie prawo Kopernika", 220, 1526, list));
-        save(new Publication("Pomiary - czlyli jak uwalić 50%", 170, 2000, new ArrayList<>()));
+        save(new Publication("jan", "Drugie prawo Kopernika", 220, 1526, list, new ArrayList<>()));
+        save(new Publication("Atrox", "Pomiary - czlyli jak uwalić 50%", 170, 2000, new ArrayList<>(), new ArrayList<>()));
     }
 }

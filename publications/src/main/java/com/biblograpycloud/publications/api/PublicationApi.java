@@ -23,6 +23,12 @@ public class PublicationApi {
         this.publicationManager = publicationManager;
     }
 
+    @GetMapping("/users/{user}/publications/all")
+    public ResponseEntity getAllUserPublication() {
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/all")
     public ResponseEntity<Iterable<Publication>> getAll() {
 
@@ -50,23 +56,23 @@ public class PublicationApi {
             return ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public ResponseEntity<Iterable<Publication>> getWithPagesBetween(@RequestParam int from,
-                                                                     @RequestParam int to) {
-
-        var result = publicationManager.getWithPagesBetween(from, to);
-        return ResponseEntity.ok(result);
-    }
+//    @PostMapping
+//    public ResponseEntity<Publication> addPublication(@RequestParam String owner,
+//                                                      @RequestParam String title,
+//                                                      @RequestParam Integer pageCount,
+//                                                      @RequestParam Integer publicationYear) {
+//
+//        var publication = new Publication(owner, title, pageCount, publicationYear, new ArrayList<>(), new ArrayList<>());
+//        var result = publicationManager.save(publication);
+//
+//        return ResponseEntity.ok(result);
+////        return new ResponseEntity<Publication>(result, HttpStatus.OK);
+//    }
 
     @PostMapping
-    public ResponseEntity<Publication> addPublication(@RequestParam String title,
-                                                      @RequestParam Integer pageCount,
-                                                      @RequestParam Integer publicationYear) {
-
-        var publication = new Publication(title, pageCount, publicationYear, new ArrayList<>());
+    public ResponseEntity addPublication(@RequestBody Publication publication) {
         var result = publicationManager.save(publication);
 
         return ResponseEntity.ok(result);
-//        return new ResponseEntity<Publication>(result, HttpStatus.OK);
     }
 }
