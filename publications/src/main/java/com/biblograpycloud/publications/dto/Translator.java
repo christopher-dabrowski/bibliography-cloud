@@ -15,10 +15,11 @@ public class Translator {
                 publication.getPageCount(), publication.getPublicationYear(), publication.getAttachments(),
                 publication.getShareList());
 
-        var selfLink = linkTo(methodOn(PublicationApi.class).getOnePublication(user, publication.getId())).withSelfRel();
-//        var link = linkTo(methodOn(PublicationApi.class).getAll()).withRel("me");
-        publicationDTO.add(selfLink);
+        var controller = PublicationApi.class;
+        var selfLink = linkTo(methodOn(controller).getOnePublication(user, publication.getId())).withSelfRel();
+        var deleteLink = linkTo(methodOn(controller).deletePublication(user, publication.getId())).withRel("delete");
 
+        publicationDTO.add(selfLink, deleteLink);
         return publicationDTO;
     }
 }
