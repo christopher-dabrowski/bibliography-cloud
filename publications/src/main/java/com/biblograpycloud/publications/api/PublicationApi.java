@@ -24,9 +24,12 @@ public class PublicationApi {
 
     private PublicationManager publicationManager;
 
+    private Translator translator;
+
     @Autowired
-    public PublicationApi(PublicationManager publicationManager) {
+    public PublicationApi(PublicationManager publicationManager, Translator translator) {
         this.publicationManager = publicationManager;
+        this.translator = translator;
     }
 
     @GetMapping("/users/{user}/publications/all")
@@ -40,7 +43,7 @@ public class PublicationApi {
 
         var publications = publicationManager.getAllUserPublications(user);
         var mapped = StreamSupport.stream(publications.spliterator(), false)
-                .map(p -> Translator.createPublicationDTOWithHATEOAS(p, user))
+                .map(p -> translator.createPublicationDTOWithHATEOAS(p, user))
                 .collect(Collectors.toList());
 
 
@@ -55,14 +58,14 @@ public class PublicationApi {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PublicationAlreadyExistsMessage());
         }
 
-        var result = Translator.createPublicationDTOWithHATEOAS(publication.get(), user);
+        var result = translator.createPublicationDTOWithHATEOAS(publication.get(), user);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/users/{user}/publications")
     public ResponseEntity<?> createPublication(@PathVariable String user, @Valid @RequestBody CreatePublicationDTO publicationDTO) {
 
-        var publication = Translator.CreatePublicationDTOTOPublication(publicationDTO);
+        var publication = translator.CreatePublicationDTOTOPublication(publicationDTO);
         publication = publicationManager.save(publication);
 
         var link = linkTo(methodOn(this.getClass()).getOnePublication(user, publication.getId())).toUri();

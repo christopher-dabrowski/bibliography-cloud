@@ -28,7 +28,7 @@ public class JwtCreator {
 
         String token = JWT.create()
                 .withIssuer("bibiograpy-cloud.pl")
-                .withExpiresAt(exp)
+//                .withExpiresAt(exp)
                 .withClaim("user", user)
                 .withClaim("fileName", file)
                 .withClaim("download", true)

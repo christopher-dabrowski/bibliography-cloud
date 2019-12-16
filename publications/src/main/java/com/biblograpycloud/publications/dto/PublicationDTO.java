@@ -1,7 +1,6 @@
 package com.biblograpycloud.publications.dto;
 
 import com.biblograpycloud.publications.dao.entity.PublicationShare;
-import com.biblograpycloud.publications.dao.entity.UserFile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,7 @@ public class PublicationDTO extends EntityModel<PublicationDTO> {
     private Integer pageCount;
     private Integer publicationYear;
 
-    private List<UserFile> attachments;
+    private List<UserFileDTO> attachments;
 
     private List<PublicationShare> shareList;
 
