@@ -41,6 +41,10 @@ public class PublicationManager {
         return publicationRepo.findAllByOwnerEquals(userName);
     }
 
+    public void delete(@NonNull Publication publication) {
+        publicationRepo.delete(publication);
+    }
+
     public Iterable<Publication> getWithPagesBetween(int a, int b) {
         return publicationRepo.findAllByPageCountBetween(a, b);
     }
