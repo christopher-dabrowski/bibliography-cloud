@@ -1,9 +1,11 @@
 package com.biblograpycloud.publications.api;
 
+import com.biblograpycloud.publications.dao.entity.Publication;
 import com.biblograpycloud.publications.dto.CreatePublicationDTO;
 import com.biblograpycloud.publications.dto.Translator;
 import com.biblograpycloud.publications.dto.errors.PublicationAlreadyExistsMessage;
 import com.biblograpycloud.publications.dto.errors.PublicationNotFoundErrorMessage;
+import com.biblograpycloud.publications.exceptions.PublicationNotFoundException;
 import com.biblograpycloud.publications.managers.PublicationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,13 +64,26 @@ public class PublicationApi {
     }
 
     @PostMapping("/users/{user}/publications")
-    public ResponseEntity<?> createPublication(@PathVariable String user, @Valid @RequestBody CreatePublicationDTO publicationDTO) {
+    public ResponseEntity<?> createPublication(@PathVariable String user,
+                                               @Valid @RequestBody CreatePublicationDTO publicationDTO) {
 
         var publication = translator.CreatePublicationDTOTOPublication(publicationDTO);
         publication = publicationManager.save(publication);
 
         var link = linkTo(methodOn(this.getClass()).getOnePublication(user, publication.getId())).toUri();
         return ResponseEntity.created(link).build();
+    }
+
+    @PutMapping("/users/{user}/publications/{id}")
+    public ResponseEntity<?> updatePublication(@PathVariable String user, @PathVariable long id,
+                                               @RequestBody Publication publication) {
+        try {
+            var updated = publicationManager.update(publication);
+
+            return ResponseEntity.ok(updated);
+        } catch (PublicationNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PublicationNotFoundErrorMessage());
+        }
     }
 
     @DeleteMapping("/users/{user}/publications/{id}")

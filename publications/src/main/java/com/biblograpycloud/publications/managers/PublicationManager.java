@@ -4,6 +4,7 @@ import com.biblograpycloud.publications.dao.PublicationRepo;
 import com.biblograpycloud.publications.dao.entity.Publication;
 import com.biblograpycloud.publications.dao.entity.PublicationShare;
 import com.biblograpycloud.publications.dao.entity.UserFile;
+import com.biblograpycloud.publications.exceptions.PublicationNotFoundException;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -47,6 +48,20 @@ public class PublicationManager {
 
     public Iterable<Publication> getWithPagesBetween(int a, int b) {
         return publicationRepo.findAllByPageCountBetween(a, b);
+    }
+
+    public Publication update(@NonNull Publication publication) throws PublicationNotFoundException {
+//        var original = publicationRepo.findById(publication.getId()).orElseThrow(PublicationNotFoundException::new);
+
+        // Maybe that's not needed
+//        original.setOwner(publication.getOwner());
+//        original.setPageCount(publication.getPageCount());
+//        original.setPublicationYear(publication.getPublicationYear());
+//        original.setTitle(publication.getTitle());
+//        original.setAttachments(publication.getAttachments());
+//        original.setShareList(publication.getShareList());
+
+        return publicationRepo.save(publication);
     }
 
 
