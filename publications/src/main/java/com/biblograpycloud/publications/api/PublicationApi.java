@@ -3,6 +3,7 @@ package com.biblograpycloud.publications.api;
 import com.biblograpycloud.publications.dao.entity.Publication;
 import com.biblograpycloud.publications.dto.CreatePublicationDTO;
 import com.biblograpycloud.publications.dto.Translator;
+import com.biblograpycloud.publications.dto.errors.ErrorMessage;
 import com.biblograpycloud.publications.dto.errors.PublicationAlreadyExistsMessage;
 import com.biblograpycloud.publications.dto.errors.PublicationNotFoundErrorMessage;
 import com.biblograpycloud.publications.exceptions.PublicationNotFoundException;
@@ -77,6 +78,10 @@ public class PublicationApi {
     @PutMapping("/users/{user}/publications/{id}")
     public ResponseEntity<?> updatePublication(@PathVariable String user, @PathVariable long id,
                                                @RequestBody Publication publication) {
+        if (id != publication.getId()) {
+            return ResponseEntity.badRequest().body(new ErrorMessage("Id in path and object are different"));
+        }
+
         try {
             var updated = publicationManager.update(publication);
 

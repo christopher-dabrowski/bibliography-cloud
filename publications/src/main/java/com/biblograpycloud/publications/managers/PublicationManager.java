@@ -51,7 +51,7 @@ public class PublicationManager {
     }
 
     public Publication update(@NonNull Publication publication) throws PublicationNotFoundException {
-//        var original = publicationRepo.findById(publication.getId()).orElseThrow(PublicationNotFoundException::new);
+        publicationRepo.findById(publication.getId()).orElseThrow(PublicationNotFoundException::new);
 
         // Maybe that's not needed
 //        original.setOwner(publication.getOwner());
