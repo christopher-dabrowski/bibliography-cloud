@@ -33,7 +33,7 @@ public class Translator {
         var filesDTO = publication.getAttachments().stream()
                 .map(f -> createUserFileDTOWithHATEOAS(f)).collect(Collectors.toList());
 
-        var publicationDTO = new PublicationDTO(publication.getOwner(), publication.getTitle(), publication.getPageCount(),
+        var publicationDTO = new PublicationDTO(publication.getId(), publication.getOwner(), publication.getTitle(), publication.getPageCount(),
                 publication.getPublicationYear(), filesDTO, publication.getShareList());
 
         var controller = PublicationApi.class;

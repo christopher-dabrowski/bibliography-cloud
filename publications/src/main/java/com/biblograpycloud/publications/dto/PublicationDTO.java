@@ -12,6 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PublicationDTO extends EntityModel<PublicationDTO> {
+    private Long id;
+
     private String owner;
 
     private String title;
@@ -21,7 +23,4 @@ public class PublicationDTO extends EntityModel<PublicationDTO> {
     private List<UserFileDTO> attachments;
 
     private List<PublicationShare> shareList;
-
-    public static class CrerateAttachment {
-    }
 }
