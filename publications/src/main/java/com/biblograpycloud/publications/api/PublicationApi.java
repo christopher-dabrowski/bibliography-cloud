@@ -1,6 +1,7 @@
 package com.biblograpycloud.publications.api;
 
 import com.biblograpycloud.publications.dao.entity.Publication;
+import com.biblograpycloud.publications.dto.CreatePublicationDTO;
 import com.biblograpycloud.publications.dto.Translator;
 import com.biblograpycloud.publications.dto.errors.PublicationAlreadyExistsMessage;
 import com.biblograpycloud.publications.dto.errors.PublicationNotFoundErrorMessage;
@@ -10,8 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -52,6 +57,16 @@ public class PublicationApi {
 
         var result = Translator.createPublicationDTOWithHATEOAS(publication.get(), user);
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/users/{user}/publications")
+    public ResponseEntity<?> createPublication(@PathVariable String user, @Valid @RequestBody CreatePublicationDTO publicationDTO) {
+
+        var publication = Translator.CreatePublicationDTOTOPublication(publicationDTO);
+        publication = publicationManager.save(publication);
+
+        var link = linkTo(methodOn(this.getClass()).getOnePublication(user, publication.getId())).toUri();
+        return ResponseEntity.created(link).build();
     }
 
     @DeleteMapping("/users/{user}/publications/{id}")
