@@ -71,13 +71,13 @@ checkBrowsers(paths.appPath, isInteractive)
         console.log(warnings.join('\n\n'));
         console.log(
           '\nSearch for the ' +
-            chalk.underline(chalk.yellow('keywords')) +
-            ' to learn more about each warning.'
+          chalk.underline(chalk.yellow('keywords')) +
+          ' to learn more about each warning.'
         );
         console.log(
           'To ignore, add ' +
-            chalk.cyan('// eslint-disable-next-line') +
-            ' to the line before.\n'
+          chalk.cyan('// eslint-disable-next-line') +
+          ' to the line before.\n'
         );
       } else {
         console.log(chalk.green('Compiled successfully.\n'));
@@ -188,19 +188,34 @@ function build(previousFileSizes) {
         console.log(
           chalk.yellow(
             '\nTreating warnings as errors because process.env.CI = true.\n' +
-              'Most CI servers set it automatically.\n'
+            'Most CI servers set it automatically.\n'
           )
         );
         return reject(new Error(messages.warnings.join('\n\n')));
       }
+
+      const FILE_NAME = 'publications.html';
+      let result = compiler.options.output.path;
+      let base = result.slice(0, result.lastIndexOf('/static'));
+      let file = path.join(base, 'templates', FILE_NAME);
+
+      let data = fs.readFileSync(file, 'utf-8');
+      // Move {% endblock %} at the end of file
+      data = data.replace('{% endblock %}', '');
+      data = data.concat('\n{% endblock %}');
+
+      fs.writeFileSync(file, data, 'utf-8');
 
       return resolve({
         stats,
         previousFileSizes,
         warnings: messages.warnings,
       });
-    });
-  });
+    }
+    );
+  }
+
+  );
 }
 
 function copyPublicFolder() {
