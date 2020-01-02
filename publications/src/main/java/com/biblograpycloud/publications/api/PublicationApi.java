@@ -25,7 +25,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class PublicationApi {
 
     private PublicationManager publicationManager;
-
     private Translator translator;
 
     @Autowired
@@ -34,15 +33,8 @@ public class PublicationApi {
         this.translator = translator;
     }
 
-    @GetMapping("/users/{user}/publications/all")
+    @GetMapping("/users/{user}/publications")
     public ResponseEntity<?> getAllUserPublication(@PathVariable String user) {
-        // TODO: Cleanup link tests
-//        var link = new Link("/place", "next");
-//        var link = linkTo(methodOn(PublicationApi.class).getAllUserPublication(user)).withRel("me");
-//        System.out.println(link);
-
-//        Link selfLink = link.andAffordance(afford(methodOn(PublicationApi.class).deletePublication(user, 1)));
-
         var publications = publicationManager.getAllUserPublications(user);
         var mapped = StreamSupport.stream(publications.spliterator(), false)
                 .map(p -> translator.createPublicationDTOWithHATEOAS(p, user))
