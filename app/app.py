@@ -39,6 +39,12 @@ def index():
     return render_template('index.html', logged=True, login=login)
 
 
+@app.route('/publications')
+@login_required
+def publications(login):
+    return render_template('publications.html', logged=True, login=login)
+
+
 @app.route('/files/delete/<int:id>')
 @login_required
 def delete_file(id, login):
