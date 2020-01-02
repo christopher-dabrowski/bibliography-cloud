@@ -40,20 +40,8 @@ def index():
 
 
 @app.route('/files/delete/<int:id>')
-def delete_file(id):
-    session_id = request.cookies.get('session-id')
-    if session_id is None:
-        flash('Wprowadzony adres wymaga logowania', 'alert-danger')
-        return render_template('index.html'), 403
-
-    if not login_manager.isSessionValid(session_id):
-        flash('Sesja wygasła', 'alert-warning')
-        response = make_response(render_template('index.html'))
-        response.set_cookie('session-id', '', expires=0)  # Clear cookie
-        return response, 403
-
-    login = login_manager.getLogin(session_id)
-
+@login_required
+def delete_file(id, login):
     # Map id to file name
     token = create_list_token(login)
     url = Config.FILE_STORE_URL + f"/files?user={login}&token={token}"
@@ -79,20 +67,8 @@ def delete_file(id):
 
 
 @app.route('/files/download/<int:id>')
-def download_file(id):
-    session_id = request.cookies.get('session-id')
-    if session_id is None:
-        flash('Wprowadzony adres wymaga logowania', 'alert-danger')
-        return render_template('index.html'), 403
-
-    if not login_manager.isSessionValid(session_id):
-        flash('Sesja wygasła', 'alert-warning')
-        response = make_response(render_template('index.html'))
-        response.set_cookie('session-id', '', expires=0)  # Clear cookie
-        return response, 403
-
-    login = login_manager.getLogin(session_id)
-
+@login_required
+def download_file(id, login):
     # Map id to file name
     token = create_list_token(login)
     url = Config.FILE_STORE_URL + f"/files?user={login}&token={token}"
@@ -112,27 +88,15 @@ def download_file(id):
 
 
 @app.route('/files/upload', methods=["POST"])
-def upload_file():
-    session_id = request.cookies.get('session-id')
-    if session_id is None:
-        flash('Wprowadzony adres wymaga logowania', 'alert-danger')
-        return render_template('index.html'), 403
-
-    if not login_manager.isSessionValid(session_id):
-        flash('Sesja wygasła', 'alert-warning')
-        response = make_response(render_template('index.html'))
-        response.set_cookie('session-id', '', expires=0)  # Clear cookie
-        return response, 403
-
+@login_required
+def upload_file(login):
     form = FileUploadForm()
     form.validate()
     if len(form.file.errors) > 0:
         flash('Brak pliku do wysłania', category='alert-warning')
         return redirect(url_for('files'))
 
-    login = login_manager.getLogin(session_id)
     token = create_upload_token(login)
-
     url = Config.FILE_STORE_URL + f'/files?user={login}&token={token}'
     files = {'file': (form.file.data.filename, form.file.data)}
 
