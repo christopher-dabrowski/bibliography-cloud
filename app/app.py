@@ -10,6 +10,7 @@ import redis
 from config import Config
 from jwt_tokens import create_download_token, create_upload_token, create_list_token, create_delete_token
 from setup import create_sample_users
+from decorators import login_required
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -145,20 +146,8 @@ def upload_file():
 
 
 @app.route('/files')
-def files():
-    session_id = request.cookies.get('session-id')
-    if session_id is None:
-        flash('Wprowadzony adres wymaga logowania', 'alert-danger')
-        return render_template('index.html'), 403
-
-    if not login_manager.isSessionValid(session_id):
-        flash('Sesja wygasła', 'alert-warning')
-        response = make_response(render_template('index.html'))
-        response.set_cookie('session-id', '', expires=0)  # Clear cookie
-        return response, 403
-
-    login = login_manager.getLogin(session_id)
-
+@login_required
+def files(login):
     # Get user files
     token = create_list_token(login)
     url = Config.FILE_STORE_URL + f"/files?user={login}&token={token}"
