@@ -46,6 +46,9 @@
           <li class="nav-item mr-3">
             <a class="nav-link btn" id="files-button" href={{url_for('files')}}>Moje pliki</a>
           </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link btn" id="publications-button" href={{url_for('publications')}}>Publikacje</a>
+          </li>
           {% endif %}
           {% if logged and logged == True %}
           <li class="nav-item mr-3">
@@ -114,3 +117,5 @@
 
   {% block js %}{% endblock %}
 </body>
+
+</html>
