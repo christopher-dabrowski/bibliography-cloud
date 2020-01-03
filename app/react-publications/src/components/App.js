@@ -9,26 +9,52 @@ class App extends React.Component {
 
     this.state = {
       login: null,
-      publications: []
+      publications: [],
+      actions: {}
     }
   }
 
-  async componentDidMount() {
-    // Get user name
+  getCurrentUserLogin = async () => {
     let url = new URL('api/login', this.props.urls.clientBase);
     let response = await fetch(url);
     let login = await response.text();
 
     this.setState({ login: login });
+    return login;
+  }
 
-    //Get publications
-    url = `http://localhost:8090/users/${login}/publications`;
-    response = await fetch(url);
+  getActionList = async () => {
+    let response = await fetch(this.props.urls.publicationsApi);
+    let data = await response.json();
+    this.setState({ actions: data["_links"] });
+  }
+
+  getPublications = async () => {
+    if (!this.state.actions["publications.list"])
+      return;
+
+    let actionUlr = this.state.actions["publications.list"].href
+    actionUlr = actionUlr.replace('{user}', this.state.login);
+    let url = new URL(actionUlr, this.props.urls.publicationsApi);
+    console.log(url);
+
+    let response = await fetch(url);
     let data = await response.json();
     this.setState({ publications: data });
   }
 
-  render() {
+  componentDidMount = async () => {
+    await this.getCurrentUserLogin();
+    await this.getActionList();
+
+    this.getPublications();
+  }
+
+  componentDidUpdate = async () => {
+    this.getPublications();
+  }
+
+  render = () => {
     console.log(this.state);
 
     return (
@@ -45,7 +71,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  url: PropTypes.exact({
+  urls: PropTypes.exact({
     clientBase: PropTypes.string.isRequired,
     filesApi: PropTypes.string.isRequired,
     publicationsApi: PropTypes.string.isRequired
