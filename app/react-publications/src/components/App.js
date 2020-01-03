@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import '../styles/App.css';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.BASE_URL = new URL(document.getElementById('app-url').innerText);
 
     this.state = {
       login: null,
@@ -15,7 +15,7 @@ class App extends React.Component {
 
   async componentDidMount() {
     // Get user name
-    let url = new URL('api/login', this.BASE_URL);
+    let url = new URL('api/login', this.props.urls.clientBase);
     let response = await fetch(url);
     let login = await response.text();
 
@@ -29,6 +29,8 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state);
+
     return (
       <div className="App">
         <section class="container text-center px-5 intro">
@@ -40,6 +42,14 @@ class App extends React.Component {
       </div>
     );
   }
+}
+
+App.propTypes = {
+  url: PropTypes.exact({
+    clientBase: PropTypes.string.isRequired,
+    filesApi: PropTypes.string.isRequired,
+    publicationsApi: PropTypes.string.isRequired
+  }).isRequired
 }
 
 export default App;
