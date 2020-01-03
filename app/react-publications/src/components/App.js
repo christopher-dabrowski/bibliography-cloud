@@ -13,7 +13,7 @@ class App extends React.Component {
       loadingPublications: false,
       publications: [],
       actions: {}
-    }
+    };
   }
 
   getCurrentUserLogin = async () => {
@@ -37,7 +37,7 @@ class App extends React.Component {
 
     this.setState({ loadingPublications: true });
 
-    let actionUlr = this.state.actions["publications.list"].href
+    let actionUlr = this.state.actions["publications.list"].href;
     actionUlr = actionUlr.replace('{user}', this.state.login);
     let url = new URL(actionUlr, this.props.urls.publicationsApi);
 
@@ -60,8 +60,8 @@ class App extends React.Component {
   render = () => {
     return (
       <div className="App">
-        <section class="container text-center px-5 intro">
-          <h1 class="mt-2">Publikacje</h1>
+        <section className="container text-center px-5 intro">
+          <h1 className="mt-2">Publikacje</h1>
         </section>
 
         <PublicationsList label="Twoje publikacje" publications={this.state.publications} />
@@ -76,6 +76,6 @@ App.propTypes = {
     filesApi: PropTypes.string.isRequired,
     publicationsApi: PropTypes.string.isRequired
   }).isRequired
-}
+};
 
 export default App;
