@@ -9,6 +9,8 @@ import com.biblograpycloud.publications.dto.errors.PublicationNotFoundErrorMessa
 import com.biblograpycloud.publications.exceptions.PublicationNotFoundException;
 import com.biblograpycloud.publications.managers.PublicationManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,20 @@ public class PublicationApi {
     public PublicationApi(PublicationManager publicationManager, Translator translator) {
         this.publicationManager = publicationManager;
         this.translator = translator;
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<RepresentationModel> getPossibleActions() {
+        var actionList = new RepresentationModel<>();
+
+        var listPublications = new Link("/users/{user}/publications");
+        var publicationDetails = new Link("/users/{user}/publications/{id}");
+        var createPublication = new Link("/users/{user}/publications");
+        var updatePublication = new Link("/users/{user}/publications/{id}");
+        var deletePublication = new Link("/users/{user}/publications/{id}");
+
+        actionList.add(listPublications, publicationDetails, createPublication, updatePublication, deletePublication);
+        return  ResponseEntity.ok(actionList);
     }
 
     @GetMapping("/users/{user}/publications")
