@@ -31,6 +31,7 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
   - [Projekt systemu](#projekt-systemu)
   - [Rest API](#rest-api)
   - [Logowanie](#logowanie)
+- [Etap 3 - Publikacje, RESTFull i klient mobilny](#etap-3---publikacje-restfull-i-klient-mobilny)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -134,6 +135,11 @@ Moduł kreacji kont aktualnie **nie działa**.
 Stan zalogowania oraz dane związane z sesją są trzymane w bazie _Redis_.
 Po wylogowaniu wpisy z bazy są kasowane. Na tej podstawie odbywa się dalsze uwierzytelnianie użytkownika.
 Użytkownik dostaje jedynie ciastko z **id sesji**.
+
+## Etap 3 - Publikacje, RESTFull i klient mobilny
+
+Celem etapu jest przygotowanie usługi sieciowej pozwalającej na przechowywanie i modyfikację pozycji bibliograficznych. Usługa sieciowa powinna zwracać powiązane elementy zgodnie z **HATEOAS**.  
+Do aplikacji mają powstać **dwie aplikacje** klienckie. Jedna ma być rozszerzeniem aplikacji webowej, a druga może być aplikacją mobilną, konsolową lub biurkową. Klient powinien dostosowywać swój interface do danych zawartych w HATEOAS.
 
 ----------------------
 
