@@ -1,9 +1,9 @@
 import React from 'react';
 
-const PublicationsList = ({ publications }) => {
+const PublicationsList = ({ label, publications }) => {
     return (
         <section className="container">
-            <h2>Twoje publikacje</h2>
+            <h2>{label}</h2>
             <ul className="list-group">
                 {publications.map((publication) => {
                     const selfLink = publication.links.find((l) => l.rel === 'self');

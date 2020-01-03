@@ -64,7 +64,7 @@ class App extends React.Component {
           <h1 class="mt-2">Publikacje</h1>
         </section>
 
-        <PublicationsList publications={this.state.publications} />
+        <PublicationsList label="Twoje publikacje" publications={this.state.publications} />
       </div>
     );
   }
