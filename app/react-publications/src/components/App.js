@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import PublicationsList from './PublicationsList';
+import Publication from './Publication';
 import '../styles/App.css';
 
 class App extends React.Component {
@@ -28,16 +30,16 @@ class App extends React.Component {
   getActionList = async () => {
     let response = await fetch(this.props.urls.publicationsApi);
     let data = await response.json();
-    this.setState({ actions: data["_links"] });
+    this.setState({ actions: data['_links'] });
   }
 
   getPublications = async () => {
-    if (!this.state.actions["publications.list"])
+    if (!this.state.actions['publications.list'])
       return;
 
     this.setState({ loadingPublications: true });
 
-    let actionUlr = this.state.actions["publications.list"].href;
+    let actionUlr = this.state.actions['publications.list'].href;
     actionUlr = actionUlr.replace('{user}', this.state.login);
     let url = new URL(actionUlr, this.props.urls.publicationsApi);
 
@@ -58,13 +60,27 @@ class App extends React.Component {
   }
 
   render = () => {
+
     return (
       <div className="App">
         <section className="container text-center px-5 intro">
           <h1 className="mt-2">Publikacje</h1>
         </section>
 
-        <PublicationsList label="Twoje publikacje" publications={this.state.publications} />
+        <Router>
+          <Switch>
+            <Route exact path="/publications">
+              <PublicationsList label="Twoje publikacje" publications={this.state.publications} />
+            </Route>
+
+            <Route path="/publications/:publicationId" render={(props) => {
+              const publication = this.state.publications.find((p) => p.id == props.match.params.publicationId);
+              if (!publication) return <Redirect to="/publications" />;
+              return <Publication publication={publication} />;
+            }}>
+            </Route>
+          </Switch>
+        </Router>
       </div>
     );
   }
@@ -75,7 +91,8 @@ App.propTypes = {
     clientBase: PropTypes.string.isRequired,
     filesApi: PropTypes.string.isRequired,
     publicationsApi: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  match: PropTypes.object
 };
 
 export default App;

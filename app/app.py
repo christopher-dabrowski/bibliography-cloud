@@ -42,9 +42,10 @@ def index():
     return render_template('index.html', logged=True, login=login)
 
 
-@app.route('/publications')
+@app.route('/publications', defaults={'u_path': ''})
+@app.route('/publications/<path:u_path>')
 @login_required
-def publications(login):
+def publications(u_path, login):
     app_url = request.url_root
     file_api_url = Config.FILE_STORE_URL
     publications_api_url = Config.PUBLICATION_API_URL
