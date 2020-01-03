@@ -30,6 +30,8 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
   - [Logowanie](#logowanie)
 - [Etap 3 - Publikacje, RESTFull i klient mobilny](#etap-3---publikacje-restfull-i-klient-mobilny)
   - [Realizacja etapu](#realizacja-etapu)
+    - [Szyfrowanie połączenia](#szyfrowanie-połączenia)
+    - [Usługa sieciowa](#usługa-sieciowa)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -164,6 +166,22 @@ Usługa sieciowa musi pozwalać na:
 ### Realizacja etapu
 
 Zmiany wprowadzone w tym etapie.
+
+#### Szyfrowanie połączenia
+
+Dodatkowo został dodany serwer Nginx pośredniczący w komunikacji z aplikacjami. Dzięki temu możliwe jest połączenie się przez **protokół https**.  
+Konfiguracja serwera znajduje się w pliku [nginx-uwsgi.conf](./nginx-uwsgi.conf).
+
+#### Usługa sieciowa
+
+Na potrzeby zarządzania publikacjami została napisana usługa sieciowa zgodnie ze stylem REST i uwzględnieniem HATEOAS.
+
+[Dokumentacja interfejsu](https://app.swaggerhub.com/apis/oakbit/bibliography-cloud-publications/1.0.0) została opisana przy pomocy Open API.
+
+Serwer obsługujący usługę sieciową został napisany przy pomocy frameworka Spring. Dane publikacji są przechowywanie w basie SQL H2.  
+Kod źródłowy serwera znajduje się w katalogu [publications](./publications).
+
+Usługa generuje **odpowiednie kody HTTP** oraz wysyła metadane przy pomocy **json+hal**.
 
 ----------------------
 
