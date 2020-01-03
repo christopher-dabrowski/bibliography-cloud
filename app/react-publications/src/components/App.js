@@ -87,7 +87,7 @@ class App extends React.Component {
             <Route path="/publications/:publicationId" render={(props) => {
               const publication = this.state.publications.find((p) => p.id == props.match.params.publicationId);
               if (!publication) return <Redirect to="/publications" />;
-              return <Publication publication={publication} globalState={this.state} />;
+              return <Publication publication={publication} refreshPublications={this.getPublications} globalState={this.state} />;
             }}>
             </Route>
           </Switch>

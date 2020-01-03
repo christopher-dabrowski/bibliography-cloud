@@ -2,13 +2,25 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const Publication = ({ publication, history, location }) => {
+const Publication = ({ publication, history, refreshPublications }) => {
   const orginalPublication = publication;
   const [editMode, setEditMode] = useState(false);
   const [currentPublication, setCurrentPublication] = useState(orginalPublication);
   const inputClass = 'form-control' + (!editMode ? ' form-control-plaintext' : '');
 
-  console.log(orginalPublication);
+  const saveChanges = async () => {
+    let selfLink = currentPublication.links.find((l) => l.rel === 'self');
+    await fetch(selfLink.href, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(currentPublication),
+    });
+
+    refreshPublications();
+    history.push('/publications');
+  };
 
   return (
     <section className="container mt-3">
@@ -54,7 +66,7 @@ const Publication = ({ publication, history, location }) => {
         <div className="form-group d-flex justify-content-end">
           {editMode &&
             <>
-              <button className="btn btn-success" type="button">Zapisz</button>
+              <button className="btn btn-success" type="button" onClick={saveChanges}>Zapisz</button>
               <button className="btn btn-danger ml-2" type="button"
                 onClick={() => { setCurrentPublication(orginalPublication); setEditMode(false); }}>
                 Anuluj zmiany
@@ -76,7 +88,7 @@ const Publication = ({ publication, history, location }) => {
 Publication.propTypes = {
   publication: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  refreshPublications: PropTypes.func
 };
 
 export default withRouter(Publication);
