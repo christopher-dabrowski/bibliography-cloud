@@ -39,11 +39,11 @@ public class PublicationApi {
     public ResponseEntity<RepresentationModel> getPossibleActions() {
         var actionList = new RepresentationModel<>();
 
-        var listPublications = new Link("/users/{user}/publications");
-        var publicationDetails = new Link("/users/{user}/publications/{id}");
-        var createPublication = new Link("/users/{user}/publications");
-        var updatePublication = new Link("/users/{user}/publications/{id}");
-        var deletePublication = new Link("/users/{user}/publications/{id}");
+        var listPublications = new Link("/users/{user}/publications", "publications.list");
+        var publicationDetails = new Link("/users/{user}/publications/{id}", "publication.get");
+        var createPublication = new Link("/users/{user}/publications", "publication.create");
+        var updatePublication = new Link("/users/{user}/publications/{id}", "publication.update");
+        var deletePublication = new Link("/users/{user}/publications/{id}", "publication.delete");
 
         actionList.add(listPublications, publicationDetails, createPublication, updatePublication, deletePublication);
         return  ResponseEntity.ok(actionList);
