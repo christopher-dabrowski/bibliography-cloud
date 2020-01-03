@@ -12,8 +12,11 @@ from jwt_tokens import create_download_token, create_upload_token, create_list_t
 from setup import create_sample_users
 from decorators import login_required
 
+from api import api
+
 app = Flask(__name__)
 app.config.from_object(Config)
+app.register_blueprint(api, url_prefix='/api')
 
 user_manager = Config.user_manager
 login_manager = Config.login_manager
@@ -42,7 +45,8 @@ def index():
 @app.route('/publications')
 @login_required
 def publications(login):
-    return render_template('publications.html', logged=True, login=login)
+    app_url = request.url_root
+    return render_template('publications.html', logged=True, login=login, app_url=app_url)
 
 
 @app.route('/files/delete/<int:id>')
