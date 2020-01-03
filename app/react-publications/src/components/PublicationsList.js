@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 
-const PublicationsList = ({ label, publications, match }) => {
+const PublicationsList = ({ label, publications, match, refreshPublications }) => {
   return (
     <section className="container">
       <h2>{label}</h2>
@@ -10,6 +10,13 @@ const PublicationsList = ({ label, publications, match }) => {
         {publications.map((publication) => {
           const selfLink = publication.links.find((l) => l.rel === 'self');
           const deleteLink = publication.links.find((l) => l.rel === 'delete');
+
+          const deletePublication = async () => {
+            await fetch(deleteLink.href, {
+              method: 'DELETE',
+            });
+            refreshPublications();
+          };
 
           return (
             <li key={publication.id} className="list-group-item d-inline-flex align-items-center">
@@ -24,10 +31,10 @@ const PublicationsList = ({ label, publications, match }) => {
                   </Link>
                 }
                 {deleteLink &&
-                  <a className="btn btn-danger mr-2" href={deleteLink.href}>
+                  <button className="btn btn-danger mr-2" onClick={deletePublication}>
                     <i className="fas fa-trash"></i>
                     <span className="d-none d-sm-inline ml-1">Usuń</span>
-                  </a>
+                  </button>
                 }
               </div>
             </li>
@@ -41,7 +48,8 @@ const PublicationsList = ({ label, publications, match }) => {
 PublicationsList.propTypes = {
   label: PropTypes.string,
   publications: PropTypes.array.isRequired,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  refreshPublications: PropTypes.func
 };
 
 export default withRouter(PublicationsList);

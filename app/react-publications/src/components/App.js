@@ -81,7 +81,9 @@ class App extends React.Component {
 
           <Switch>
             <Route exact path="/publications">
-              <PublicationsList label="Twoje publikacje" publications={this.state.publications} />
+              <PublicationsList label="Twoje publikacje" publications={this.state.publications}
+                refreshPublications={this.getPublications}
+              />
             </Route>
 
             <Route path="/publications/:publicationId" render={(props) => {
