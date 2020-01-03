@@ -4,7 +4,6 @@ services:
     image: chaberb/nginx-ssl
     depends_on:
       - web
-      - file-store
     ports:
       - "443:443"
     volumes:
@@ -17,9 +16,11 @@ services:
     environment:
       - REDIS_NAME=redis
       - FILE_STORE_HOST=file-store
+      - APP_URL=https://localhost:443
     depends_on:
       - redis
       - file-store
+      - publications
 
   redis:
     image: redis
@@ -28,3 +29,8 @@ services:
     build: ./file-store
     ports:
       - "8081:8081"
+
+  publications:
+    build: ./publications
+    ports:
+      - "8090:8090"

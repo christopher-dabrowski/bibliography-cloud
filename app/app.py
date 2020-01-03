@@ -46,7 +46,7 @@ def index():
 @app.route('/publications/<path:u_path>')
 @login_required
 def publications(u_path, login):
-    app_url = request.url_root
+    app_url = Config.APP_URL
     file_api_url = Config.FILE_STORE_URL
     publications_api_url = Config.PUBLICATION_API_URL
     return render_template('publications.html', logged=True, login=login,

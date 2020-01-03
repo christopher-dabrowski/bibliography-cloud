@@ -18,6 +18,8 @@ class Config(object):
         'JWT_SECRET') or 'ChangeMeChangeMeChangeMeChangeMeChangeMeChangeMeChangeMeChangeMeChangeMe'
     JWT_SESSION_TIME = int(os.environ.get('JWT_SESSION_TIME') or '4')
 
+    APP_URL = os.environ.get('APP_URL') or 'http://localhost:5000'
+
     FILE_STORE_HOST = os.environ.get('FILE_STORE_HOST') or 'localhost'
     FILE_STORE_URL = f'http://{FILE_STORE_HOST}:8081'
 
