@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import PublicationsList from './PublicationsList';
 import Publication from './Publication';
 import '../styles/App.css';
@@ -63,11 +63,25 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <section className="container text-center px-5 intro">
-          <h1 className="mt-2">Publikacje</h1>
-        </section>
 
         <Router>
+          <Route path="/publications" render={(props) => {
+            const home = props.match.isExact;
+
+            return (
+              <section className="container intro d-flex">
+                {!home &&
+                  <Link to="/publications">
+                    <button className="btn btn-warning h-100" style={{ width: '6.5ch' }}>
+                      <i className="fas fa-chevron-left"></i>
+                    </button>
+                  </Link>
+                }
+                <h1 className="mt-2 text-center" style={{ flexGrow: 1 }}>Publikacje</h1>
+              </section>
+            );
+          }} />
+
           <Switch>
             <Route exact path="/publications">
               <PublicationsList label="Twoje publikacje" publications={this.state.publications} />
