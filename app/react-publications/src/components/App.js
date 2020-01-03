@@ -9,6 +9,7 @@ class App extends React.Component {
 
     this.state = {
       login: null,
+      loadingPublications: false,
       publications: [],
       actions: {}
     }
@@ -33,6 +34,8 @@ class App extends React.Component {
     if (!this.state.actions["publications.list"])
       return;
 
+    this.setState({ loadingPublications: true });
+
     let actionUlr = this.state.actions["publications.list"].href
     actionUlr = actionUlr.replace('{user}', this.state.login);
     let url = new URL(actionUlr, this.props.urls.publicationsApi);
@@ -40,7 +43,7 @@ class App extends React.Component {
 
     let response = await fetch(url);
     let data = await response.json();
-    this.setState({ publications: data });
+    this.setState({ publications: data, loadingPublications: false });
   }
 
   componentDidMount = async () => {
@@ -51,7 +54,7 @@ class App extends React.Component {
   }
 
   componentDidUpdate = async () => {
-    this.getPublications();
+    // this.getPublications();
   }
 
   render = () => {
@@ -63,6 +66,7 @@ class App extends React.Component {
           <h1 class="mt-5">Lista publikacji</h1>
           <p>Publications</p>
           <p>Login: {this.state.login}</p>
+          <p>Loading: {String(this.state.loadingPublications)}</p>
         </section>
 
       </div>
