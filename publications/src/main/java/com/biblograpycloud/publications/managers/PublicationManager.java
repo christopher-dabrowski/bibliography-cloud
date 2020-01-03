@@ -72,7 +72,7 @@ public class PublicationManager {
 
         save(new Publication("jan", "Drugie prawo Kopernika", 220, 1526, list, new ArrayList<>()));
 
-        save(new Publication("jan", "Rozpawa na temety wszelakie", 148, 2019,
+        save(new Publication("jan", "Rozprawa na tematy wszelakie", 148, 2019,
                 Arrays.asList(
                         new UserFile("jan", "Ciekawe dowody.pdf"),
                         new UserFile("jan", "Odbicia światła.pdf")
