@@ -14,7 +14,8 @@ class App extends React.Component {
       login: null,
       loadingPublications: false,
       publications: [],
-      actions: {}
+      actions: {},
+      urls: props.urls
     };
   }
 
@@ -55,10 +56,6 @@ class App extends React.Component {
     this.getPublications();
   }
 
-  componentDidUpdate = async () => {
-    // this.getPublications();
-  }
-
   render = () => {
 
     return (
@@ -90,7 +87,7 @@ class App extends React.Component {
             <Route path="/publications/:publicationId" render={(props) => {
               const publication = this.state.publications.find((p) => p.id == props.match.params.publicationId);
               if (!publication) return <Redirect to="/publications" />;
-              return <Publication publication={publication} />;
+              return <Publication publication={publication} globalState={this.state} />;
             }}>
             </Route>
           </Switch>

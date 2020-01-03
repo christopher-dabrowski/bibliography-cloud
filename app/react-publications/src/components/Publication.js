@@ -25,12 +25,18 @@ const Publication = ({ publication }) => {
         <div className="form-group row">
           <label className="col-sm-2 col-form-label" htmlFor="publicationYear">Rok wydania</label>
           <div className="col-sm-10">
-            <input className={inputClass} readOnly={!editMode} name="publicationYer" type="number" min={1500} max={2200} readOnly={true} />
+            <input className={inputClass} readOnly={!editMode} name="publicationYer" type="number" min={1500} max={2200} />
           </div>
         </div>
 
-        <div className="form-group row">
+        <hr />
 
+        <div className="form-group d-flex justify-content-end">
+          {!editMode &&
+            <button className="btn btn-primary" type="button" onClick={() => setEditMode(true)}>
+              Edytuj
+            </button>
+          }
         </div>
       </form>
     </section>
