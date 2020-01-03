@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import PublicationsList from './PublicationsList';
 import '../styles/App.css';
 
 class App extends React.Component {
@@ -39,7 +40,6 @@ class App extends React.Component {
     let actionUlr = this.state.actions["publications.list"].href
     actionUlr = actionUlr.replace('{user}', this.state.login);
     let url = new URL(actionUlr, this.props.urls.publicationsApi);
-    console.log(url);
 
     let response = await fetch(url);
     let data = await response.json();
@@ -58,17 +58,13 @@ class App extends React.Component {
   }
 
   render = () => {
-    console.log(this.state);
-
     return (
       <div className="App">
         <section class="container text-center px-5 intro">
-          <h1 class="mt-5">Lista publikacji</h1>
-          <p>Publications</p>
-          <p>Login: {this.state.login}</p>
-          <p>Loading: {String(this.state.loadingPublications)}</p>
+          <h1 class="mt-2">Publikacje</h1>
         </section>
 
+        <PublicationsList publications={this.state.publications} />
       </div>
     );
   }
