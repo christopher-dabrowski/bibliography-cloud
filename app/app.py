@@ -46,7 +46,10 @@ def index():
 @login_required
 def publications(login):
     app_url = request.url_root
-    return render_template('publications.html', logged=True, login=login, app_url=app_url)
+    file_api_url = Config.FILE_STORE_URL
+    publications_api_url = Config.PUBLICATION_API_URL
+    return render_template('publications.html', logged=True, login=login,
+                           app_url=app_url, file_api_url=file_api_url, publications_api_url=publications_api_url)
 
 
 @app.route('/files/delete/<int:id>')
