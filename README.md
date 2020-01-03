@@ -4,11 +4,6 @@
 
 Realizacja kolejnych etapów projektów laboratoryjnych.
 
-Aktualny stan projektu można zobaczyć pod [adresem](https://bibliography-cloud.azurewebsites.net).
-
-Projekt jest hostowany na platformie _Microsoft Azure_ na **darmowym** poziomie - F1.  
-:exclamation: Jeśli aplikacja nie była ostatnio uruchamiana start może zająć nawet **5 minut**. :exclamation:
-
 ## Cel projektu
 
 Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
@@ -20,6 +15,7 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
 - [Etap 1 - Formularz rejestracyjny](#etap-1---formularz-rejestracyjny)
   - [Istotne elementy](#istotne-elementy)
   - [Uruchomienie Formularza](#uruchomienie-formularza)
+    - [Web deployment](#web-deployment)
     - [Docker](#docker)
     - [Docker-compose](#docker-compose)
   - [Opis plików](#opis-plików)
@@ -27,11 +23,13 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
     - [Pliki konfiguracji (serwer)](#pliki-konfiguracji-serwer)
   - [Zakończenie etapu](#zakończenie-etapu)
 - [Etap 2 - Logowanie i przechowywanie plików](#etap-2---logowanie-i-przechowywanie-plików)
+  - [Uruchomienie projektu](#uruchomienie-projektu)
   - [Istotne elementy](#istotne-elementy-1)
   - [Projekt systemu](#projekt-systemu)
   - [Rest API](#rest-api)
   - [Logowanie](#logowanie)
 - [Etap 3 - Publikacje, RESTFull i klient mobilny](#etap-3---publikacje-restfull-i-klient-mobilny)
+  - [Realizacja etapu](#realizacja-etapu)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -47,6 +45,13 @@ Opracowanie formularza rejestracyjnego dla nowych użytkowników. Formularz musi
 ### Uruchomienie Formularza
 
 Strona wymaga **połączenia z Internetem**, ponieważ ładuje biblioteki z CDN oraz sprawdza poprawność loginu na zewnętrznym serwerze.
+
+#### Web deployment
+
+Stan projektu po pierwszym kroku milowym można zobaczyć pod [adresem](https://bibliography-cloud.azurewebsites.net).
+
+Projekt jest hostowany na platformie _Microsoft Azure_ na **darmowym** poziomie - F1.  
+:exclamation: Jeśli aplikacja nie była ostatnio uruchamiana start może zająć nawet **5 minut**. :exclamation:
 
 #### Docker
 
@@ -70,17 +75,17 @@ Informacja o plikach składających się na projekt.
 
 #### Pliki projektu
 
-* **login.html** - Struktura strony logowania
-* **styles/login.css** - Wygląd strony logowania
-* **img/** - Obrazy znajdujące się na stronie
-* **scripts/script.js** - Skrypt bezpośrednio związany z ekranem logowania
-* **scripts/utils.js** - Przydatne funkcje nie będące bezpośrednio związane z projektem
-* **scripts/validateExtensions.js** - Dodatkowe funkcje i walidatory związane z biblioteką _validate.js_
+- **login.html** - Struktura strony logowania
+- **styles/login.css** - Wygląd strony logowania
+- **img/** - Obrazy znajdujące się na stronie
+- **scripts/script.js** - Skrypt bezpośrednio związany z ekranem logowania
+- **scripts/utils.js** - Przydatne funkcje nie będące bezpośrednio związane z projektem
+- **scripts/validateExtensions.js** - Dodatkowe funkcje i walidatory związane z biblioteką _validate.js_
 
 #### Pliki konfiguracji (serwer)
 
-* **nginx.conf** - Konfiguracja serwera _Nginx_
-* **Dockerfile** - Opis jak zbudować kontener serwujący stronę
+- **nginx.conf** - Konfiguracja serwera _Nginx_
+- **Dockerfile** - Opis jak zbudować kontener serwujący stronę
 
 ### Zakończenie etapu
 
@@ -89,6 +94,13 @@ Projekt w stanie bezpośrednio po tym etapie można znaleźć w zakładce [relea
 ## Etap 2 - Logowanie i przechowywanie plików
 
 Opracowanie modułu służącego do bezpiecznego logowania i wylogowywania użytkownika. Moduł logowania otrzymuje od użytkownika hasło i login – w przypadku poprawnych danych generowany jest **identyfikator sesji**. Dane sesyjne przechowywane są w bazie danych **Redis**. Należy opracować formularz pozwalający na przechowywanie przez użytkownika plików **PDF** w systemie. Pliki PDF powinny być dostępne do pobrania i serwowane przez **bezstanową aplikację**. Należy wykorzystać **JWT** z krótką datą ważności.
+
+### Uruchomienie projektu
+
+Stan projektu po tym etapie można znaleźć w zakładce [release](https://github.com/SiwyKrzysiek/bibliography-cloud/releases/tag/Milestone2).
+
+By uruchomić projekt należy wykonać `docker-compose up` w głównym katalogu projektu.  
+Domyślnie projekt będzie dostępny pod adresem [http://localhost:8080](http://localhost:8080).
 
 ### Istotne elementy
 
@@ -127,8 +139,8 @@ Tokeny mają **krótki czas ważności** i są przydzielane bezpośrednio przy p
 Jest kilka kont użytkownika wpisanych na stałe do bazy
 
 - **Login:** jan **hasło:** AAA
-- - **Login:** zupan **hasło:** gros
-- - **Login:** Atrox **hasło:** password
+- **Login:** zupan **hasło:** gros
+- **Login:** Atrox **hasło:** password
 
 Moduł kreacji kont aktualnie **nie działa**.
 
@@ -140,6 +152,18 @@ Użytkownik dostaje jedynie ciastko z **id sesji**.
 
 Celem etapu jest przygotowanie usługi sieciowej pozwalającej na przechowywanie i modyfikację pozycji bibliograficznych. Usługa sieciowa powinna zwracać powiązane elementy zgodnie z **HATEOAS**.  
 Do aplikacji mają powstać **dwie aplikacje** klienckie. Jedna ma być rozszerzeniem aplikacji webowej, a druga może być aplikacją mobilną, konsolową lub biurkową. Klient powinien dostosowywać swój interface do danych zawartych w HATEOAS.
+
+Usługa sieciowa musi pozwalać na:
+
+- dodawanie pozycji bibliograficznej,
+- listowanie pozycji bibliograficznych,
+- usuwaniu pozycji bibliograficznych,
+- podpinanie i odpinanie plików przy pozycji bibliograficznej,
+- dodawanie, pobieranie i usuwanie plików.
+
+### Realizacja etapu
+
+Zmiany wprowadzone w tym etapie.
 
 ----------------------
 
