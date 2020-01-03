@@ -29,9 +29,10 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
   - [Rest API](#rest-api)
   - [Logowanie](#logowanie)
 - [Etap 3 - Publikacje, RESTFull i klient mobilny](#etap-3---publikacje-restfull-i-klient-mobilny)
-  - [Realizacja etapu](#realizacja-etapu)
-    - [Szyfrowanie połączenia](#szyfrowanie-połączenia)
-    - [Usługa sieciowa](#usługa-sieciowa)
+  - [Szyfrowanie połączenia](#szyfrowanie-połączenia)
+  - [Usługa sieciowa](#usługa-sieciowa)
+  - [Klient webowy](#klient-webowy)
+    - [Konfiguracja](#konfiguracja)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -163,16 +164,12 @@ Usługa sieciowa musi pozwalać na:
 - podpinanie i odpinanie plików przy pozycji bibliograficznej,
 - dodawanie, pobieranie i usuwanie plików.
 
-### Realizacja etapu
-
-Zmiany wprowadzone w tym etapie.
-
-#### Szyfrowanie połączenia
+### Szyfrowanie połączenia
 
 Dodatkowo został dodany serwer Nginx pośredniczący w komunikacji z aplikacjami. Dzięki temu możliwe jest połączenie się przez **protokół https**.  
 Konfiguracja serwera znajduje się w pliku [nginx-uwsgi.conf](./nginx-uwsgi.conf).
 
-#### Usługa sieciowa
+### Usługa sieciowa
 
 Na potrzeby zarządzania publikacjami została napisana usługa sieciowa zgodnie ze stylem REST i uwzględnieniem HATEOAS.
 
@@ -182,6 +179,21 @@ Serwer obsługujący usługę sieciową został napisany przy pomocy frameworka 
 Kod źródłowy serwera znajduje się w katalogu [publications](./publications).
 
 Usługa generuje **odpowiednie kody HTTP** oraz wysyła metadane przy pomocy **json+hal**.
+
+### Klient webowy
+
+W celu urozmaicenia projektu i poznania nowych technologi zdecydowałem się na renderowanie po stronie klienta i wykorzystanie frameworka **React**.
+
+#### Konfiguracja
+
+Połączenie serwera Flask z elementem w React nie było łatwe.  
+Projekt React został utworzony w katalogu [react-publications](./react-publications) przy pomocy skryptu [create-react-app](https://github.com/facebook/create-react-app). Następnie została wyizolowana konfiguracja tworzenia projektu poleceniem `npm reject`.
+
+Dzięki edycji plików [webpack.config.js](./react-publications/config/webpack.config.js), [paths.js](react-publications/config/paths.js) i [package.json](./react-publications/package.json) miejsce tworzenia plików wynikowych przez _webpack_ zostało zmienione na katalogi `static/react/publications` i `templates` w aplikacji Flask.
+
+Dodatkowo połączenie aplikacji z szablonami Flaks (templates) wymagało ręcznej zmiany w [skrypcie budującym](./react-publications/scripts/build.js). Ponieważ _webpack_ dopisuje tag `<script>` na koniec pliku nie znajdował się on w bloku `{% block main %}` i nie był częścią strony. Żeby to naprawić skrypt budujący wykonuje dodatkowy krok ręcznie przenoszący zamknięcie bloku na koniec pliku.
+
+Zbudowanie komponentu React można wykonać poleceniem `npm run buld`.
 
 ----------------------
 
