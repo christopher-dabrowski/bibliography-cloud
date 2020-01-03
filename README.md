@@ -167,7 +167,7 @@ Usługa sieciowa musi pozwalać na:
 ### Szyfrowanie połączenia
 
 Dodatkowo został dodany serwer Nginx pośredniczący w komunikacji z aplikacjami. Dzięki temu możliwe jest połączenie się przez **protokół https**.  
-Konfiguracja serwera znajduje się w pliku [nginx-uwsgi.conf](./nginx-uwsgi.conf).
+Konfiguracja serwera znajduje się w pliku [nginx.conf](./nginx.conf).
 
 ### Usługa sieciowa
 
