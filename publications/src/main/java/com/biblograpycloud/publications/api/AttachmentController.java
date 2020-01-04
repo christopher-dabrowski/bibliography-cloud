@@ -1,15 +1,14 @@
 package com.biblograpycloud.publications.api;
 
 import com.biblograpycloud.publications.dto.Translator;
+import com.biblograpycloud.publications.dto.errors.ErrorMessage;
+import com.biblograpycloud.publications.dto.errors.ErrorMessages;
 import com.biblograpycloud.publications.dto.errors.PublicationNotFoundErrorMessage;
 import com.biblograpycloud.publications.managers.PublicationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
@@ -37,5 +36,25 @@ public class AttachmentController {
                 map(a -> translator.createUserFileDTOWithHATEOAS(a)).collect(Collectors.toList());
 
         return ResponseEntity.ok(attachmentsWithLinks);
+    }
+
+    @DeleteMapping("/users/{user}/publications/{publicationId}/attachments/{id}")
+    public ResponseEntity<?> detach(@PathVariable String user, @PathVariable Long publicationId,
+                                    @PathVariable Long id) {
+
+        var maybePublication = publicationManager.getById(publicationId);
+        if (maybePublication.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PublicationNotFoundErrorMessage());
+
+        var publication = maybePublication.get();
+        var maybeAttachment = publication.getAttachments().stream()
+                .filter(a -> a.getId().equals(id)).findFirst();
+        if (maybeAttachment.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorMessages.AttachmentNotFound());
+
+        publication.getAttachments().remove(maybeAttachment.get());
+        publicationManager.save(publication);
+
+        return ResponseEntity.noContent().build();
     }
 }
