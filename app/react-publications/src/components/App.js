@@ -86,9 +86,11 @@ class App extends React.Component {
               />
               <section className="container">
                 <hr />
-                <Link to="/publications/create">
-                  <button type='button' className="btn btn-primary">Nowa publikacja</button>
-                </Link>
+                {this.state.actions['publication.create'] && // Add create button only when there is action
+                  <Link to="/publications/create">
+                    <button type='button' className="btn btn-primary">Nowa publikacja</button>
+                  </Link>
+                }
               </section>
             </Route>
 

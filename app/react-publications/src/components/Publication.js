@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const Publication = ({ createMode, publication, history, refreshPublications, globalSatate }) => {
+const Publication = ({ createMode, publication, history, refreshPublications, globalState }) => {
   if (createMode) {
     publication = {
-      owner: '!!!!USER!!!!!',
+      owner: globalState.login,
       title: '',
       pageCount: null,
       publicationYear: null,
       attachments: [],
       shareList: []
-    }
+    };
   }
 
   const orginalPublication = publication;
@@ -23,13 +23,51 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
 
   const saveChanges = async () => {
     let selfLink = currentPublication.links.find((l) => l.rel === 'self');
-    await fetch(selfLink.href, {
+    const response = await fetch(selfLink.href, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(currentPublication),
     });
+
+    if (!response.ok) {
+      alert('Nie udało się zapisać zmian');
+      return;
+    }
+
+    refreshPublications();
+    history.push('/publications');
+  };
+
+  const validatePublication = (publication) => {
+    return (
+      publication.title.length > 0 &&
+      publication.pageCount > 0 &&
+      publication.publicationYear > 0
+    );
+  };
+
+  const createPublication = async () => {
+    if (!validatePublication(currentPublication))
+      alert('Niepoprawne dane');
+
+    const baseUrl = globalState.urls.publicationsApi;
+    let url = baseUrl + globalState.actions['publication.create'].href;
+    url = url.replace('{user}', globalState.login);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(currentPublication),
+    });
+
+    if (!response.ok) {
+      alert('Nie udało się utworzyć publikacji');
+      return;
+    }
 
     refreshPublications();
     history.push('/publications');
@@ -77,15 +115,13 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
         <hr />
 
         <div className="form-group d-flex justify-content-end">
-          {editMode &&
+          {editMode && !createMode &&
             <>
               <button className="btn btn-success" type="button" onClick={saveChanges}>Zapisz</button>
-              {!createMode &&
-                <button className="btn btn-danger ml-2" type="button"
-                  onClick={() => { setCurrentPublication(orginalPublication); setEditMode(false); }}>
-                  Anuluj zmiany
+              <button className="btn btn-danger ml-2" type="button"
+                onClick={() => { setCurrentPublication(orginalPublication); setEditMode(false); }}>
+                Anuluj zmiany
               </button>
-              }
             </>
           }
 
@@ -93,6 +129,10 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
             <button className="btn btn-primary" type="button" onClick={() => setEditMode(true)}>
               Edytuj
             </button>
+          }
+
+          {createMode &&
+            <button className="btn btn-success" type="button" onClick={createPublication}>Utwórz pulikację</button>
           }
         </div>
       </form>
@@ -105,7 +145,7 @@ Publication.propTypes = {
   publication: PropTypes.object,
   history: PropTypes.object.isRequired,
   refreshPublications: PropTypes.func.isRequired,
-  globalSatate: PropTypes.object
+  globalState: PropTypes.object
 };
 
 export default withRouter(Publication);
