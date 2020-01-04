@@ -119,6 +119,29 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
           </div>
         </div>
 
+        <div className="form-group">
+          <label>Załączone pliki</label>
+          <ul className="list-group">
+            {currentPublication.attachments.map((attachment, i) => {
+              const downloadLink = attachment.links.find((l) => l.rel === 'download');
+
+              return (
+                <li key={i} className="list-group-item d-inline-flex align-items-center">
+                  <span className="flex-grow-1">{attachment.fileName}</span>
+                  <div className="buttons">
+                    {downloadLink &&
+                      <a href={downloadLink.href} className="btn btn-primary mr-2" type="button">
+                        <i className="fas fa-cloud-download-alt"></i>
+                        <span className="d-none d-sm-inline ml-1">Pobierz</span>
+                      </a>
+                    }
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
         <hr />
 
         <div className="form-group d-flex justify-content-end">
