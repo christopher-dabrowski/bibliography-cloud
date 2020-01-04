@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.stream.Collectors;
+
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AttachmentController {
@@ -31,7 +33,9 @@ public class AttachmentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PublicationNotFoundErrorMessage());
 
         var attachments = maybePublication.get().getAttachments();
+        var attachmentsWithLinks = attachments.stream().
+                map(a -> translator.createUserFileDTOWithHATEOAS(a)).collect(Collectors.toList());
 
-        return ResponseEntity.ok(attachments);
+        return ResponseEntity.ok(attachmentsWithLinks);
     }
 }
