@@ -24,13 +24,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class PublicationApi {
+public class PublicationController {
 
     private PublicationManager publicationManager;
     private Translator translator;
 
     @Autowired
-    public PublicationApi(PublicationManager publicationManager, Translator translator) {
+    public PublicationController(PublicationManager publicationManager, Translator translator) {
         this.publicationManager = publicationManager;
         this.translator = translator;
     }

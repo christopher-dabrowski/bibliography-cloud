@@ -1,6 +1,6 @@
 package com.biblograpycloud.publications.dto;
 
-import com.biblograpycloud.publications.api.PublicationApi;
+import com.biblograpycloud.publications.api.PublicationController;
 import com.biblograpycloud.publications.dao.entity.Publication;
 import com.biblograpycloud.publications.dao.entity.UserFile;
 import com.biblograpycloud.publications.jwt.JwtCreator;
@@ -36,7 +36,7 @@ public class Translator {
         var publicationDTO = new PublicationDTO(publication.getId(), publication.getOwner(), publication.getTitle(), publication.getPageCount(),
                 publication.getPublicationYear(), filesDTO, publication.getShareList());
 
-        var controller = PublicationApi.class;
+        var controller = PublicationController.class;
         var selfLink = linkTo(methodOn(controller).getOnePublication(user, publication.getId())).withSelfRel();
         var deleteLink = linkTo(methodOn(controller).deletePublication(user, publication.getId())).withRel("delete");
 
@@ -49,7 +49,7 @@ public class Translator {
         var file = userFile.getFileName();
         var userFileDTO = new UserFileDTO(userFile.getId(), userFile.getUserName(), userFile.getFileName());
 
-        var controller = PublicationApi.class;
+        var controller = PublicationController.class;
         var downloadLink = new Link(fileStoreServer + "/files/" + userFile.getFileName() +
                 "?user=" + user + "&token=" + jwtCreator.creteFileDownloadToken(user, file),
                 "download");
