@@ -21,7 +21,20 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
   const [currentPublication, setCurrentPublication] = useState(orginalPublication);
   const inputClass = 'form-control' + (!editMode ? ' form-control-plaintext' : '');
 
+  const validatePublication = (publication) => {
+    return (
+      publication.title.length > 0 &&
+      publication.pageCount > 0 &&
+      publication.publicationYear > 0
+    );
+  };
+
   const saveChanges = async () => {
+    if (!validatePublication(currentPublication)) {
+      alert('Niepoprawne dane');
+      return;
+    }
+
     let selfLink = currentPublication.links.find((l) => l.rel === 'self');
     const response = await fetch(selfLink.href, {
       method: 'PUT',
@@ -40,17 +53,11 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
     history.push('/publications');
   };
 
-  const validatePublication = (publication) => {
-    return (
-      publication.title.length > 0 &&
-      publication.pageCount > 0 &&
-      publication.publicationYear > 0
-    );
-  };
-
   const createPublication = async () => {
-    if (!validatePublication(currentPublication))
+    if (!validatePublication(currentPublication)) {
       alert('Niepoprawne dane');
+      return;
+    }
 
     const baseUrl = globalState.urls.publicationsApi;
     let url = baseUrl + globalState.actions['publication.create'].href;
