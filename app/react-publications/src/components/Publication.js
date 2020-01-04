@@ -2,9 +2,22 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const Publication = ({ publication, history, refreshPublications }) => {
+const Publication = ({ createMode, publication, history, refreshPublications, globalSatate }) => {
+  if (createMode) {
+    publication = {
+      owner: '!!!!USER!!!!!',
+      title: '',
+      pageCount: null,
+      publicationYear: null,
+      attachments: [],
+      shareList: []
+    }
+  }
+
   const orginalPublication = publication;
-  const [editMode, setEditMode] = useState(false);
+  console.log(orginalPublication);
+
+  const [editMode, setEditMode] = useState(createMode ? true : false);
   const [currentPublication, setCurrentPublication] = useState(orginalPublication);
   const inputClass = 'form-control' + (!editMode ? ' form-control-plaintext' : '');
 
@@ -67,10 +80,12 @@ const Publication = ({ publication, history, refreshPublications }) => {
           {editMode &&
             <>
               <button className="btn btn-success" type="button" onClick={saveChanges}>Zapisz</button>
-              <button className="btn btn-danger ml-2" type="button"
-                onClick={() => { setCurrentPublication(orginalPublication); setEditMode(false); }}>
-                Anuluj zmiany
+              {!createMode &&
+                <button className="btn btn-danger ml-2" type="button"
+                  onClick={() => { setCurrentPublication(orginalPublication); setEditMode(false); }}>
+                  Anuluj zmiany
               </button>
+              }
             </>
           }
 
@@ -86,9 +101,11 @@ const Publication = ({ publication, history, refreshPublications }) => {
 };
 
 Publication.propTypes = {
-  publication: PropTypes.object.isRequired,
+  createMode: PropTypes.bool,
+  publication: PropTypes.object,
   history: PropTypes.object.isRequired,
-  refreshPublications: PropTypes.func
+  refreshPublications: PropTypes.func.isRequired,
+  globalSatate: PropTypes.object
 };
 
 export default withRouter(Publication);

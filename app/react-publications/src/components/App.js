@@ -84,6 +84,17 @@ class App extends React.Component {
               <PublicationsList label="Twoje publikacje" publications={this.state.publications}
                 refreshPublications={this.getPublications}
               />
+              <section className="container">
+                <hr />
+                <Link to="/publications/create">
+                  <button type='button' className="btn btn-primary">Nowa publikacja</button>
+                </Link>
+              </section>
+            </Route>
+
+            <Route path="/publications/create">
+              {/* <p>Create publication</p> */}
+              <Publication createMode={true} refreshPublications={this.getPublications} globalState={this.state} />
             </Route>
 
             <Route path="/publications/:publicationId" render={(props) => {
@@ -92,6 +103,7 @@ class App extends React.Component {
               return <Publication publication={publication} refreshPublications={this.getPublications} globalState={this.state} />;
             }}>
             </Route>
+
           </Switch>
         </Router>
       </div>
