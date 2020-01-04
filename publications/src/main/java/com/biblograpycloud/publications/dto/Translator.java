@@ -1,5 +1,6 @@
 package com.biblograpycloud.publications.dto;
 
+import com.biblograpycloud.publications.api.AttachmentController;
 import com.biblograpycloud.publications.api.PublicationController;
 import com.biblograpycloud.publications.dao.entity.Publication;
 import com.biblograpycloud.publications.dao.entity.UserFile;
@@ -31,7 +32,7 @@ public class Translator {
     public PublicationDTO createPublicationDTOWithHATEOAS(@NonNull Publication publication, @NonNull String user) {
 
         var filesDTO = publication.getAttachments().stream()
-                .map(f -> createUserFileDTOWithHATEOAS(f)).collect(Collectors.toList());
+                .map(f -> createUserFileDTOWithHATEOAS(f, publication.getId())).collect(Collectors.toList());
 
         var publicationDTO = new PublicationDTO(publication.getId(), publication.getOwner(), publication.getTitle(), publication.getPageCount(),
                 publication.getPublicationYear(), filesDTO, publication.getShareList());
@@ -44,17 +45,18 @@ public class Translator {
         return publicationDTO;
     }
 
-    public UserFileDTO createUserFileDTOWithHATEOAS(@NonNull UserFile userFile) {
+    public UserFileDTO createUserFileDTOWithHATEOAS(@NonNull UserFile userFile, @NonNull Long publicationId) {
         var user = userFile.getUserName();
         var file = userFile.getFileName();
         var userFileDTO = new UserFileDTO(userFile.getId(), userFile.getUserName(), userFile.getFileName());
 
-        var controller = PublicationController.class;
+        var controller = AttachmentController.class;
         var downloadLink = new Link(fileStoreServer + "/files/" + userFile.getFileName() +
                 "?user=" + user + "&token=" + jwtCreator.creteFileDownloadToken(user, file),
                 "download");
+        var detachLink = linkTo(methodOn(controller).detach(user, publicationId, userFile.getId())).withRel("detach");
 
-        userFileDTO.add(downloadLink);
+        userFileDTO.add(downloadLink, detachLink);
 
         return userFileDTO;
     }

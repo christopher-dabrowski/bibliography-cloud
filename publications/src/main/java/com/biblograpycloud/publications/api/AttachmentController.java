@@ -25,7 +25,7 @@ public class AttachmentController {
     }
 
     @GetMapping("/users/{user}/publications/{publicationId}/attachments")
-    public ResponseEntity<?> getAllAttachments(@PathVariable String user, @PathVariable Integer publicationId)
+    public ResponseEntity<?> getAllAttachments(@PathVariable String user, @PathVariable Long publicationId)
     {
         var maybePublication = publicationManager.getById(publicationId);
         if (maybePublication.isEmpty())
@@ -33,7 +33,7 @@ public class AttachmentController {
 
         var attachments = maybePublication.get().getAttachments();
         var attachmentsWithLinks = attachments.stream().
-                map(a -> translator.createUserFileDTOWithHATEOAS(a)).collect(Collectors.toList());
+                map(a -> translator.createUserFileDTOWithHATEOAS(a, publicationId)).collect(Collectors.toList());
 
         return ResponseEntity.ok(attachmentsWithLinks);
     }
