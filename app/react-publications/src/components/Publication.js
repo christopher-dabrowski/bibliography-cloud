@@ -112,24 +112,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
     });
   };
 
-  const attachFile = async (fileName) => {
-    const attachment = {
-      id: Math.max(currentPublication.attachments.map((a) => a.id)) + 1,
-      userName: globalState.login,
-      fileName: fileName,
-      links: [{ rel: 'detach', href: 'createMode' }]
-    };
-
-    if (editMode) { // Just add to model
-      setCurrentPublication({
-        ...currentPublication,
-        attachments: [...currentPublication.attachments, attachment]
-      });
-      return;
-    }
-  };
-
-  const attachFilesInEditMode = (fileNames) => {
+  const attachFilesInCreateMode = (fileNames) => {
     let freeId = Math.max(currentPublication.attachments.map((a) => a.id)) + 1;
     const attachments = fileNames.map((f) => ({
       id: freeId++,
@@ -144,15 +127,48 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
     });
   };
 
-  const attachFiles = async () => {
-    if (editMode) { // Just update model
-      attachFilesInEditMode(toAttachList);
-      setToAttachList([]);
+  const updateAttachments = async () => {
+    const url = attachLink.href;
+    const request = await fetch(url);
+    if (!request.ok) {
+      alert('Nie udało się odświeżyć listy załączników');
       return;
     }
+
+    const data = await request.json();
+    setCurrentPublication({
+      ...currentPublication,
+      attachments: data
+    });
   };
 
+  const attachFilesInEditMode = async (fileNames) => {
+    const url = attachLink.href;
+    let requests = fileNames.map((f) => (
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userName: globalState.login, fileName: f }),
+      })
+    ));
 
+    requests = await Promise.all(requests);
+    if (requests.some((r) => !r.ok))
+      alert('Nie wszystkie pliki udało się dodać');
+
+    updateAttachments();
+  };
+
+  const attachFiles = async () => {
+    if (createMode) // Just update model
+      attachFilesInEditMode(toAttachList);
+    else
+      attachFilesInEditMode(toAttachList);
+
+    setToAttachList([]);
+  };
 
   const prepareAttachmentsOptions = () => {
     const attachedFileNames = currentPublication.attachments.map((a) => a.fileName);
