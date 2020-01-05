@@ -35,6 +35,7 @@ class App extends React.Component {
   }
 
   getPublications = async () => {
+    console.log('Updating publications');
     if (!this.state.actions['publications.list'])
       return;
 
@@ -64,11 +65,12 @@ class App extends React.Component {
         <Router>
           <Route path="/publications" render={(props) => {
             const home = props.match.isExact;
+            // this.refreshPublications();
 
             return (
               <section className="container intro d-flex">
                 {!home &&
-                  <Link to="/publications">
+                  <Link to="/publications" onClick={this.getPublications}>
                     <button className="btn btn-warning h-100" style={{ width: '6.5ch' }}>
                       <i className="fas fa-chevron-left"></i>
                     </button>

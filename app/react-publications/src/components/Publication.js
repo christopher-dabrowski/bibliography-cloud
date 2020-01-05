@@ -94,6 +94,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
       ...currentPublication,
       attachments: currentPublication.attachments.filter((a) => a.id !== id)
     });
+    refreshPublications();
   };
 
   return (
