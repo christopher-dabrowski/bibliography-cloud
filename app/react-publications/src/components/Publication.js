@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import Select from 'react-select';
 import PropTypes from 'prop-types';
 
 const Publication = ({ createMode, publication, history, refreshPublications, globalState }) => {
@@ -164,6 +165,28 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
               );
             })}
           </ul>
+        </div>
+
+        <div className="form-group row">
+          <div className="col-9">
+            <Select
+              isMulti
+              name="attachments"
+              options={[
+                { value: 'chocolate', label: 'Chocolate' },
+                { value: 'a', label: 'a' },
+                { value: 'b', label: 'b' },
+              ]}
+              className="basic-multi-select"
+              classNamePrefix="select"
+            />
+          </div>
+          <section className='col-3'>
+            <button onClick={() => alert('Not implemented')} className="btn btn-success" type="button">
+              <i className="fas fa-link"></i>
+              <span className="d-none d-sm-inline ml-1">Dołącz</span>
+            </button>
+          </se>
         </div>
 
         <hr />
