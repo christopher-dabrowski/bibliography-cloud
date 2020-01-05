@@ -14,9 +14,16 @@ class App extends React.Component {
       login: null,
       loadingPublications: false,
       publications: [],
+      userFiles: [],
       actions: {},
       urls: props.urls
     };
+  }
+
+  getActionList = async () => {
+    let response = await fetch(this.props.urls.publicationsApi);
+    let data = await response.json();
+    this.setState({ actions: data['_links'] });
   }
 
   getCurrentUserLogin = async () => {
@@ -28,14 +35,7 @@ class App extends React.Component {
     return login;
   }
 
-  getActionList = async () => {
-    let response = await fetch(this.props.urls.publicationsApi);
-    let data = await response.json();
-    this.setState({ actions: data['_links'] });
-  }
-
   getPublications = async () => {
-    console.log('Updating publications');
     if (!this.state.actions['publications.list'])
       return;
 
@@ -50,11 +50,33 @@ class App extends React.Component {
     this.setState({ publications: data, loadingPublications: false });
   }
 
+  getUserFiles = async () => {
+    let url = new URL('api/jwt/listFiles', this.props.urls.clientBase);
+    let response = await fetch(url);
+    let data = await response.json();
+    let token = data.token;
+
+    url = new URL('/files', this.props.urls.filesApi);
+    url.searchParams.set('user', this.state.login);
+    url.searchParams.set('token', token);
+
+    response = await fetch(url);
+    data = await response.json();
+
+    if (!response.ok) {
+      alert('Nie udało się pobrać listy Twoich plików');
+      return;
+    }
+
+    this.setState({ userFiles: data });
+  }
+
   componentDidMount = async () => {
     await this.getCurrentUserLogin();
     await this.getActionList();
 
     this.getPublications();
+    this.getUserFiles();
   }
 
   render = () => {
