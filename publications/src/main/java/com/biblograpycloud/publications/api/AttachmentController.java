@@ -63,7 +63,7 @@ public class AttachmentController {
     }
 
     @PostMapping("/users/{user}/publications/{publicationId}/attachments")
-    ResponseEntity<?> attachFile(@PathVariable String user, @PathVariable Long publicationId,
+    public ResponseEntity<?> attachFile(@PathVariable String user, @PathVariable Long publicationId,
                                  @RequestBody UserFile attachment) {
         var maybePublication = publicationManager.getById(publicationId);
         if (maybePublication.isEmpty())

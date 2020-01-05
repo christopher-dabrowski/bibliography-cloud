@@ -41,7 +41,10 @@ public class Translator {
         var selfLink = linkTo(methodOn(controller).getOnePublication(user, publication.getId())).withSelfRel();
         var deleteLink = linkTo(methodOn(controller).deletePublication(user, publication.getId())).withRel("delete");
 
-        publicationDTO.add(selfLink, deleteLink);
+        var attachFileLink = linkTo(methodOn(AttachmentController.class).attachFile(user, publication.getId(), null))
+                .withRel("attachFile");
+
+        publicationDTO.add(selfLink, deleteLink, attachFileLink);
         return publicationDTO;
     }
 
