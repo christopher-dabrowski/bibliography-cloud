@@ -120,10 +120,11 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
         </div>
 
         <div className="form-group">
-          <label>Załączone pliki</label>
+          <label className="font-weight-bolder">Załączone pliki</label>
           <ul className="list-group">
             {currentPublication.attachments.map((attachment, i) => {
               const downloadLink = attachment.links.find((l) => l.rel === 'download');
+              const detachLink = attachment.links.find((l) => l.rel === 'detach');
 
               return (
                 <li key={i} className="list-group-item d-inline-flex align-items-center">
@@ -134,6 +135,12 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
                         <i className="fas fa-cloud-download-alt"></i>
                         <span className="d-none d-sm-inline ml-1">Pobierz</span>
                       </a>
+                    }
+                    {detachLink &&
+                      <button className="btn btn-warning mr-2" type="button">
+                        <i className="fas fa-unlink"></i>
+                        <span className="d-none d-sm-inline ml-1">Odłącz</span>
+                      </button>
                     }
                   </div>
                 </li>
