@@ -80,6 +80,22 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
     history.push('/publications');
   };
 
+  const detachFile = async (id) => {
+    const attachment = currentPublication.attachments.find((a) => a.id === id);
+    const url = attachment.links.find((l) => l.rel === 'detach').href;
+
+    const response = await fetch(url, { method: 'DELETE' });
+    if (!response.ok) {
+      alert('Nie udało się odłączyć pliku');
+      return;
+    }
+
+    setCurrentPublication({
+      ...currentPublication,
+      attachments: currentPublication.attachments.filter((a) => a.id !== id)
+    });
+  };
+
   return (
     <section className="container mt-3">
       <form>
@@ -122,12 +138,12 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
         <div className="form-group">
           <label className="font-weight-bolder">Załączone pliki</label>
           <ul className="list-group">
-            {currentPublication.attachments.map((attachment, i) => {
+            {currentPublication.attachments.map((attachment) => {
               const downloadLink = attachment.links.find((l) => l.rel === 'download');
               const detachLink = attachment.links.find((l) => l.rel === 'detach');
 
               return (
-                <li key={i} className="list-group-item d-inline-flex align-items-center">
+                <li key={attachment.id} className="list-group-item d-inline-flex align-items-center">
                   <span className="flex-grow-1">{attachment.fileName}</span>
                   <div className="buttons">
                     {downloadLink &&
@@ -137,7 +153,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
                       </a>
                     }
                     {detachLink &&
-                      <button className="btn btn-warning mr-2" type="button">
+                      <button onClick={() => detachFile(attachment.id)} className="btn btn-warning mr-2" type="button">
                         <i className="fas fa-unlink"></i>
                         <span className="d-none d-sm-inline ml-1">Odłącz</span>
                       </button>
