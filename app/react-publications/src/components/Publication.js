@@ -98,6 +98,10 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
     refreshPublications();
   };
 
+  // const prepareAttachmentsOptions = () => {
+  //   const userFileNames = globalState.userFiles.map()
+  // };
+
   return (
     <section className="container mt-3">
       <form>
@@ -154,7 +158,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
                         <span className="d-none d-sm-inline ml-1">Pobierz</span>
                       </a>
                     }
-                    {detachLink &&
+                    {detachLink && editMode &&
                       <button onClick={() => detachFile(attachment.id)} className="btn btn-warning mr-2" type="button">
                         <i className="fas fa-unlink"></i>
                         <span className="d-none d-sm-inline ml-1">Odłącz</span>
@@ -167,26 +171,29 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
           </ul>
         </div>
 
-        <div className="form-group ">
-          <label htmlFor="attachments">Dołącz pliki</label>
-          <div className="d-flex">
-            <Select
-              isMulti
-              name="attachments"
-              options={[
-                { value: 'chocolate', label: 'Chocolate' },
-                { value: 'a', label: 'a' },
-                { value: 'b', label: 'b' },
-              ]}
-              className="basic-multi-select flex-grow-1 mr-2"
-              classNamePrefix="select"
-            />
-            <button onClick={() => alert('Not implemented')} className="btn btn-success" type="button">
-              <i className="fas fa-link"></i>
-              <span className="d-none d-sm-inline ml-1">Dołącz</span>
-            </button>
+        {editMode &&
+          <div className="form-group ">
+            <label htmlFor="attachments">Dołącz pliki</label>
+            <div className="d-flex">
+              <Select
+                isMulti
+                name="attachments"
+                options={[
+                  { value: 'chocolate', label: 'Chocolate' },
+                  { value: 'a', label: 'a' },
+                  { value: 'b', label: 'b' },
+                ]}
+                className="basic-multi-select flex-grow-1 mr-2"
+                classNamePrefix="select"
+              />
+              <button onClick={() => alert('Not implemented')} className="btn btn-success" type="button">
+                <i className="fas fa-link"></i>
+                <span className="d-none d-sm-inline ml-1">Dołącz</span>
+              </button>
+            </div>
           </div>
-        </div>
+        }
+
 
         <hr />
 
