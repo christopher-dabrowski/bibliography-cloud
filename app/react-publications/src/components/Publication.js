@@ -98,9 +98,13 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
     refreshPublications();
   };
 
-  // const prepareAttachmentsOptions = () => {
-  //   const userFileNames = globalState.userFiles.map()
-  // };
+  const prepareAttachmentsOptions = () => {
+    const attachedFileNames = currentPublication.attachments.map((a) => a.fileName);
+    let userFileNames = globalState.userFiles.map((f) => f.fileName);
+    userFileNames = userFileNames.filter((f) => (!attachedFileNames.includes(f)));
+
+    return userFileNames.map((f) => ({ value: f, label: f }));
+  };
 
   return (
     <section className="container mt-3">
@@ -178,11 +182,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
               <Select
                 isMulti
                 name="attachments"
-                options={[
-                  { value: 'chocolate', label: 'Chocolate' },
-                  { value: 'a', label: 'a' },
-                  { value: 'b', label: 'b' },
-                ]}
+                options={prepareAttachmentsOptions()}
                 className="basic-multi-select flex-grow-1 mr-2"
                 classNamePrefix="select"
               />
