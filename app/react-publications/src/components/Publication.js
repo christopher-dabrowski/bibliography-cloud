@@ -21,6 +21,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
   const [editMode, setEditMode] = useState(createMode ? true : false);
   const [currentPublication, setCurrentPublication] = useState(orginalPublication);
   const [toAttachList, setToAttachList] = useState([]);
+  const [localIdList, setLocalIdList] = useState([]);
   const inputClass = 'form-control' + (!editMode ? ' form-control-plaintext' : '');
   const attachLink = currentPublication.links.find((l) => l.rel === "attachFile");
 
@@ -41,13 +42,22 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
       return;
     }
 
+    const publication = { ...currentPublication };
+    publication.attachments = publication.attachments.map(a => { // Clear local id
+      if (!localIdList.includes(a.id)) return a;
+      else return {
+        userName: a.userName,
+        fileName: a.fileName
+      };
+    });
+
     let selfLink = currentPublication.links.find((l) => l.rel === 'self');
     const response = await fetch(selfLink.href, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(currentPublication),
+      body: JSON.stringify(publication),
     });
 
     if (!response.ok) {
@@ -94,78 +104,31 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
   };
 
   const detachFile = async (id) => {
-    if (!createMode) { // In create mode just update model
-      const attachment = currentPublication.attachments.find((a) => a.id === id);
-      const url = attachment.links.find((l) => l.rel === 'detach').href;
-
-      const response = await fetch(url, { method: 'DELETE' });
-      if (!response.ok) {
-        alert('Nie udało się odłączyć pliku');
-        return;
-      }
-      refreshPublications();
-    }
-
     setCurrentPublication({
       ...currentPublication,
       attachments: currentPublication.attachments.filter((a) => a.id !== id)
     });
   };
 
-  const attachFilesInCreateMode = (fileNames) => {
-    let freeId = Math.max(currentPublication.attachments.map((a) => a.id)) + 1;
-    const attachments = fileNames.map((f) => ({
-      id: freeId++,
-      userName: globalState.login,
-      fileName: f,
-      links: [{ rel: 'detach', href: 'createMode' }]
-    }));
+  const attachFiles = async () => {
+    const attachments = [];
+    const curretnlyTakenId = [...localIdList]; // Cant use state because it updates async
+    for (const fileName of toAttachList) {
+      const id = Math.max(...currentPublication.attachments.map((a) => a.id), ...curretnlyTakenId) + 1;
+      curretnlyTakenId.push(id);
+      attachments.push({
+        id: id,
+        userName: globalState.login,
+        fileName: fileName,
+        links: [{ rel: 'detach', href: 'NotYetSaved' }]
+      });
+    }
+    setLocalIdList(curretnlyTakenId);
 
     setCurrentPublication({
       ...currentPublication,
       attachments: currentPublication.attachments.concat(attachments)
     });
-  };
-
-  const updateAttachments = async () => {
-    const url = attachLink.href;
-    const request = await fetch(url);
-    if (!request.ok) {
-      alert('Nie udało się odświeżyć listy załączników');
-      return;
-    }
-
-    const data = await request.json();
-    setCurrentPublication({
-      ...currentPublication,
-      attachments: data
-    });
-  };
-
-  const attachFilesInEditMode = async (fileNames) => {
-    const url = attachLink.href;
-    let requests = fileNames.map((f) => (
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userName: globalState.login, fileName: f }),
-      })
-    ));
-
-    requests = await Promise.all(requests);
-    if (requests.some((r) => !r.ok))
-      alert('Nie wszystkie pliki udało się dodać');
-
-    updateAttachments();
-  };
-
-  const attachFiles = async () => {
-    if (createMode) // Just update model
-      attachFilesInEditMode(toAttachList);
-    else
-      attachFilesInEditMode(toAttachList);
 
     setToAttachList([]);
   };
@@ -276,7 +239,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
             <>
               <button className="btn btn-success" type="button" onClick={saveChanges}>Zapisz</button>
               <button className="btn btn-danger ml-2" type="button"
-                onClick={() => { setCurrentPublication(orginalPublication); setEditMode(false); }}>
+                onClick={() => { setCurrentPublication(orginalPublication); setToAttachList([]); setEditMode(false); }}>
                 Anuluj zmiany
               </button>
             </>
