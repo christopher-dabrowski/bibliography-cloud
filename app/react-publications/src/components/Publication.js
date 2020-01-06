@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
+import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 
 const Publication = ({ createMode, publication, history, refreshPublications, globalState }) => {
@@ -236,7 +237,15 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
         <div className="form-group d-flex justify-content-end">
           {editMode && !createMode &&
             <>
-              <button className="btn btn-success" type="button" disabled={!validatePublication(currentPublication)} onClick={saveChanges}>Zapisz</button>
+              <span className="d-inline-block" data-tip data-for="save-button">
+                <button className="btn btn-success" type="button" disabled={!validatePublication(currentPublication)} onClick={saveChanges}>
+                  Zapisz
+                </button>
+                <ReactTooltip id='save-button' type='error' data-tip-disable={validatePublication(currentPublication)}>
+                  <span>Nieprawidłowe dane publikacji</span>
+                </ReactTooltip>
+              </span>
+
               <button className="btn btn-danger ml-2" type="button"
                 onClick={() => { setCurrentPublication(orginalPublication); setToAttachList([]); setEditMode(false); }}>
                 Anuluj zmiany
@@ -251,9 +260,16 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
           }
 
           {createMode &&
-            <button className="btn btn-success" type="button" disabled={!validatePublication(currentPublication)} onClick={createPublication}>
-              Utwórz pulikację
-            </button>
+            <>
+              <span className="d-inline-block" data-tip data-for="create-button">
+                <button className="btn btn-success" type="button" disabled={!validatePublication(currentPublication)} onClick={createPublication}>
+                  Utwórz pulikację
+                </button>
+              </span>
+              <ReactTooltip id='create-button' type='error' data-tip-disable={validatePublication(currentPublication)}>
+                <span>Nieprawidłowe dane publikacji</span>
+              </ReactTooltip>
+            </>
           }
         </div>
       </form>
