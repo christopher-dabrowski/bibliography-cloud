@@ -33,6 +33,8 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
   - [Usługa sieciowa](#usługa-sieciowa)
   - [Klient webowy](#klient-webowy)
     - [Konfiguracja](#konfiguracja)
+    - [Działanie](#działanie)
+    - [Responsywność](#responsywność)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -180,13 +182,17 @@ Kod źródłowy serwera znajduje się w katalogu [publications](./publications).
 
 Usługa generuje **odpowiednie kody HTTP** oraz wysyła metadane przy pomocy **json+hal**.
 
+Działanie samej usługi sieciowej można obserwować przy pomocy [kolekcji gotowych zapytań HTTP](https://documenter.getpostman.com/view/6368494/SWLe8ToM). Kolekcja została utworzona z myślą o aplikacji Postman i programie `curl`. Zapytania związane z tym krokiem milowym znajdują się w **katalogu Publications**.
+
 ### Klient webowy
 
 W celu urozmaicenia projektu i poznania nowych technologi zdecydowałem się na renderowanie po stronie klienta i wykorzystanie frameworka **React**.
 
+Główne pliki klienta można znaleźć w katalogu [components](./app/react-publications/src/components).
+
 #### Konfiguracja
 
-Połączenie serwera Flask z elementem w React nie było łatwe.  
+Połączenie serwera Flask z elementem w React nie było łatwe.   
 Projekt React został utworzony w katalogu [react-publications](./react-publications) przy pomocy skryptu [create-react-app](https://github.com/facebook/create-react-app). Następnie została wyizolowana konfiguracja tworzenia projektu poleceniem `npm reject`.
 
 Dzięki edycji plików [webpack.config.js](./react-publications/config/webpack.config.js), [paths.js](react-publications/config/paths.js) i [package.json](./react-publications/package.json) miejsce tworzenia plików wynikowych przez _webpack_ zostało zmienione na katalogi `static/react/publications` i `templates` w aplikacji Flask.
@@ -194,6 +200,30 @@ Dzięki edycji plików [webpack.config.js](./react-publications/config/webpack.c
 Dodatkowo połączenie aplikacji z szablonami Flaks (templates) wymagało ręcznej zmiany w [skrypcie budującym](./react-publications/scripts/build.js). Ponieważ _webpack_ dopisuje tag `<script>` na koniec pliku nie znajdował się on w bloku `{% block main %}` i nie był częścią strony. Żeby to naprawić skrypt budujący wykonuje dodatkowy krok ręcznie przenoszący zamknięcie bloku na koniec pliku.
 
 Zbudowanie komponentu React można wykonać poleceniem `npm run buld`.
+
+#### Działanie
+
+Klient wykorzystuje asynchroniczne zapytania HTTP w celu pobrania danych z usług całej aplikacji. Jedyne dane, jakie dostaje bezpośrednio to adresy końcówek (endpoints).
+
+Możliwe **akcje są ustalane dynamicznie** na podstawie danych HATEOAS.
+
+Przykład tworzenia guzika dodawania publikacji:
+
+![Fantastic HATEOAS in action](./doc/HATEOAS_example_1.png)
+
+Interfejs pozwala na pracę w trybie edycji dzięki czemu można łatwo anulować niechciane zmiany.
+
+![Edit mode example](./doc/Edit_mode_example.png)
+
+#### Responsywność
+
+Cały klient webowy był tworzony z myślą wsparciu urządzeń mobilnych. Aplikacja webowa w wersji na telefon jest **głównym klientem na urządzenia przenośne**.
+
+Dzięki zastosowaniu biblioteki Bootstrap oraz własnych CSS media query aplikacja wygląda dobrze za równo na dużych jak i małych ekranach.
+
+Przykład trybu edycji publikacji na telefonie:
+
+![Edit mode on phone example](doc/Edit_mode_phone_example.png)
 
 ----------------------
 
