@@ -211,7 +211,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
         </div>
 
         {editMode && (attachLink || createMode) &&
-          < div className="form-group ">
+          <div className="form-group ">
             <label htmlFor="attachments">Dołącz pliki</label>
             <div className="d-flex">
               <Select
@@ -223,14 +223,13 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
                 className="basic-multi-select flex-grow-1 mr-2"
                 classNamePrefix="select"
               />
-              <button onClick={attachFiles} className="btn btn-success" type="button">
+              <button onClick={attachFiles} disabled={toAttachList.length === 0} className="btn btn-success" type="button">
                 <i className="fas fa-link"></i>
                 <span className="d-none d-sm-inline ml-1">Dołącz</span>
               </button>
             </div>
           </div>
         }
-
 
         <hr />
 
