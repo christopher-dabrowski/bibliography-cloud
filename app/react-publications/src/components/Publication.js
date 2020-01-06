@@ -248,9 +248,11 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
                 <button className="btn btn-success" type="button" disabled={!validatePublication(currentPublication)} onClick={saveChanges}>
                   Zapisz
                 </button>
-                <ReactTooltip id='save-button' type='error' data-tip-disable={validatePublication(currentPublication)}>
-                  <span>Nieprawidłowe dane publikacji</span>
-                </ReactTooltip>
+                {!validatePublication(currentPublication) &&
+                  <ReactTooltip id='save-button' type='error'>
+                    <span>Nieprawidłowe dane publikacji</span>
+                  </ReactTooltip>
+                }
               </span>
 
               <button className="btn btn-danger ml-2" type="button"
@@ -273,9 +275,11 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
                   Utwórz pulikację
                 </button>
               </span>
-              <ReactTooltip id='create-button' type='error' data-tip-disable={validatePublication(currentPublication)}>
-                <span>Nieprawidłowe dane publikacji</span>
-              </ReactTooltip>
+              {!validatePublication(currentPublication) &&
+                <ReactTooltip id='create-button' type='error'>
+                  <span>Nieprawidłowe dane publikacji</span>
+                </ReactTooltip>
+              }
             </>
           }
         </div>
