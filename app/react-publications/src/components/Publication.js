@@ -236,7 +236,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
         <div className="form-group d-flex justify-content-end">
           {editMode && !createMode &&
             <>
-              <button className="btn btn-success" type="button" onClick={saveChanges}>Zapisz</button>
+              <button className="btn btn-success" type="button" disabled={!validatePublication(currentPublication)} onClick={saveChanges}>Zapisz</button>
               <button className="btn btn-danger ml-2" type="button"
                 onClick={() => { setCurrentPublication(orginalPublication); setToAttachList([]); setEditMode(false); }}>
                 Anuluj zmiany
@@ -245,13 +245,15 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
           }
 
           {!editMode &&
-            <button className="btn btn-primary" type="button" onClick={() => setEditMode(true)}>
+            <button className="btn btn-info" type="button" onClick={() => setEditMode(true)}>
               Edytuj
             </button>
           }
 
           {createMode &&
-            <button className="btn btn-success" type="button" onClick={createPublication}>Utwórz pulikację</button>
+            <button className="btn btn-success" type="button" disabled={!validatePublication(currentPublication)} onClick={createPublication}>
+              Utwórz pulikację
+            </button>
           }
         </div>
       </form>
