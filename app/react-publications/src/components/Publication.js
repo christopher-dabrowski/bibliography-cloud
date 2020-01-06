@@ -193,7 +193,6 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
                   .replace('{appBaseUrl}', globalState.urls.clientBase)
                   .replace('{fileName}', attachment.fileName);
               }
-              console.log(downloadLink);
 
               return (
                 <li key={attachment.id} className="list-group-item d-inline-flex align-items-center">
