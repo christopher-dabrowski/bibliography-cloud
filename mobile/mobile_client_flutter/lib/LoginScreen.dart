@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_client_flutter/PublicationList.dart';
 import 'utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PublicationList()));
   }
 
   @override
