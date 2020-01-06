@@ -54,7 +54,7 @@ public class Translator {
         var userFileDTO = new UserFileDTO(userFile.getId(), userFile.getUserName(), userFile.getFileName());
 
         var controller = AttachmentController.class;
-        var downloadLink = new Link("{appBaseUrl}/api/downloadFile?fileName={fileName}");
+        var downloadLink = new Link("{appBaseUrl}/api/downloadFile?fileName={fileName}").withRel("download");
         var detachLink = linkTo(methodOn(controller).detach(user, publicationId, userFile.getId())).withRel("detach");
 
         userFileDTO.add(downloadLink, detachLink);
