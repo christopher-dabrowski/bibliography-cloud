@@ -26,7 +26,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
   const inputClass = 'form-control' + (!editMode ? ' form-control-plaintext' : '');
   const attachLink = currentPublication.links.find((l) => l.rel === "attachFile");
 
-  console.log(currentPublication);
+  // console.log(currentPublication);
 
 
   const validatePublication = (publication) => {
