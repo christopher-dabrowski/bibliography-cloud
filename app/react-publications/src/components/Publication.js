@@ -188,6 +188,13 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
               const downloadLink = attachment.links.find((l) => l.rel === 'download');
               const detachLink = attachment.links.find((l) => l.rel === 'detach');
 
+              if (downloadLink) { // Fill in template url
+                downloadLink.href = downloadLink.href
+                  .replace('{appBaseUrl}', globalState.urls.clientBase)
+                  .replace('{fileName}', attachment.fileName);
+              }
+              console.log(downloadLink);
+
               return (
                 <li key={attachment.id} className="list-group-item d-inline-flex align-items-center">
                   <span className="flex-grow-1">{attachment.fileName}</span>
