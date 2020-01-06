@@ -1,8 +1,12 @@
-"""Flask template for interaction with other services"""
+"""
+Flask template for interaction with other services
+
+Capable of verifying user cookies
+"""
 
 from flask import Blueprint, request, abort, jsonify
 from decorators import login_required
-from jwt_tokens import create_list_token
+from jwt_tokens import create_list_token, create_download_token
 
 api = Blueprint('api', __name__, template_folder='templates')
 
@@ -21,6 +25,11 @@ def get_token(type, login):
     token = None
     if (type == 'listFiles'):
         token = create_list_token(login)
+    elif (type == 'downloadFile'):
+        fileName = request.args['fileName']
+        if not fileName:
+            abort(400)
+        token = create_download_token(login, fileName)
 
     if token == None:
         abort(404)
