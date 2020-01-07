@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { Text, View, TextInput, Button } from 'react-native';
 
 
-export default function disableExpoCliLogging() {
+export default function disableExpoCliLogging({ setLogin, setScreen, globalState, refreshPublications }) {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
     const credentials = { 'jan': 'AAA', 'zupan': 'gros', 'Atrox': 'password' };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
+        // const request = await fetch('http://localhost:8090');
+        // alert(request.status);
+
         if (!credentials[login]) {
             alert('Nieprawidłowy login');
             return;
@@ -17,6 +20,11 @@ export default function disableExpoCliLogging() {
             alert('Nieprawidłowe hasło');
             return;
         }
+
+        setLogin(login);
+
+        refreshPublications();
+        setScreen('PublicationList');
     };
 
     return (
