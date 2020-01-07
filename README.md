@@ -29,12 +29,14 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
   - [Rest API](#rest-api)
   - [Logowanie](#logowanie)
 - [Etap 3 - Publikacje, RESTFull i klient mobilny](#etap-3---publikacje-restfull-i-klient-mobilny)
+  - [Uruchomienie projektu](#uruchomienie-projektu-1)
   - [Szyfrowanie połączenia](#szyfrowanie-połączenia)
   - [Usługa sieciowa](#usługa-sieciowa)
   - [Klient webowy](#klient-webowy)
     - [Konfiguracja](#konfiguracja)
     - [Działanie](#działanie)
     - [Responsywność](#responsywność)
+  - [Klient mobilny](#klient-mobilny)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -166,6 +168,13 @@ Usługa sieciowa musi pozwalać na:
 - podpinanie i odpinanie plików przy pozycji bibliograficznej,
 - dodawanie, pobieranie i usuwanie plików.
 
+### Uruchomienie projektu
+
+Stan projektu po tym etapie można znaleźć w zakładce [release](https://github.com/SiwyKrzysiek/bibliography-cloud/releases/tag/Milestone3).
+
+By uruchomić projekt należy wykonać `docker-compose up` w głównym katalogu projektu.  
+Domyślnie projekt będzie dostępny pod adresem [https://localhost:443](https://localhost:443).
+
 ### Szyfrowanie połączenia
 
 Dodatkowo został dodany serwer Nginx pośredniczący w komunikacji z aplikacjami. Dzięki temu możliwe jest połączenie się przez **protokół https**.  
@@ -224,6 +233,11 @@ Dzięki zastosowaniu biblioteki Bootstrap oraz własnych CSS media query aplikac
 Przykład trybu edycji publikacji na telefonie:
 
 ![Edit mode on phone example](doc/Edit_mode_phone_example.png)
+
+### Klient mobilny
+
+Zostały utworzone dwie proste aplikacje będące klientami mobilnymi. Aplikacja Flutter będąca prototypem znajduje się w katalogu [mobile_client_flutter](./mobile/mobile_client_flutter).  
+Aplikacja React Native, która jest uproszczeniem klienta webowego jest w katalogu [mobile_client_react_native](./mobile/mobile_client_react_native).
 
 ----------------------
 
