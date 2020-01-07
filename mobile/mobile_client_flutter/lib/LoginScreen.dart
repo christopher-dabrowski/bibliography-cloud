@@ -25,7 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PublicationList()));
+    Navigator.push(context, MaterialPageRoute(builder:
+        (context) => PublicationList(login: login,))
+    );
   }
 
   @override
