@@ -60,7 +60,7 @@ export default class App extends React.Component {
         }
         {
           screen === 'PublicationList' &&
-          <PublicationsList publications={this.state.publications} globalState={this.state} />
+          <PublicationsList publications={this.state.publications} globalState={this.state} refreshPublications={refreshPublications} />
         }
       </View >
     );
