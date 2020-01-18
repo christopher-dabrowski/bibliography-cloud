@@ -116,6 +116,7 @@ class App extends React.Component {
     console.log('Stream time!');
     this.stream = new EventSource(this.props.urls.clientBase + '/stream');
     this.stream.addEventListener(`user:${this.state.login}`, (event) => {
+      this.getPublications();
       var data = JSON.parse(event.data);
       this.displayInformation(data.message);
     });
@@ -148,7 +149,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/publications">
               <PublicationsList label="Twoje publikacje" publications={this.state.publications}
-                refreshPublications={this.getPublications}
+                refreshPublications={this.getPublications} globalState={this.state}
               />
               <section className="container">
                 <hr />

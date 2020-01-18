@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 
-const PublicationsList = ({ label, publications, match, refreshPublications }) => {
+const PublicationsList = ({ label, publications, match, refreshPublications, globalState }) => {
   return (
     <section className="container">
       <h2>{label}</h2>
@@ -12,6 +12,13 @@ const PublicationsList = ({ label, publications, match, refreshPublications }) =
           const deleteLink = publication.links.find((l) => l.rel === 'delete');
 
           const deletePublication = async () => {
+            // Send SSE
+            let url = globalState.urls.clientBase + '/api/publicationMessage';
+            url = new URL(url);
+            url.searchParams.set('publication', publication.title);
+            url.searchParams.set('action', 'deleted');
+            fetch(url);
+
             await fetch(deleteLink.href, {
               method: 'DELETE',
             });

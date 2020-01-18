@@ -13,6 +13,18 @@ from flask_sse import sse
 api = Blueprint('api', __name__, template_folder='templates')
 
 
+def map_action_to_message(publication_name: str, action: str) -> str:
+    """Crete right message for SSE when publication list changed"""
+    if action == 'created':
+        return f'Publikacja {publication_name} została utworzona'
+    if action == 'changed':
+        return f'Publikacja {publication_name} została zmieniona'
+    if action == 'deleted':
+        return f'Publikacja {publication_name} została usunięta'
+
+    return f'Coś się stało z publikacją {publication_name}'
+
+
 @api.route('login')
 @login_required
 def get_login(login):
@@ -26,10 +38,10 @@ def register_publication_sse(login):
     if not publication_name:
         abort(404)
 
-    action = request.args.get('action', 'created')
+    action = request.args.get('action', '')
 
-    sse.publish({'message': f'Publikacja {publication_name}', 'action': action},
-                type=f'user:{login}')
+    message = map_action_to_message(publication_name, action)
+    sse.publish({'message': message, 'action': action}, type=f'user:{login}')
 
     return Response(201)
 

@@ -66,6 +66,13 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
       return;
     }
 
+    // Send SSE
+    let url = globalState.urls.clientBase + '/api/publicationMessage';
+    url = new URL(url);
+    url.searchParams.set('publication', publication.title);
+    url.searchParams.set('action', 'changed');
+    fetch(url);
+
     refreshPublications();
     history.push('/publications');
   };
@@ -104,6 +111,7 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
     url = globalState.urls.clientBase + '/api/publicationMessage';
     url = new URL(url);
     url.searchParams.set('publication', publication.title);
+    url.searchParams.set('action', 'created');
     fetch(url);
 
     refreshPublications();
