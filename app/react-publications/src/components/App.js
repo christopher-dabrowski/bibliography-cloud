@@ -80,7 +80,7 @@ class App extends React.Component {
 
     console.log('Stream time!');
     this.stream = new EventSource(this.props.urls.clientBase + '/stream');
-    this.stream.addEventListener('test', function (event) {
+    this.stream.addEventListener(`user:${this.state.login}`, function (event) {
       console.log(event);
       console.log('aaaa');
       var data = JSON.parse(event.data);

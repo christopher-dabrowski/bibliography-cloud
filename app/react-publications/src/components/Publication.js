@@ -100,6 +100,12 @@ const Publication = ({ createMode, publication, history, refreshPublications, gl
       return;
     }
 
+    // Send SSE
+    url = globalState.urls.clientBase + '/api/publicationMessage';
+    url = new URL(url);
+    url.searchParams.set('publication', publication.title);
+    fetch(url);
+
     refreshPublications();
     history.push('/publications');
   };

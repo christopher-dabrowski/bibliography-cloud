@@ -47,12 +47,6 @@ login_manager = Config.login_manager
 # create_sample_users(user_manager)
 
 
-@app.route('/streamTest')
-def publish_hello():
-    sse.publish({"message": "Hello!"}, type='test')
-    return "Message sent!"
-
-
 @app.route('/callback')
 def callback_handling():
     # Handles response from token endpoint
