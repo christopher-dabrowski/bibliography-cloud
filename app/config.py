@@ -30,3 +30,8 @@ class Config(object):
     redis = redis.Redis(REDIS_NAME)
     user_manager = UserManager(redis)
     login_manager = LoginManager(redis)
+
+    AUTH0_CLIENT_ID = os.environ.get('AUTH0_CLIENT_ID')
+    AUTH0_CLIENT_SECRET = os.environ.get('AUTH0_CLIENT_SECRET')
+    AUTH0_API_BASE_URL = os.environ.get('AUTH0_API_BASE_URL')
+    AUTH0_CALLBACK_URL = APP_URL + '/callback'

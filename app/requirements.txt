@@ -5,3 +5,4 @@ flask-wtf
 redis
 PyJWT
 requests
+authlib

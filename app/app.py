@@ -1,7 +1,7 @@
 import os
 import secrets
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, make_response, flash
+from flask import Flask, render_template, request, redirect, url_for, make_response, flash, session
 import requests
 import urllib.parse
 from livereload import Server
@@ -12,11 +12,42 @@ from jwt_tokens import create_download_token, create_upload_token, create_list_t
 from setup import create_sample_users
 from decorators import login_required
 
+from authlib.integrations.flask_client import OAuth
+from six.moves.urllib.parse import urlencode
+from functools import wraps
+from werkzeug.exceptions import HTTPException
+
 from api import api
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.register_blueprint(api, url_prefix='/api')
+
+oauth = OAuth(app)
+
+auth0 = oauth.register(
+    'auth0',
+    client_id=Config.AUTH0_CLIENT_ID,
+    client_secret=Config.AUTH0_CLIENT_SECRET,
+    api_base_url=Config.AUTH0_API_BASE_URL,
+    access_token_url=f'{Config.AUTH0_API_BASE_URL}/oauth/token',
+    authorize_url=f'{Config.AUTH0_API_BASE_URL}/authorize',
+    client_kwargs={
+        'scope': 'openid profile email',
+    },
+)
+
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if 'profile' not in session:
+            # Redirect to Login page here
+            return redirect('/')
+        return f(*args, **kwargs)
+
+    return decorated
+
 
 user_manager = Config.user_manager
 login_manager = Config.login_manager
@@ -24,10 +55,30 @@ login_manager = Config.login_manager
 create_sample_users(user_manager)
 
 
+@app.route('/callback')
+def callback_handling():
+    # Handles response from token endpoint
+    auth0.authorize_access_token()
+    resp = auth0.get('userinfo')
+    userinfo = resp.json()
+
+    # Store the user information in flask session.
+    session['jwt_payload'] = userinfo
+    session['profile'] = {
+        'user_id': userinfo['sub'],
+        'name': userinfo['name'],
+        'picture': userinfo['picture']
+    }
+    return redirect('/')
+
+
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
 def index():
+    for key, value in session.items():
+        print(f'{key}: {value}')
+
     session_id = request.cookies.get('session-id')
     if session_id is None:
         return render_template('index.html')
@@ -155,18 +206,20 @@ def signup():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        login = form.login.data
+    return auth0.authorize_redirect(redirect_uri='http://localhost:5000/callback')
 
-        session_id = login_manager.registerLogin(login)
-        response = redirect(url_for('index'))
-        response.set_cookie('session-id', session_id,
-                            httponly=True)
-        return response
+    # form = LoginForm()
+    # if form.validate_on_submit():
+    #     login = form.login.data
 
-    else:
-        return render_template('login.html', title='Logowanie', form=form)
+    #     session_id = login_manager.registerLogin(login)
+    #     response = redirect(url_for('index'))
+    #     response.set_cookie('session-id', session_id,
+    #                         httponly=True)
+    #     return response
+
+    # else:
+    #     return render_template('login.html', title='Logowanie', form=form)
 
 
 @app.route('/logout', methods=["GET"])
