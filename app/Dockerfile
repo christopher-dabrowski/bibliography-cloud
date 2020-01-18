@@ -14,4 +14,4 @@ COPY . .
 # ENV FLASK_RUN_HOST 0.0.0.0
 # CMD ["flask", "run"]
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "-k", "gevent", "--bind", "0.0.0.0:5000", "app:app"]

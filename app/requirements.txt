@@ -7,3 +7,4 @@ PyJWT
 requests
 authlib
 gunicorn
+gevent
