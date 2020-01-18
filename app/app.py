@@ -1,7 +1,7 @@
 import os
 import secrets
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, make_response, flash, session
+from flask import Flask, render_template, request, redirect, url_for, make_response, flash
 import requests
 import urllib.parse
 from livereload import Server
@@ -38,17 +38,6 @@ auth0 = oauth.register(
 )
 
 
-def requires_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if 'profile' not in session:
-            # Redirect to Login page here
-            return redirect('/')
-        return f(*args, **kwargs)
-
-    return decorated
-
-
 user_manager = Config.user_manager
 login_manager = Config.login_manager
 
@@ -60,25 +49,21 @@ def callback_handling():
     # Handles response from token endpoint
     auth0.authorize_access_token()
     resp = auth0.get('userinfo')
-    userinfo = resp.json()
+    user_info = resp.json()
+    user_name = user_info['name']
 
-    # Store the user information in flask session.
-    session['jwt_payload'] = userinfo
-    session['profile'] = {
-        'user_id': userinfo['sub'],
-        'name': userinfo['name'],
-        'picture': userinfo['picture']
-    }
-    return redirect('/')
+    # Use custom login manager from milestone 2
+    session_id = login_manager.registerLogin(user_name)
+    response = redirect(url_for('index'))
+    response.set_cookie('session-id', session_id,
+                        httponly=True)
+    return response
 
 
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
 def index():
-    for key, value in session.items():
-        print(f'{key}: {value}')
-
     session_id = request.cookies.get('session-id')
     if session_id is None:
         return render_template('index.html')
