@@ -76,7 +76,6 @@
   <main role="main" class="flex-shrink-0">
 
     {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
     <section class="container messages">
       <ul class="flashes" id="flashes">
 
@@ -91,7 +90,6 @@
 
       </ul>
     </section>
-    {% endif %}
     {% endwith %}
 
     {% block main %}{% endblock %}

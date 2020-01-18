@@ -28,7 +28,7 @@ def register_publication_sse(login):
 
     action = request.args.get('action', 'created')
 
-    sse.publish({'message': f'Publikacja {publication_name}'},
+    sse.publish({'message': f'Publikacja {publication_name}', 'action': action},
                 type=f'user:{login}')
 
     return Response(201)

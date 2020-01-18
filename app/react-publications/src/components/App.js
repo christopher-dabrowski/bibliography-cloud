@@ -93,7 +93,7 @@ class App extends React.Component {
 
     const closeIcon = document.createElement('span');
     closeIcon.setAttribute('aria-hidden', 'true');
-    closeIcon.innerText = '&times;';
+    closeIcon.innerHTML = '&times;';
 
     closeButton.appendChild(closeIcon);
     li.appendChild(closeButton);
@@ -115,7 +115,7 @@ class App extends React.Component {
 
     console.log('Stream time!');
     this.stream = new EventSource(this.props.urls.clientBase + '/stream');
-    this.stream.addEventListener(`user:${this.state.login}`, function (event) {
+    this.stream.addEventListener(`user:${this.state.login}`, (event) => {
       var data = JSON.parse(event.data);
       this.displayInformation(data.message);
     });
