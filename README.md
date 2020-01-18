@@ -37,6 +37,10 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
     - [Działanie](#działanie)
     - [Responsywność](#responsywność)
   - [Klient mobilny](#klient-mobilny)
+- [Etap 4](#etap-4)
+  - [Uruchomienie projektu](#uruchomienie-projektu-2)
+  - [OAuth2.0](#oauth20)
+    - [Implementacja](#implementacja)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -238,6 +242,42 @@ Przykład trybu edycji publikacji na telefonie:
 
 Zostały utworzone dwie proste aplikacje będące klientami mobilnymi. Aplikacja Flutter będąca prototypem znajduje się w katalogu [mobile_client_flutter](./mobile/mobile_client_flutter).  
 Aplikacja React Native, która jest uproszczeniem klienta webowego jest w katalogu [mobile_client_react_native](./mobile/mobile_client_react_native).
+
+## Etap 4
+
+Celem etapu jest rozszerzenie aplikacji `web` o powiadomienia ze strony serwera o dodaniu nowych publikacji.
+Powiadomienia powinny pojawiać się we wszystkich przeglądarkach, w których zalogowany jest użytkownik.
+Powiadomienia powinny wyświetlać się tylko użytkownikowi, który jest zalogowany.
+Dopuszczalne jest wykorzystanie: long-polling, Server Sent Events (EventStream) lub WebSocket. Co do ostatniego, to warto pamiętać, że WebSocket jest wykorzystywany **głównie** w przypadku, gdy wymagana jest dwukierunkowa komunikacja (wykorzystanie tego w kontekście powiadomień jest pewnym naciągnięciem, ale w tym kamieniu milowym jest dopuszczalne).
+
+Należy również o zintegrowanie logowania do aplikacji z wykorzystaniem **OAuth2.0**. Najlepiej wykorzystać auth0.com.
+
+### Uruchomienie projektu
+
+<!-- TODO: Opisać uruchomienie projektu -->
+
+Stan projektu po tym etapie można znaleźć w zakładce [release](https://github.com/SiwyKrzysiek/bibliography-cloud/releases/tag/Milestone3).
+
+**Przed uruchomieniem należy wpisać dane Auth0.**  
+W tym celu trzeba ustawić zmienne w pliku [/app/docker.env](./app/docker.env).
+
+By uruchomić projekt należy wykonać `docker-compose up` w głównym katalogu projektu.  
+Domyślnie projekt będzie dostępny pod adresem [https://localhost:443](https://localhost:443).
+
+Tak jak w poprzednich etapach + **WPISANIE KLUCZY AUTH0!!!**. (Szczegółowy opis zostanie dodany przed oddaniem etapu)
+
+### OAuth2.0
+
+W celu przejścia na autoryzacje przy pomocy zewnętrznej usługi OAuth2.0 została utworzona aplikacja na stronie **Auth0**. Ponieważ aplikacja jest w głównej części klasyczną aplikacją webową jest w stanie bezpiecznie przechować sekret aplikacji. Dzięki temu możliwe jest zastosowanie modelu [Authorization Code](https://auth0.com/docs/flows/concepts/auth-code).
+
+#### Implementacja
+
+Zostało utworzone konto testowe na stronie Auth0.  
+**Email:** 293101@pw.edu.pl
+**Login:** jan
+**Hasło:** Pa$$word
+
+Po stronie aplikacji został zdefiniowany adres powrotu, pod który zostanie przekierowany użytkownik po uwierzytelnieniu przy pomocy Auth0. Po poprawnej weryfikacji następne kroki pozostały takie jak w kamieniu milowym 2 (własny moduł logowania użytkowników oparty na ciasteczkach i redisie oraz własny dekorator `login_required`).
 
 ----------------------
 
