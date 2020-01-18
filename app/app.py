@@ -38,10 +38,10 @@ auth0 = oauth.register(
 )
 
 
-user_manager = Config.user_manager
+# user_manager = Config.user_manager
 login_manager = Config.login_manager
 
-create_sample_users(user_manager)
+# create_sample_users(user_manager)
 
 
 @app.route('/callback')

@@ -1,3 +1,8 @@
+"""
+Not in use in favor of Auth0.
+Left for sentimental reasons.
+"""
+
 import redis
 from hashlib import sha256
 

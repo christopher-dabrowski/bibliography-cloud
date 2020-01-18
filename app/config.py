@@ -28,7 +28,7 @@ class Config(object):
     PUBLICATION_API_URL = f'http://{PUBLICATION_API_HOST}:8090'
 
     redis = redis.Redis(REDIS_NAME)
-    user_manager = UserManager(redis)
+    # user_manager = UserManager(redis)
     login_manager = LoginManager(redis)
 
     AUTH0_CLIENT_ID = os.environ.get('AUTH0_CLIENT_ID')
