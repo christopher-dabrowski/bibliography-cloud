@@ -213,7 +213,12 @@ def logout():
     login_manager.registerLogout(session_id)
 
     flash('Nastąpiło poprawne wylogowanie', 'alert-success')
-    response = redirect(url_for('index'))
+
+    # Build redirect to Auth0
+    params = {'returnTo': url_for(
+        'index', _external=True), 'client_id': Config.AUTH0_CLIENT_ID}
+    response = redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
+
     response.set_cookie('session-id', '', expires=0,
                         httponly=True)  # Clear cookie
     return response
