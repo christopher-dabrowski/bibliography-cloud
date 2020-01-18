@@ -191,20 +191,9 @@ def signup():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    return auth0.authorize_redirect(redirect_uri='http://localhost:5000/callback')
+    redirect_uri = Config.APP_URL + url_for('callback_handling')
 
-    # form = LoginForm()
-    # if form.validate_on_submit():
-    #     login = form.login.data
-
-    #     session_id = login_manager.registerLogin(login)
-    #     response = redirect(url_for('index'))
-    #     response.set_cookie('session-id', session_id,
-    #                         httponly=True)
-    #     return response
-
-    # else:
-    #     return render_template('login.html', title='Logowanie', form=form)
+    return auth0.authorize_redirect(redirect_uri=redirect_uri)
 
 
 @app.route('/logout', methods=["GET"])
@@ -215,8 +204,8 @@ def logout():
     flash('Nastąpiło poprawne wylogowanie', 'alert-success')
 
     # Build redirect to Auth0
-    params = {'returnTo': url_for(
-        'index', _external=True), 'client_id': Config.AUTH0_CLIENT_ID}
+    return_url = Config.APP_URL + url_for('index')
+    params = {'returnTo': return_url, 'client_id': Config.AUTH0_CLIENT_ID}
     response = redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
     response.set_cookie('session-id', '', expires=0,

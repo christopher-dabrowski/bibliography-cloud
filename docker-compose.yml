@@ -17,6 +17,8 @@ services:
       - REDIS_NAME=redis
       - FILE_STORE_HOST=file-store
       - APP_URL=https://localhost:443
+    env_file:
+      - ./app/docker.env
     depends_on:
       - redis
       - file-store
