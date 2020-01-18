@@ -77,6 +77,15 @@ class App extends React.Component {
 
     this.getPublications();
     this.getUserFiles();
+
+    console.log('Stream time!');
+    this.stream = new EventSource(this.props.urls.clientBase + '/stream');
+    this.stream.addEventListener('test', function (event) {
+      console.log(event);
+      console.log('aaaa');
+      var data = JSON.parse(event.data);
+      alert("The server says " + data.message);
+    });
   }
 
   render = () => {

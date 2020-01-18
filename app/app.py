@@ -1,7 +1,7 @@
 import os
 import secrets
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, make_response, flash
+from flask import Flask, render_template, request, redirect, url_for, make_response, flash, Response
 import requests
 import urllib.parse
 from livereload import Server
@@ -17,11 +17,14 @@ from six.moves.urllib.parse import urlencode
 from functools import wraps
 from werkzeug.exceptions import HTTPException
 
+from flask_sse import sse
+
 from api import api
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(sse, url_prefix='/stream')
 
 oauth = OAuth(app)
 
@@ -42,6 +45,12 @@ auth0 = oauth.register(
 login_manager = Config.login_manager
 
 # create_sample_users(user_manager)
+
+
+@app.route('/streamTest')
+def publish_hello():
+    sse.publish({"message": "Hello!"}, type='test')
+    return "Message sent!"
 
 
 @app.route('/callback')
