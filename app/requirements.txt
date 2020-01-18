@@ -6,3 +6,4 @@ redis
 PyJWT
 requests
 authlib
+gunicorn
