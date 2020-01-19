@@ -41,6 +41,8 @@ Napisanie aplikacji do zarządzania źródłami w pracach naukowych.
   - [Uruchomienie projektu](#uruchomienie-projektu-2)
   - [OAuth2.0](#oauth20)
     - [Implementacja](#implementacja)
+  - [Powiadomienia o serwera](#powiadomienia-o-serwera)
+    - [Implementacja](#implementacja-1)
 - [Przydatne materiały](#przydatne-materiały)
 
 ## Etap 1 - Formularz rejestracyjny
@@ -262,9 +264,9 @@ Stan projektu po tym etapie można znaleźć w zakładce [release](https://githu
 W tym celu trzeba ustawić zmienne w pliku [/app/docker.env](./app/docker.env).
 
 By uruchomić projekt należy wykonać `docker-compose up` w głównym katalogu projektu.  
-Domyślnie projekt będzie dostępny pod adresem [https://localhost:443](https://localhost:443).
+Domyślnie projekt będzie dostępny pod adresem [https://localhost:5000](https://localhost:5000).
 
-Tak jak w poprzednich etapach + **WPISANIE KLUCZY AUTH0!!!**. (Szczegółowy opis zostanie dodany przed oddaniem etapu)
+:exclamation: Adres aplikacji jest **inny** niż w poprzednich etapach.
 
 ### OAuth2.0
 
@@ -278,6 +280,24 @@ Zostało utworzone konto testowe na stronie Auth0.
 **Hasło:** Pa$$word
 
 Po stronie aplikacji został zdefiniowany adres powrotu, pod który zostanie przekierowany użytkownik po uwierzytelnieniu przy pomocy Auth0. Po poprawnej weryfikacji następne kroki pozostały takie jak w kamieniu milowym 2 (własny moduł logowania użytkowników oparty na ciasteczkach i redisie oraz własny dekorator `login_required`).
+
+### Powiadomienia o serwera
+
+W celu informowania użytkownika o zmianach przeprowadzanych na różnych urządzeniach wykorzystana została technologia Server Send Events. Dzięki temu po zmianie publikacji (utworzenie, aktualizacja, usunięcie) we wszystkich oknach przeglądarki, na których otwarta jest aplikacja użytkownik zobaczy **powiadomienie** o akcji, a lista publikacji zostanie **automatycznie odświeżona**.
+
+Niestety wystąpiły problemy przy połączeniu tej funkcjonalności z przejściem przez serwer Nginx. Z tego powodu w tym kamieniu milowym nie jest aktualnie wspierane połączenie htts. Mimo tego ciągle jest serwowane przez rozwiązanie produkcyjne (gunicorn).
+
+#### Implementacja
+
+Po stronie serwera `web` wykożystnana została biblioteka _flaks-sse_, która wykorzystuje funkcjonalność [pubsub serwera Redis](https://redis.io/topics/pubsub) jako kolejkę komunikatów.
+
+Za rejestrowanie i przekazywanie powiadomień SSE odpowiada aplikacja `web`. Klient po wprowadzeniu zmiany może wykonać zapytanie pod odpowiedni adres. Jeśli zapytanie jest poprawne odpowiednia wiadomość zostanie dodana do kolejki komunikatów **danego użytkownika**.
+
+Pod odpowiednim adresem dostępny jest strumień komunikatów (.../api/stream).
+
+Klientem odpowiadającym za wyświetlanie i zgłaszanie komunikatów jest moduł UI publikacji napisany w React jako część kamienia milowego 4. Tworzy on obiekt `EventSource` i nasłuchuje wiadomości dla aktualnego użytkownika. (Plik [app/react-publications/src/components/App.js](./app/react-publications/src/components/App.js) linia 118). Po otrzymaniu komunikatu z klient wyświetla powiadomienie i aktualizuję listę publikacji.
+
+Gdy klient wykona zmianę publikacji i otrzyma prawidłową odpowiedź od serwera wysyła powiadomienie o akcji do aplikacji `web`. (Przykład: Plik [app/react-publications/src/components/Publication.js](./app/react-publications/src/components/Publication.js) linia 70)
 
 ----------------------
 
