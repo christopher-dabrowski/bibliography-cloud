@@ -34,6 +34,9 @@ def get_login(login):
 @api.route('publicationMessage')
 @login_required
 def register_publication_sse(login):
+    # return 'hi'
+    # sse.publish({'message': 'hi'}, type=f'user:{login}')
+
     publication_name = request.args.get('publication', None)
     if not publication_name:
         abort(404)
@@ -43,7 +46,7 @@ def register_publication_sse(login):
     message = map_action_to_message(publication_name, action)
     sse.publish({'message': message, 'action': action}, type=f'user:{login}')
 
-    return Response(201)
+    return 'Ok'
 
 
 @api.route('jwt/<string:type>')
