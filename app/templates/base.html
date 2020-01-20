@@ -114,6 +114,19 @@
     crossorigin="anonymous"></script>
 
   {% block js %}{% endblock %}
+  {% if logged and logged == True %}
+  <script src="{{url_for('static', filename='js/sse.js')}}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const stream = new EventSource("{{url_for('sse.stream')}}");
+      stream.addEventListener(`user:{{login}}`, (event) => {
+        var data = JSON.parse(event.data);
+        displayInformation(data.message);
+      });
+    });
+  </script>
+  {% endif %}
+
 </body>
 
 </html>

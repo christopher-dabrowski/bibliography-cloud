@@ -71,41 +71,6 @@ class App extends React.Component {
     this.setState({ userFiles: data });
   }
 
-  createAllert = (message, category = 'info') => {
-    const li = document.createElement('li');
-    li.setAttribute('role', 'alert')
-    li.classList.add('alert');
-    li.classList.add('alert-dismissible');
-    li.classList.add('fade');
-    li.classList.add('show');
-    li.classList.add('mt-2');
-    li.classList.add(`alert-${category}`);
-
-    const span = document.createElement('span');
-    span.innerText = message;
-    li.appendChild(span);
-
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('close');
-    closeButton.setAttribute('type', 'button');
-    closeButton.setAttribute('data-dismiss', 'alert');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    const closeIcon = document.createElement('span');
-    closeIcon.setAttribute('aria-hidden', 'true');
-    closeIcon.innerHTML = '&times;';
-
-    closeButton.appendChild(closeIcon);
-    li.appendChild(closeButton);
-
-    return li;
-  }
-
-  displayInformation = (message, category = 'info') => {
-    const flashList = document.getElementById('flashes');
-    flashList.appendChild(this.createAllert(message, category));
-  }
-
   componentDidMount = async () => {
     await this.getCurrentUserLogin();
     await this.getActionList();
@@ -113,12 +78,11 @@ class App extends React.Component {
     this.getPublications();
     this.getUserFiles();
 
-    console.log('Stream time!');
+    // console.log('Stream time!');
     this.stream = new EventSource(this.props.urls.clientBase + '/stream');
     this.stream.addEventListener(`user:${this.state.login}`, (event) => {
       this.getPublications();
-      var data = JSON.parse(event.data);
-      this.displayInformation(data.message);
+      // Notification display moved to base template
     });
   }
 
