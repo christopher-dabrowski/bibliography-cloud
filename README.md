@@ -256,9 +256,7 @@ Należy również o zintegrowanie logowania do aplikacji z wykorzystaniem **OAut
 
 ### Uruchomienie projektu
 
-<!-- TODO: Opisać uruchomienie projektu -->
-
-Stan projektu po tym etapie można znaleźć w zakładce [release](https://github.com/SiwyKrzysiek/bibliography-cloud/releases/tag/Milestone3).
+Stan projektu po tym etapie można znaleźć w zakładce [release](https://github.com/SiwyKrzysiek/bibliography-cloud/releases/tag/Milestone4).
 
 **Przed uruchomieniem należy wpisać dane Auth0.**  
 W tym celu trzeba ustawić zmienne w pliku [/app/docker.env](./app/docker.env).
@@ -275,8 +273,8 @@ W celu przejścia na autoryzacje przy pomocy zewnętrznej usługi OAuth2.0 zosta
 #### Implementacja
 
 Zostało utworzone konto testowe na stronie Auth0.  
-**Email:** 293101@pw.edu.pl
-**Login:** jan
+**Email:** 293101@pw.edu.pl  
+**Login:** jan  
 **Hasło:** Pa$$word
 
 Po stronie aplikacji został zdefiniowany adres powrotu, pod który zostanie przekierowany użytkownik po uwierzytelnieniu przy pomocy Auth0. Po poprawnej weryfikacji następne kroki pozostały takie jak w kamieniu milowym 2 (własny moduł logowania użytkowników oparty na ciasteczkach i redisie oraz własny dekorator `login_required`).
@@ -295,7 +293,10 @@ Za rejestrowanie i przekazywanie powiadomień SSE odpowiada aplikacja `web`. Kli
 
 Pod odpowiednim adresem dostępny jest strumień komunikatów (.../api/stream).
 
-Klientem odpowiadającym za wyświetlanie i zgłaszanie komunikatów jest moduł UI publikacji napisany w React jako część kamienia milowego 4. Tworzy on obiekt `EventSource` i nasłuchuje wiadomości dla aktualnego użytkownika. (Plik [app/react-publications/src/components/App.js](./app/react-publications/src/components/App.js) linia 118). Po otrzymaniu komunikatu z klient wyświetla powiadomienie i aktualizuję listę publikacji.
+Klientem odpowiadającym za wyświetlanie i zgłaszanie komunikatów jest moduł UI publikacji napisany w React jako część kamienia milowego 4. Tworzy on obiekt `EventSource` i nasłuchuje wiadomości dla aktualnego użytkownika. (Plik [app/react-publications/src/components/App.js](./app/react-publications/src/components/App.js) linia 82). Po otrzymaniu komunikatu klient aktualizuję listę publikacji.
+Do bazowego szablonu został dodany kod łączący się ze strumieniem SSE i wyświetlający notyfikacje dla zalogowanego użytkownika. Dzięki temu są one widoczne na dowolnej stronie.  
+Łączenie, tak jak w App.js: [app/templates/base.html](./app/templates/base.html) linia 120  
+Generowanie powiadomień: [app/static/js/sse.js](./app/static/js/sse.js)
 
 Gdy klient wykona zmianę publikacji i otrzyma prawidłową odpowiedź od serwera wysyła powiadomienie o akcji do aplikacji `web`. (Przykład: Plik [app/react-publications/src/components/Publication.js](./app/react-publications/src/components/Publication.js) linia 70)
 
